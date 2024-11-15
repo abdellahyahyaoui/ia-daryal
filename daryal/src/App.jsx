@@ -28,7 +28,7 @@ function App() {
 
           <div className="home">
             <div className="robot">
-              <Robot />
+              {/* <Robot /> */}
             </div>
             <Routes>
               <Route path="/" element={<Home />} />

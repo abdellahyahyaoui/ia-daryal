@@ -3,7 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF, useAnimations, Environment } from '@react-three/drei';
 import './Robot.css'
 function Model() {
-    const { scene, animations } = useGLTF("/planosGlb/futur.glb");
+    const { scene, animations } = useGLTF("./planosGlb/futur.glb");
     const { actions } = useAnimations(animations, scene);
 
     // Inicia la animación automáticamente

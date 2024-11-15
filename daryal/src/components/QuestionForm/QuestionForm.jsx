@@ -12,12 +12,14 @@ function QuestionForm({ question, questionNumber, maxQuestions, onSubmit, isLast
 
   return (
     <form className="question-form" onSubmit={handleSubmit}>
-      <h2>Pregunta {questionNumber} de {maxQuestions}</h2>
+      <h2>  Responde e intenta ser lo más preciso posible </h2>
       <p>{question}</p>
       <textarea
         value={answer}
         onChange={(e) => setAnswer(e.target.value)}
-        placeholder="Tu respuesta"
+        placeholder="Tu respuesta máx. 150 caracteres"
+        maxLength={150}
+        
         required
       ></textarea>
       <button type="submit">

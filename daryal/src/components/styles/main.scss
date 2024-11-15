@@ -1,6 +1,6 @@
 // Variables
-$primary-bg-color: #073d7ea8;
-$primary-text-color: #dce3ec;
+$primary-bg-color: #0000008f;
+$primary-text-color: #e8eef5;
 $primary-font-family: 'Urbanist', sans-serif;
 $secondary-font-family: "Archivo Black", sans-serif;
 $border-radius: 40px;
@@ -12,7 +12,7 @@ $box-shadow: 1px 0px 20px 0px #ffffff7a;
     text-align: center;
     background-color: $primary-bg-color;
     font-family: $primary-font-family;
-    backdrop-filter: invert(1);
+    backdrop-filter: blur(20px);
     box-shadow: $box-shadow;
     border-radius: $border-radius;
     color: $primary-text-color;

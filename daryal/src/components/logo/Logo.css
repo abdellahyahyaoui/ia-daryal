@@ -54,7 +54,7 @@
     font-size: clamp(3rem, 6vw, 6rem);
     font-weight: 800;
     letter-spacing: 0.4em;
-    color: #b0bfd2;
+    color: #e8eef5;
     opacity: 0;
     transform: translateY(20px);
     animation: logoBounce 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;

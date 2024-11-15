@@ -127,12 +127,12 @@ function VehicleForm({ onSubmit }) {
           value={problem}
           onChange={(e) => setProblem(e.target.value)}
           required
-          maxLength={100}
+          maxLength={350}
           className="form-textarea"
-          placeholder="máx. 100 caracteres"
+          placeholder="máx. 350 caracteres"
         ></textarea>
         <div className="character-count">
-          {problem.length}/100 caracteres
+          {problem.length}/350 caracteres
         </div>
       </div>
 
@@ -144,3 +144,15 @@ function VehicleForm({ onSubmit }) {
 }
 
 export default VehicleForm;
+
+
+
+
+
+
+
+
+
+
+
+

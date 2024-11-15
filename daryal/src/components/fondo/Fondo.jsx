@@ -78,7 +78,7 @@ export default function Scene() {
       if (window.innerWidth <= 768) {
         setCameraPosition([-45, 19, 2]); // Posición de la cámara para pantallas pequeñas
       } else {
-        setCameraPosition([12, 6, 26]); // Posición de la cámara para pantallas grandes
+        setCameraPosition([12, 0, 26]); // Posición de la cámara para pantallas grandes
       }
     };
 
@@ -99,12 +99,12 @@ export default function Scene() {
           {/* Carga el modelo del escenario .glb */}
           <Model url="/planosGLb/7.glb" />
           {/* Carga el modelo del coche .glb */}
-          <CarModel url="/planosGLb/cabrio.glb" />
+          <CarModel url="/planosGLb/l1.glb" />
           <Environment preset="sunset" />
         </Suspense>
 
         {/* Añade iluminación */}
-        <ambientLight intensity={1.0} /> {/* Aumentar la luz ambiental */}
+        {/* <ambientLight intensity={1.0} /> Aumentar la luz ambiental */}
         <directionalLight position={[10, 10, 5]} intensity={1.0} /> {/* Luz direccional */}
         <directionalLight position={[-10, 10, 5]} intensity={0.5} /> {/* Otra luz direccional */}
         <pointLight position={[55, 5, 5]} intensity={1.5} decay={2} distance={10} /> {/* Luz puntual */}
