@@ -1,5 +1,5 @@
 {
-  "short_name": "React App",
+  "short_name": "Daryal AI",
   "name": "Create React App Sample",
   "icons": [
     {
@@ -8,12 +8,12 @@
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "daryal.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "daryal.png",
       "type": "image/png",
       "sizes": "512x512"
     }
@@ -22,4 +22,5 @@
   "display": "standalone",
   "theme_color": "#000000",
   "background_color": "#ffffff"
+
 }

@@ -1,5 +1,5 @@
 import './Menu.css';
-import { FaUser, FaShoppingCart } from 'react-icons/fa';
+import { FaUser } from 'react-icons/fa';
 
 export default function Menu() {
   return (
@@ -7,8 +7,8 @@ export default function Menu() {
       <a href="/" className="menu-item">
         Inicio
       </a>
-      <a href="#carrito" className="menu-item">
-         Tienda
+      <a href="/code" className="menu-item">
+         Code 
       </a>
      
       </div>

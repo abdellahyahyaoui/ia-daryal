@@ -29,9 +29,10 @@
 @media (max-width: 768px) {
     .menu-completo {
         flex-direction: column;
-        
+        position: relative;
         align-items: center;
          width: 100%;
+         z-index: 2;
 
     }}
         @media (max-width: 768px){

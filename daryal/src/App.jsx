@@ -6,17 +6,20 @@ import Home from './components/home/Home';
 import Logo from './components/logo/Logo';
 import Fondo from './components/fondo/Fondo';
 import Robot from './components/robot/Robot';
+import Lamp from './components/Lamp/Lamp';
+import CodeInterpreterForm from './components/CodeInterpreterPage/CodeInterpreterForm';
 
 import './components/logo/Logo.css';
 import './components/navbar/Navbar.css';
 import './components/robot/Robot.css';
 
+import './App.css'
 function App() {
   return (
     <Router>
       <ErrorBoundary>
-        <div>
-          <Fondo />
+        <div>253
+          {/* <Fondo /> */}
           <div className="menu-completo">
             <div className="Logo">
               <Logo />
@@ -26,15 +29,28 @@ function App() {
             </div>
           </div>
 
-          <div className="home">
+          <div className="centro">
+            <div className="cuerpo">
             <div className="robot">
-              {/* <Robot /> */}
+              <Robot />
             </div>
+            
+            <div className="contenido">
             <Routes>
               <Route path="/" element={<Home />} />
-              {/* Agrega más rutas aquí según sea necesario */}
+                  {/* Agrega más rutas aquí según sea necesario */}
+                  <Route path="/code" element={<CodeInterpreterForm />} />
             </Routes>
+              </div>
+              </div>
+            <div className="lamp">
+              <Lamp />
+              
+            </div>
+              
           </div>
+          
+         
         </div>
       </ErrorBoundary>
     </Router>

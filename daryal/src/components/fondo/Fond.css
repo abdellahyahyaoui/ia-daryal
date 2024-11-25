@@ -6,6 +6,7 @@ body {
     height: 100%;
    overflow: auto;
     /* Evita el desplazamiento si el contenido es más grande que la pantalla */
+    background: black;
 }
 
 .scene-container {

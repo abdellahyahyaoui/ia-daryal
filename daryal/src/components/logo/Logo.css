@@ -5,20 +5,18 @@
 .container {
     width: 30px;
     min-height: 10vh;
-    
+
     display: flex;
     align-items: center;
     justify-content: flex-start;
     padding: 1rem;
     font-family: 'Urbanist', sans-serif;
-    
 }
 
 .letters {
     display: flex;
     align-items: baseline;
     position: relative;
-    
 }
 
 /* Animación de entrada con efecto de rebote */
@@ -54,7 +52,7 @@
     font-size: clamp(3rem, 6vw, 6rem);
     font-weight: 800;
     letter-spacing: 0.4em;
-    color: #e8eef5;
+    color: #e6eaeb;
     opacity: 0;
     transform: translateY(20px);
     animation: logoBounce 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
@@ -65,12 +63,12 @@
 
 .letter.hovered {
     color: transparent;
-    background-image: linear-gradient(45deg, #3b82f6, #9333ea, #22c55e);
+    background-image: linear-gradient(45deg, #22d3ee, #9333ea, #22c55e);
     background-size: 200%;
     animation: colorShift 3s ease infinite;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-shadow: 0px 0px 10px rgba(59, 130, 246, 0.7);
+    text-shadow: 0px 0px 10px rgba(34, 211, 238, 0.7);
     /* Glow suave */
 }
 
@@ -85,7 +83,7 @@
     font-weight: 500;
     letter-spacing: 0.25em;
     margin-left: 0.5rem;
-    background: linear-gradient(45deg, #3b82f6, #1d4ed8);
+    background: #22d3ee;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     opacity: 0;
@@ -104,7 +102,7 @@
     content: '';
     display: block;
     height: 2px;
-    background: linear-gradient(45deg, #3b82f6, #1d4ed8);
+    background: linear-gradient(45deg, #22d3ee, #22d3ee);
     width: 0;
     transition: width 1s ease-in-out;
     animation: underline 1s ease-in-out forwards;
@@ -135,16 +133,15 @@
         opacity: 1;
     }
 }
-.Logo {
 
+.Logo {
     transform: scale(0.2);
     /* Reduce al 50% del tamaño original */
     transform-origin: left;
     margin-left: 30px;
     margin-top: -15px;
-    
-    /* Opcional: asegura que se escale desde el centro */
 }
+
 @media (max-width: 768px) {
     .Logo {
         margin-left: 0px;

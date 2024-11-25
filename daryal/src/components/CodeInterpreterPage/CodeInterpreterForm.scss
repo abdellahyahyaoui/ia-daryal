@@ -1,0 +1,67 @@
+@import '../styles/main.scss';
+
+.code-interpreter-form {
+    @include card-style;
+
+    h2 {
+        @include title-style;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+
+        label {
+            margin-bottom: 8px;
+        }
+
+        input {
+            @extend %input-style;
+        }
+
+        button {
+            @include button-style;
+            margin-top: 16px;
+        }
+    }
+
+    .error {
+        color: red;
+        margin-top: 16px;
+        text-align: center;
+    }
+
+    .resultado {
+        margin-top: 20px;
+        background: rgba(230, 255, 230, 0.1);
+        padding: 10px;
+        border-radius: 4px;
+
+        ul {
+            list-style: none;
+            padding: 0;
+
+            li {
+                margin-bottom: 8px;
+            }
+        }
+    }
+}
+input::placeholder {
+    color: rgba(40, 40, 42, 0.934);
+    /* Color personalizado para el placeholder */
+    opacity: 1;
+    /* Mantener el color visible */
+}
+
+textarea::placeholder {
+    color: rgba(40, 40, 42, 0.934);
+    /* Color personalizado para el placeholder */
+    opacity: 1;
+}
+@media (max-width: 768px) {
+    .code-interpreter-form {
+        scale: 0.8;
+        margin-top: -75px;
+    }
+}

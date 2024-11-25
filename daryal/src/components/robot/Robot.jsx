@@ -3,7 +3,7 @@ import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF, useAnimations, Environment } from '@react-three/drei';
 import './Robot.css'
 function Model() {
-    const { scene, animations } = useGLTF("./planosGlb/futur.glb");
+    const { scene, animations } = useGLTF("/planosGLb/futur.glb");
     const { actions } = useAnimations(animations, scene);
 
     // Inicia la animación automáticamente
@@ -16,7 +16,7 @@ function Model() {
         }
     }, [actions]);
 
-    return <primitive object={scene} scale={[1.2, 1.2, 1.2,]} />; // Aumenta la escala del modelo
+    return <primitive object={scene} scale={[1.6, 1.6, 1.6,]} />; // Aumenta la escala del modelo
 }
 
 export default function RobotComponent() {

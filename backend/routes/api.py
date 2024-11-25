@@ -85,7 +85,19 @@ def continuar_diagnostico():
         logging.error(f"Error in continuar_diagnostico: {str(e)}")
         return jsonify({"error": str(e)}), 500
 
-
+@api.route('/interpretar-codigos', methods=['POST'])
+def interpretar_codigos():
+    data = request.json
+    try:
+        codigos = data.get('codigos', [])
+        # Aquí debes implementar la lógica para interpretar los códigos
+        # Por ejemplo:
+        prompt = f"Interpreta los siguientes códigos de error: {', '.join(codigos)}"
+        interpretacion = obtener_respuesta_gpt(prompt)
+        return jsonify({"interpretacion": interpretacion})
+    except Exception as e:
+        logging.error(f"Error in interpretar_codigos: {str(e)}")
+        return jsonify({"error": str(e)}), 500
 
 
 

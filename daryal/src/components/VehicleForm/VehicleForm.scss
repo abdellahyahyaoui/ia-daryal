@@ -42,6 +42,7 @@ textarea:focus {
   transform: translateY(-3px);
   box-shadow: inset 6px 6px 12px #c5c5c599, inset 1px -1px 20px #483f3fd4, 0 6px 12px rgba(0, 0, 0, 0.1);
   animation: neon-pulse 1.5s infinite;
+  color: #7fd0dcf9;
 }
 
 .vehicle-form button:active {
@@ -68,8 +69,9 @@ textarea::placeholder {
 }
 @media (max-width: 768px) {
   .vehicle-form {
-    margin-top: -100px;
-    scale: 0.8;
+    margin: 10px;
+    scale: 0.9;
+    margin-top: -75px;
   }
 
   .character-count {

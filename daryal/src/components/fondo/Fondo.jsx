@@ -78,7 +78,7 @@ export default function Scene() {
       if (window.innerWidth <= 768) {
         setCameraPosition([-45, 19, 2]); // Posición de la cámara para pantallas pequeñas
       } else {
-        setCameraPosition([12, 0, 26]); // Posición de la cámara para pantallas grandes
+        setCameraPosition([12, 10, 26]); // Posición de la cámara para pantallas grandes
       }
     };
 
@@ -97,10 +97,10 @@ export default function Scene() {
       <Canvas camera={{ position: cameraPosition }} style={{ width: '100%', height: '100%' }}>
         <Suspense fallback={null}>
           {/* Carga el modelo del escenario .glb */}
-          <Model url="/planosGLb/7.glb" />
+          <Model url="/planosGLb/sci-fi_garage.glb" />
           {/* Carga el modelo del coche .glb */}
-          <CarModel url="/planosGLb/l1.glb" />
-          <Environment preset="sunset" />
+          <CarModel url="/planosGLb/bmw.glb" />
+          <Environment preset="studio" />
         </Suspense>
 
         {/* Añade iluminación */}
