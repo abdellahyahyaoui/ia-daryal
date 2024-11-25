@@ -17,19 +17,24 @@ from flask_cors import CORS
 from routes.api import api
 
 app = Flask(__name__)
+from flask import Flask
+from flask_cors import CORS
+from routes.api import api
+
+app = Flask(__name__)
 
 # Configuración específica de CORS
 CORS(app, resources={
     r"/api/*": {
         "origins": [
-            "https://darayal.web.app",  # Tu dominio de producción
-            "http://localhost:3000",     # Para desarrollo local
-            "http://localhost:5173"      # Para desarrollo con Vite
+            "https://darayal.web.app",
+            "http://localhost:3000",
+            "http://localhost:5173"
         ],
-        "methods": ["POST", "OPTIONS"],
-        "allow_headers": ["Content-Type"],
-        "expose_headers": ["Content-Type"],
-        "supports_credentials": False
+        "methods": ["GET", "POST", "OPTIONS"],
+        "allow_headers": ["Content-Type", "Authorization", "Access-Control-Allow-Origin"],
+        "expose_headers": ["Content-Type", "Authorization"],
+        "supports_credentials": True
     }
 })
 
