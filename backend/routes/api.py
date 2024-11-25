@@ -1,6 +1,6 @@
 import logging
 from flask import Blueprint, request, jsonify
-from utils.openai_helper import obtener_respuesta_gpt
+from utils.openai_helper import obtener_respuesta_gpt, interpretar_codigos_error
 
 api = Blueprint('api', __name__)
 logging.basicConfig(level=logging.DEBUG)
@@ -86,6 +86,30 @@ def continuar_diagnostico():
         return jsonify({"error": str(e)}), 500
 
 
+@api.route('/interpretar-codigos', methods=['POST'])
+def interpretar_codigos():
+    logging.debug(f"Received data for code interpretation: {request.json}")
+    data = request.json
+    try:
+        codigos = data.get('codigos', [])
+        if not codigos:
+            return jsonify({"error": "No se proporcionaron códigos para interpretar"}), 400
+
+        interpretacion = interpretar_codigos_error(codigos)
+        logging.debug(f"Code interpretation result: {interpretacion}")
+        
+        # Procesar la respuesta para extraer el diagnóstico y las sugerencias
+        partes = interpretacion.split("Sugerencias:")
+        diagnostico = partes[0].replace("Diagnóstico:", "").strip()
+        sugerencias = [s.strip() for s in partes[1].split("\n") if s.strip() and not s.strip().isdigit()]
+
+        return jsonify({
+            "diagnostico": diagnostico,
+            "sugerencias": sugerencias
+        })
+    except Exception as e:
+        logging.error(f"Error in interpretar_codigos: {str(e)}")
+        return jsonify({"error": str(e)}), 500
 
 
 
@@ -113,76 +137,3 @@ def continuar_diagnostico():
 
 
 
-# import logging
-# from flask import Blueprint, request, jsonify
-# from utils.openai_helper import obtener_respuesta_gpt
-
-# api = Blueprint('api', __name__)
-# logging.basicConfig(level=logging.DEBUG)
-# MAX_QUESTION_LENGTH = 300
-
-# @api.route('/iniciar-diagnostico', methods=['POST'])
-# def iniciar_diagnostico():
-#     logging.debug(f"Received data: {request.json}")
-#     data = request.json
-#     try:
-#         prompt = f"""
-#         Un coche {data.get('marca', 'desconocida')} {data.get('modelo', 'desconocido')} del año {data.get('año', 'desconocido')} 
-#         con motor de {data.get('combustible', 'desconocido')} presenta el siguiente problema: 
-#         {data.get('problema', 'No se proporcionó descripción del problema')}. 
-#         Genera una pregunta específica y relevante para obtener más información sobre el problema. 
-#         La pregunta debe estar directamente relacionada con el diagnóstico de la avería descrita.
-#         """
-#         logging.debug(f"Generated prompt: {prompt}")
-#         pregunta = obtener_respuesta_gpt(prompt)
-#         logging.debug(f"Generated question: {pregunta}")
-#         return jsonify({"pregunta": pregunta[:MAX_QUESTION_LENGTH]})
-#     except Exception as e:
-#         logging.error(f"Error in iniciar_diagnostico: {str(e)}")
-#         return jsonify({"error": str(e)}), 500
-
-# @api.route('/continuar-diagnostico', methods=['POST'])
-# def continuar_diagnostico():
-#     logging.debug(f"Received data for continuation: {request.json}")
-#     data = request.json
-#     try:
-#         historial = data.get('historial', [])
-#         numero_pregunta = len([item for item in historial if item['tipo'] == 'pregunta']) + 1
-#         info_vehiculo = data.get('vehiculo', {})
-
-#         # Generamos una nueva pregunta para el diagnóstico sin validaciones adicionales
-#         if numero_pregunta <= 5:
-#             prompt = f"""
-#             Eres un experto en diagnóstico automotriz. Basado en la información del vehículo y el historial de diálogo,
-#             genera una pregunta específica para continuar el diagnóstico. 
-
-#             Información del vehículo: {info_vehiculo}
-#             Historial de preguntas y respuestas: {historial}
-
-#             La pregunta debe ayudar a identificar el problema específico del vehículo y ser breve (máximo {MAX_QUESTION_LENGTH} caracteres).
-#             """
-#             siguiente_pregunta = obtener_respuesta_gpt(prompt)
-#             logging.debug(f"Generated next question: {siguiente_pregunta}")
-#             return jsonify({"pregunta": siguiente_pregunta[:MAX_QUESTION_LENGTH], "es_ultima": numero_pregunta == 5})
-#         else:
-#             # Generamos el diagnóstico final
-#             prompt = f"""
-#             Basándote en toda la información recopilada sobre el vehículo y el historial de preguntas y respuestas, 
-#             proporciona un diagnóstico final resumido en menos de 100 caracteres, seguido de 2-3 posibles soluciones breves.
-
-#             Información del vehículo: {info_vehiculo}
-#             Historial: {historial}
-
-#             Formato de respuesta:
-#             Diagnóstico: [Diagnóstico resumido en menos de 100 caracteres]
-#             Soluciones:
-#             1. [Primera solución breve]
-#             2. [Segunda solución breve]
-#             3. [Tercera solución breve (opcional)]
-#             """
-#             respuesta_final = obtener_respuesta_gpt(prompt)
-#             logging.debug(f"Generated final diagnosis and solutions: {respuesta_final}")
-#             return jsonify({"diagnostico_y_soluciones": respuesta_final})
-#     except Exception as e:
-#         logging.error(f"Error in continuar_diagnostico: {str(e)}")
-#         return jsonify({"error": str(e)}), 500
