@@ -44,12 +44,3 @@ export const continuarDiagnostico = async (historial, vehiculo) => {
         throw error;
     }
 };
-export const interpretarCodigos = async (codigos) => {
-    try {
-        const response = await apiClient.post('/interpretar-codigos', { codigos });
-        return response.data;
-    } catch (error) {
-        console.error("Error al interpretar códigos:", error);
-        throw error;
-    }
-};

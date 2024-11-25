@@ -7,7 +7,7 @@ import Logo from './components/logo/Logo';
 import Fondo from './components/fondo/Fondo';
 import Robot from './components/robot/Robot';
 import Lamp from './components/Lamp/Lamp';
-import CodeInterpreterForm from './components/CodeInterpreterPage/CodeInterpreterForm';
+import CodeInterpreterPage from './components/CodeInterpreterPage/CodeInterpreterForm';
 
 import './components/logo/Logo.css';
 import './components/navbar/Navbar.css';
@@ -39,7 +39,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
                   {/* Agrega más rutas aquí según sea necesario */}
-                  <Route path="/code" element={<CodeInterpreterForm />} />
+                  <Route path="/code" element={<CodeInterpreterPage />} />
             </Routes>
               </div>
               </div>
