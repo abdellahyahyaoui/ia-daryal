@@ -1,16 +1,21 @@
 @import '../styles/main.scss';
 
 .code-interpreter-container {
-    @include card-style;
-    width: 79%;
-    max-width: 600px;
-    margin: 0 auto;
-    z-index: 2;
-    position: relative;
-    margin-top: -106px;
+    margin: 20px;
+        padding: relative;
+   
+   
 }
 
+
+
 .code-interpreter-form {
+    @include card-style;
+            padding: 15px;
+                scale: 0.9;
+                position: relative;
+                margin-top: -30px;
+                margin-bottom: 60px;
     .form-title {
         @include title-style;
     }
@@ -23,12 +28,15 @@
 
     input {
         @extend %input-style;
+        font-size: 1.06rem;
+            color: black;
     }
 
     .codigos-container {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
+        margin-top: 30px;
     }
 
     .form-group {
@@ -37,10 +45,63 @@
     }
 
     .submit-button {
-        @include button-style;
-        margin-top: 20px;
-        width: 100%;
-    }
+    
+            @include button-style;
+    
+    
+            &::after,
+            &::before {
+                content: '';
+                position: absolute;
+            }
+    
+            &::after {
+                top: -2px;
+                left: -2px;
+                right: -2px;
+                bottom: -2px;
+                background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
+                z-index: -1;
+                filter: blur(10px);
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+    
+            &::before {
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                transform: rotate(45deg);
+                transition: all 0.3s ease;
+                opacity: 0;
+            }
+    
+            &:hover {
+                transform: translateY(-3px);
+                box-shadow: inset 6px 6px 12px #c5c5c599, inset 1px -1px 20px #483f3fd4,
+                    0 6px 12px rgba(0, 0, 0, 0.1);
+                animation: neon-pulse 1.5s infinite;
+                color: #7fd0dcf9;
+    
+                &::after {
+                    opacity: 1;
+                }
+    
+                &::before {
+                    opacity: 1;
+                    left: -100%;
+                }
+            }
+    
+            &:active {
+                transform: translateY(1px);
+                box-shadow: inset 6px 6px 12px #c5c5c599, inset 1px -1px 20px #483f3fd4,
+                    0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+        }
+    
+    
 }
 
 .error {
@@ -50,21 +111,76 @@
 }
 
 .resultado-container {
+    
     .resultado {
         margin-bottom: 20px;
+        
     }
 
     .reset-button {
-        @include button-style;
-        width: 100%;
+    
+            @include button-style;
+    
+    
+            &::after,
+            &::before {
+                content: '';
+                position: absolute;
+            }
+    
+            &::after {
+                top: -2px;
+                left: -2px;
+                right: -2px;
+                bottom: -2px;
+                background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
+                z-index: -1;
+                filter: blur(10px);
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+    
+            &::before {
+                top: -50%;
+                left: -50%;
+                width: 200%;
+                height: 200%;
+                transform: rotate(45deg);
+                transition: all 0.3s ease;
+                opacity: 0;
+            }
+    
+            &:hover {
+                transform: translateY(-3px);
+                box-shadow: inset 6px 6px 12px #c5c5c599, inset 1px -1px 20px #483f3fd4,
+                    0 6px 12px rgba(0, 0, 0, 0.1);
+                animation: neon-pulse 1.5s infinite;
+                color: #7fd0dcf9;
+    
+                &::after {
+                    opacity: 1;
+                }
+    
+                &::before {
+                    opacity: 1;
+                    left: -100%;
+                }
+            }
+    
+            &:active {
+                transform: translateY(1px);
+                box-shadow: inset 6px 6px 12px #c5c5c599, inset 1px -1px 20px #483f3fd4,
+                    0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+        }
+    
     }
-}
+
 
 .resultado {
+    @include card-style;
     
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
 
     .resultado-titulo {
         @include title-style;
@@ -90,12 +206,7 @@
             padding-left: 20px;
             position: relative;
 
-            &:before {
-                content: '•';
-                position: absolute;
-                left: 0;
-                color: #007bff;
-            }
+          
         }
     }
 }
@@ -104,10 +215,14 @@
     .code-interpreter-container {
       
         padding: 15px;
-        scale: 0.9;
+        scale: 0.95;
         position: relative;
-                margin-top: 15px;
-                    margin-bottom: 28px;
+                    margin-top: -20px;
+                        margin-bottom: -20px;
+                    }
+    .resultado{
+                margin-top: -130px;
+                    scale: 0.9;
     }
 
     .form-group {

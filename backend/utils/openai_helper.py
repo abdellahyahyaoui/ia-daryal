@@ -29,12 +29,12 @@ def interpretar_codigos_error(codigos):
         Por favor, proporciona un diagnóstico detallado y sugerencias para resolver estos problemas.
 
         Tu respuesta debe tener el siguiente formato:
-        Diagnóstico: [Un resumen conciso del problema o problemas indicados por los códigos]
+        Diagnóstico: [Un resumen conciso del problema o problemas indicados por los códigos ,Diagnóstico resumido en menos de 250 caracteres]
         Sugerencias:
-        1. [Primera sugerencia para resolver el problema]
-        2. [Segunda sugerencia para resolver el problema]
-        3. [Tercera sugerencia para resolver el problema (si es aplicable)]
+        1. [Primera sugerencia breve para resolver el problema]
+        2. [Segunda sugerencia breve para resolver el problema](si es aplicable)]
 
+        
         Asegúrate de que el diagnóstico sea claro y las sugerencias sean prácticas y específicas.
         """
 

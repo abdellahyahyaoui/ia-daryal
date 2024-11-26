@@ -3,7 +3,7 @@
 .menu {
     
     display: flex;
-    gap: 1.5rem;
+    gap: 18rem;
     /* Espacio entre los elementos del menú */
     align-items: center;
     margin-left: auto;
@@ -38,6 +38,9 @@ margin: 20px;
     }
     .navigacion{
         margin-left: 43px;
+    }
+    .menu{
+        gap: 10.5rem;
     }
 }
 

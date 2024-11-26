@@ -25,6 +25,7 @@
 .vehicle-form input,
 .vehicle-form textarea {
   @extend %input-style;
+      font-size: 1.2rem;
 }
 
 input:focus,
@@ -36,6 +37,7 @@ textarea:focus {
 
 .vehicle-form button {
   @include button-style;
+  
 }
 
 .vehicle-form button:hover {
