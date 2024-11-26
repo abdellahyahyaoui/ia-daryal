@@ -28,7 +28,7 @@ $box-shadow: 1px 0px 20px 0px #ffffff7a;
     font-family: $secondary-font-family;
     font-weight: 400;
     font-style: normal;
-    font-size: 1.4rem;
+    font-size: 1.1rem;
     padding: 10px;
     background-image: linear-gradient(342deg, #e8eef5, #e8eef5 42%, #22d3ee 74%, #22d3ee);
     background-clip: text;
@@ -41,7 +41,7 @@ $box-shadow: 1px 0px 20px 0px #ffffff7a;
 }
 
 @mixin button-style {
-    border-radius: 3em;
+    border-radius: 2em;
     background: #e8e8e869;
     cursor: pointer;
     border: none;
@@ -55,7 +55,7 @@ $box-shadow: 1px 0px 20px 0px #ffffff7a;
     position: relative;
     overflow: hidden;
     // 
-    font-size: 1.05rem;
+    font-size: 1rem;
     
 }
 

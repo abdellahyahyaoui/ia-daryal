@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './CodeInterpreterForm.scss';
 
 const CodeInterpreterForm = ({ onSubmit, isLoading, error }) => {
-    const [codigos, setCodigos] = useState(['', '', '', '']);
+    const [codigos, setCodigos] = useState(['']);
 
     const codigoValidoRegex = /^[PCBU][01]\d{3}$/;
 
@@ -34,6 +34,7 @@ const CodeInterpreterForm = ({ onSubmit, isLoading, error }) => {
             <div className="codigos-container">
                 {codigos.map((codigo, index) => (
                     <div key={index} className="form-group">
+                        <label htmlFor="model">Codigo De Averia:</label>
                         <input
                             type="text"
                             value={codigo}
@@ -46,6 +47,7 @@ const CodeInterpreterForm = ({ onSubmit, isLoading, error }) => {
                             <p className="error">Código inválido</p>
                         )}
                     </div>
+                    
                 ))}
             </div>
             <button type="submit" disabled={isLoading} className="submit-button">
