@@ -61,7 +61,14 @@
 
 @media (max-width: 768px) {
   .question-form {
-    scale: 0.8;
+    scale: 0.9;
     margin-top: -75px;
+    font-size: 1.4rem;
+    
+      h2 {
+    
+        font-size: 1.6rem;
+    
+      }
   }
 }

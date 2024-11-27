@@ -70,6 +70,13 @@ ul{
 @media (max-width: 768px) {
   .welcome-dialog {
     scale: 0.9;
-      margin-top: -50px;      
+      margin-top: -50px;  
+      font-size: 1.4rem; 
+      h1{
+     
+        font-size: 1.6rem;
+      
+  }   
   }
+  
 }

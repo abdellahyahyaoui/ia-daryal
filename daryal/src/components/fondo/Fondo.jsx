@@ -60,7 +60,7 @@
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF, Environment } from '@react-three/drei';
 import { Suspense, useEffect, useState } from 'react';
-import './Fond.css';
+import './Fondo.css';
 import CarModel from '../car-model/CarModel'; // Asegúrate de que la ruta sea correcta
 
 function Model({ url }) {

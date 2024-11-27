@@ -16,8 +16,10 @@
                 position: relative;
                 margin-top: -30px;
                 margin-bottom: 60px;
+                width: 166%;
     .form-title {
         @include title-style;
+        
     }
 
     .form-group {
@@ -30,6 +32,7 @@
         @extend %input-style;
         font-size: 1.06rem;
             color: black;
+            width: 54%;
     }
 
     .codigos-container {
@@ -47,7 +50,7 @@
     .submit-button {
     
             @include button-style;
-    
+   font-size: 1.2rem;
     
             &::after,
             &::before {
@@ -221,10 +224,17 @@
                         margin-bottom: -20px;
                     }
     .resultado{
-                margin-top: -130px;
-                    scale: 0.9;
+                    margin-top: -110px;
+                        scale: 0.8;
+                        font-size: 1.4rem;
+                        .resultado-titulo {
+                                font-size: 1.4rem;
+                            }
     }
-
+        .code-interpreter-form{
+            width: 100%;
+        }
+ 
     .form-group {
         flex: 1 0 100%;
     }

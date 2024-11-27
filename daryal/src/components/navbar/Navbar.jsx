@@ -1,7 +1,7 @@
 // Navbar.jsx
 import Logo from '../logo/Logo'
 import Menu from '../menu/Menu'
-import './Navbar.css'
+import './Navbar.scss'
 import '../logo/Logo.css'
 
 export default function Navbar() {

@@ -10,7 +10,7 @@ import Lamp from './components/Lamp/Lamp';
 import CodeInterpreter from './components/CodeInterpreterForm/CodeInterpreter';
 import VideoBackground  from './components/video/Video';
 import './components/logo/Logo.css';
-import './components/navbar/Navbar.css';
+import './components/navbar/Navbar.scss';
 import './components/robot/Robot.css';
 
 import './App.css'
@@ -20,7 +20,7 @@ function App() {
     <Router>
       <ErrorBoundary>
         <div>
-        {/* <VideoBackground/> */}
+        <VideoBackground/>
           <div className="menu-completo">
             <div className="Logo">
               <Logo />

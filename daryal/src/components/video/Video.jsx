@@ -1,24 +1,25 @@
 import React, { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
 import './Video.css';
-import videoSrc from './0001-0150.mkv';
+import videoSrc from './0001-0150.mkv'; // Cambia la ruta según corresponda
 
 const VideoBackground = () => {
   const videoRef = useRef(null);
 
   useEffect(() => {
-    if (videoRef.current) {
-      // Animación para el video (un pequeño zoom al inicio)
-      gsap.fromTo(
-        videoRef.current,
-        { scale: 1 },
-        { scale: 1, duration: 3, ease: 'power2.out' }
-      );
+    const video = videoRef.current;
 
-      // Asegurarse de que el video se detenga en el último fotograma
-      videoRef.current.addEventListener('ended', () => {
-        videoRef.current.currentTime = videoRef.current.duration;
-      });
+    if (video) {
+      // Detener el video en el último fotograma
+      const handleVideoEnd = () => {
+        video.pause(); // Pausa el video
+        video.currentTime = video.duration; // Detiene en el último fotograma
+      };
+
+      video.addEventListener('ended', handleVideoEnd);
+
+      return () => {
+        video.removeEventListener('ended', handleVideoEnd);
+      };
     }
   }, []);
 
@@ -39,4 +40,3 @@ const VideoBackground = () => {
 };
 
 export default VideoBackground;
-

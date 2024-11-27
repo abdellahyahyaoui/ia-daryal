@@ -5,10 +5,10 @@ export default function Menu() {
   return (
     <div className="menu">
       <a href="/" className="menu-item">
-        Inicio
+        Diagnocis
       </a>
       <a href="/code" className="menu-item">
-         Code 
+         Codigos
       </a>
      
       </div>
