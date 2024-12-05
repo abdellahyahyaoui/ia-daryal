@@ -1,13 +1,15 @@
-/* General */
+@import '../src/components/styles/main.scss';
+
+
 .centro {
     display: flex;
-        position: relative;
-        margin: 0 auto;
-        padding: 20px;
-        border-radius: 10px;
-        text-align: center;
-        gap: 20px;
-        overflow: hidden;
+    position: fixed;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    gap: 20px;
+    overflow: hidden;
 }
 
 .cuerpo {
@@ -19,7 +21,6 @@
 .robot {
     width: 400px;
     height: 400px;
-
     overflow: hidden;
 }
 
@@ -28,37 +29,29 @@
     width: 100%;
 }
 
-/* Responsividad: dispositivos de ancho máximo 768px */
-@media (max-width: 768px) {
+@include mobile {
     .centro {
         flex-direction: column-reverse;
         align-items: center;
         position: relative;
         margin-left: 0;
-        /* margin-top: -130px; */
         gap: 0;
         width: 100%;
         padding: 0;
     }
 
     .contenido {
-        
         z-index: 12;
         scale: 0.8;
-       
     }
 
     .lamp {
         width: 100%;
-        margin-top: 0;
+        margin-top: -140px;
         overflow: hidden;
-        justify-content: center;
-        align-content: center;
-        display: flex;
-                margin-top: -140px;
-                    z-index: 0;
-                    scale: 0.7;
-                
+        @include flex-center;
+        z-index: 0;
+        scale: 0.7;
     }
 
     #root {
@@ -68,9 +61,7 @@
     }
 
     .robot {
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        @include flex-center;
         margin-top: -110px;
         z-index: 32;
     }
@@ -80,7 +71,6 @@
         width: 100%;
         align-items: center;
         margin-top: -215px;
-            z-index: 1;
-        
+        z-index: 1;
     }
 }

@@ -2,7 +2,7 @@
 import Logo from '../logo/Logo'
 import Menu from '../menu/Menu'
 import './Navbar.scss'
-import '../logo/Logo.css'
+import '../logo/Logo.scss'
 
 export default function Navbar() {
   return (

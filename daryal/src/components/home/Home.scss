@@ -1,0 +1,14 @@
+@import '../styles/main.scss';
+.home {
+  margin: 20px;
+  padding: relative;
+  scale: 0.95;
+}
+
+@include mobile {
+  .home {
+    scale: 0.88;
+    font-size: 1.3rem;
+    margin-top: -70px;
+  }
+}

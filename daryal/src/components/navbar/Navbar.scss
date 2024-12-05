@@ -1,46 +1,41 @@
 /* navbar.scss */
 @import '../styles/main.scss';
+
+
 .navbar {
-    
     transform: scale(0.7);
     display: flex;
     align-items: center;
     justify-content: space-between;
-  
     padding: 1rem 3rem;
-   
     width: 570px;
-        
-            
-            box-shadow: 0px 0px 0px 1px #eef0f0;
-            border-radius: 40px;
-                height: 30px;
-                    margin-right: 40px;
-        }
-   
-    /* Sombra suave debajo del navbar */
+    box-shadow: 0px 1px 3px 0px $lamp-color;
+    border-radius: 40px;
+    height: 30px;
+    margin-right: 40px;
+}
 
-.menu-completo{
+.menu-completo {
     display: flex;
     width: 95vw;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 }
-@media (max-width: 768px) {
+
+@include mobile {
     .menu-completo {
         flex-direction: column;
         position: relative;
         align-items: center;
-         width: 100%;
-         z-index: 2;
+        width: 100%;
+        z-index: 2;
+    }
 
-    }}
-        @media (max-width: 768px){
-            .navbar{
-                width: 80%;
-                margin: 0px;
-                margin-top: -30px;
-                box-shadow: 1px 1px 20px 0px #ffffff8a;
-            }
-        }
+    .navbar {
+        width: 80%;
+        margin: 0px;
+        margin-top: -30px;
+        box-shadow: 0px 1px 7px 0px $lamp-color;
+    }
+}

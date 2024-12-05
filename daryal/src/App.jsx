@@ -9,17 +9,18 @@ import Robot from './components/robot/Robot';
 import Lamp from './components/Lamp/Lamp';
 import CodeInterpreter from './components/CodeInterpreterForm/CodeInterpreter';
 import VideoBackground  from './components/video/Video';
-import './components/logo/Logo.css';
+import './components/logo/Logo.scss';
 import './components/navbar/Navbar.scss';
 import './components/robot/Robot.css';
 
-import './App.css'
+import './App.scss'
 
 function App() {
   return (
     <Router>
       <ErrorBoundary>
         <div>
+          {/* <Fondo/> */}
         <VideoBackground/>
           <div className="menu-completo">
             <div className="Logo">

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import './Video.css';
+import './Video.scss';
 import videoSrc from './0001-0150.mkv'; // Cambia la ruta según corresponda
 
 const VideoBackground = () => {

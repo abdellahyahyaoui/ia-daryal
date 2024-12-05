@@ -5,7 +5,7 @@ import QuestionForm from '../QuestionForm/QuestionForm';
 import Diagnosis from '../Diagnosis/Diagnosis';
 import WarningMessage from '../WarningMessage/WarningMessage'; // Importamos el nuevo componente
 import { iniciarDiagnostico, continuarDiagnostico } from '../../api/openai';
-import './Home.css';
+import './Home.scss';
 
 // Reducer para manejar el estado del diagnóstico
 const initialState = {

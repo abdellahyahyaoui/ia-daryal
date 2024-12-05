@@ -1,0 +1,52 @@
+@import '../styles/main.scss';
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500&display=swap');
+
+.menu {
+    display: flex;
+    gap: 18rem;
+    align-items: center;
+    margin-left: auto;
+    justify-content: center;
+    font-family: $primary-font-family;
+    max-width: 90%;
+    width: 100vw;
+    font-size: clamp(3rem, 6vw, 6rem);
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    color: #333;
+    margin: 20px;
+}
+
+.menu-item {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: $primary-text-color;
+    text-decoration: none;
+    transition: color 0.3s ease;
+
+    &:hover {
+        color: $lamp-color;
+    }
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    width: 100px;
+    justify-content: space-between;
+    margin-right: -29px;
+}
+
+@include mobile {
+    .menu-item {
+        color: $primary-text-color;
+    }
+
+    .navigacion {
+        margin-left: 43px;
+    }
+
+    .menu {
+        gap: 10.5rem;
+    }
+}

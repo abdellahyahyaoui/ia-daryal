@@ -1,29 +1,20 @@
-@media (max-width: 768px) {
-    .lamp-container {
+@import '../styles/main.scss';
+ @media (max-width: 768px){
+.lamp-container {
     position: relative;
-    display: flex;
+    @include flex-center;
     min-height: 400px;
-    /* Updated */
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
     overflow: hidden;
-    /* background-color: #020617; */
     width: 100%;
     border-radius: 0.375rem;
     z-index: 0;
 }
 
 .lamp-wrapper {
-    /* New */
     width: 600px;
-    /* New */
-   
-    /* New */
     overflow: hidden;
-    /* New */
     margin: 0 auto;
-    /* New */
 }
 
 .lamp-inner {
@@ -32,8 +23,7 @@
     width: 100%;
     flex: 1;
     transform: scaleY(1.25);
-    align-items: center;
-    justify-content: center;
+    @include flex-center;
     isolation: isolate;
     z-index: 0;
 }
@@ -42,31 +32,26 @@
 .lamp-right {
     position: absolute;
     height: 9rem;
-    /* Updated */
     width: 20rem;
-    /* Updated */
     overflow: visible;
 }
 
 .lamp-left {
     right: 50%;
-    background-image: conic-gradient(from 70deg at center top, #06b6d4, transparent, transparent);
+    background-image: conic-gradient(from 48deg at center top, $lamp-color, transparent, transparent);
 }
 
 .lamp-right {
     left: 50%;
-    background-image: conic-gradient(from 290deg at center top, transparent, transparent, #06b6d4);
+    background-image: conic-gradient(from 315deg at center top, transparent, transparent, $lamp-color);
 }
 
-.lamp-left-mask-1,
-.lamp-left-mask-2,
-.lamp-right-mask-1,
-.lamp-right-mask-2 {
+%lamp-mask {
     position: absolute;
-    background-color: #000000;
 }
 
 .lamp-left-mask-1 {
+    @extend %lamp-mask;
     width: 100%;
     left: 0;
     height: 10rem;
@@ -75,6 +60,7 @@
 }
 
 .lamp-left-mask-2 {
+    @extend %lamp-mask;
     width: 10rem;
     height: 100%;
     left: 0;
@@ -83,6 +69,7 @@
 }
 
 .lamp-right-mask-1 {
+    @extend %lamp-mask;
     width: 10rem;
     height: 100%;
     right: 0;
@@ -91,6 +78,7 @@
 }
 
 .lamp-right-mask-2 {
+    @extend %lamp-mask;
     width: 100%;
     right: 0;
     height: 10rem;
@@ -127,7 +115,6 @@
     width: 28rem;
     transform: translateY(-50%);
     border-radius: 9999px;
-    
     opacity: 0.5;
     filter: blur(3rem);
 }
@@ -137,13 +124,9 @@
     inset: auto;
     z-index: 30;
     height: 6rem;
-    /* Updated */
     width: 10rem;
-    /* Updated */
     transform: translateY(-4rem);
-    /* Updated */
     border-radius: 9999px;
-   
     filter: blur(1rem);
 }
 
@@ -153,9 +136,7 @@
     z-index: 50;
     height: 0.125rem;
     width: 20rem;
-    /* Updated */
     transform: translateY(-5rem);
-    /* Updated */
     background-color: #22d3ee;
 }
 
@@ -164,18 +145,7 @@
     inset: auto;
     z-index: 40;
     height: 7rem;
-    /* Updated */
     width: 100%;
     transform: translateY(-8rem);
-    /* Updated */
     background-color: #020617;
-}
-
-}
-
-
-  
-
-
-
- 
+}}

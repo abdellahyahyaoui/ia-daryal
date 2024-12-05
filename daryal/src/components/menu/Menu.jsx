@@ -1,4 +1,4 @@
-import './Menu.css';
+import './Menu.scss';
 import { FaUser } from 'react-icons/fa';
 
 export default function Menu() {

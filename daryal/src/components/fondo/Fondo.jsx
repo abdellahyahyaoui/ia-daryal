@@ -97,10 +97,10 @@ export default function Scene() {
       <Canvas camera={{ position: cameraPosition }} style={{ width: '100%', height: '100%' }}>
         <Suspense fallback={null}>
           {/* Carga el modelo del escenario .glb */}
-          <Model url="/planosGLb/nissan.glb" />
+          <Model url="/planosGLb/sci-fi_garage.glb" />
           {/* Carga el modelo del coche .glb */}
           {/* <CarModel url="/planosGLb/bmw.glb" /> */}
-          {/* <Environment preset="studio" /> */}
+          <Environment preset="studio" />
         </Suspense>
 
         {/* Añade iluminación */}

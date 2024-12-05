@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import './Lamp.css';
+import './Lamp.scss';
 
 const Lamp = () => {
   const leftLampRef = useRef(null);

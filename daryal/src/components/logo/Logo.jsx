@@ -2,7 +2,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import './Logo.css'
+import './Logo.scss'
 
 export default function Logo() {
   const [hoveredIndex, setHoveredIndex] = useState(-1)
