@@ -43,6 +43,7 @@ function App() {
                   <Route path="/code" element={<CodeInterpreter />} />
                 </Routes>
               </div>
+              
             </div>
             <div className="lamp">
               <Lamp />

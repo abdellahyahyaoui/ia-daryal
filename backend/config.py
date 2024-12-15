@@ -23,15 +23,3 @@ class Config:
 
 print(f"API Key loaded: {Config.OPENAI_API_KEY[:5]}...") # Muestra solo los primeros 5 caracteres por seguridad
 
-
-
-
-
-
-
-
-
-
-
-
-

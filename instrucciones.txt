@@ -15,6 +15,7 @@ New-Item -Path .\src\components\logo\Logo.jsx, .\src\components\logo\Logo.css, .
 comando para ver todas las carpetas y archivos 
  Get-ChildItem -Recurse
 
+ 
 
 
 
@@ -28,6 +29,7 @@ comando para ver todas las carpetas y archivos
 
 
 
+.\env\Scripts\activate
  backend:
 
 
