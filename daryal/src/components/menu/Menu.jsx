@@ -1,19 +1,26 @@
 import './Menu.scss';
 import { FaUser } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 export default function Menu() {
   return (
     <div className="menu">
-      <a href="/" className="menu-item">
-        Diagnocis
-      </a>
-      <a href="/code" className="menu-item">
-         Codigos
-      </a>
-     
-      </div>
+      <Link to="/" className="menu-item">
+        Diagnosis
+      </Link>
+      <Link to="/code" className="menu-item">
+        Códigos
+      </Link>
+      {/* <Link to="/login" className="menu-item">
+        Login
+      </Link>
+      <Link to="/register" className="menu-item">
+        Registro
+      </Link> */}
+    </div>
   );
 }
+
 
 
 

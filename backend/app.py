@@ -1,3 +1,6 @@
+
+
+
 from flask import Flask
 from flask_cors import CORS
 from routes.api import api
@@ -8,6 +11,7 @@ app = Flask(__name__)
 CORS(app, resources={
     r"/api/*": {
         "origins": [
+            "https://idaryal.com/"
             "http://localhost:3001",
             "https://darayal.web.app",
             "http://localhost:3000",

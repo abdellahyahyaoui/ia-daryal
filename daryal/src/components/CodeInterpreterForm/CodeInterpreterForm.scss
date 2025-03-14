@@ -13,6 +13,7 @@
     margin-top: -30px;
     margin-bottom: 60px;
     width: 166%;
+    font-family: $secondary-font-family;
 
     .form-title {
         @include title-style;
@@ -29,6 +30,12 @@
         font-size: 1.06rem;
         color: rgb(255, 254, 254);
         width: 54%;
+       
+            font-weight: 200;
+            letter-spacing: 0.15em;
+            
+            line-height: 3rem;
+            font-family: $primary-font-family;
     }
 
     .codigos-container {
@@ -56,8 +63,21 @@
 }
 
 .resultado-container {
+   
     .resultado {
         margin-bottom: 20px;
+        display: flex;
+
+        flex-direction: column;
+        align-items: center;
+        p,li{
+           
+            font-weight: 200;
+            letter-spacing: 0.15em;
+          
+            line-height: 3rem;
+            font-family: $primary-font-family;
+          }
     }
 
     .reset-button {
@@ -74,8 +94,19 @@
     }
 
     .resultado-subtitulo {
-        color: rgb(8 126 164);
+        
         margin-bottom: 10px;
+        width: 300px;
+            border-radius: 25px;
+            border: solid 1px;
+            border-color: rgb(212, 221, 224);
+            padding: 10px;
+            
+            font-weight: 200;
+            letter-spacing: 0.15em;
+            font-size: 1.5rem;
+            line-height: 3rem;
+            
     }
 
     .resultado-diagnostico {
@@ -105,12 +136,12 @@
     }
 
     .resultado {
-        margin-top: -110px;
+        margin-top: -180px;
         scale: 0.8;
         font-size: 1.4rem;
 
         .resultado-titulo {
-            font-size: 1.4rem;
+            
         }
     }
 
@@ -122,8 +153,6 @@
             flex: 1 0 100%;
         }
 
-        .submit-button {
-            color: rgb(8 126 164);
-        }
+       
     }
 }

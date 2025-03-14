@@ -1,10 +1,98 @@
+// @import '../styles/main.scss';
+
+// .welcome-dialog {
+//   @include card-style;
+//   background: none;
+//   backdrop-filter: none;
+//   box-shadow: none;
+
+//   ul {
+//     list-style: none;
+//   }
+
+//   h1 {
+//     @include title-style;
+//   }
+
+//   button {
+//     @include button-style;
+
+//     &::after,
+//     &::before {
+//       content: '';
+//       position: absolute;
+//     }
+
+//     &::after {
+//       top: -2px;
+//       left: -2px;
+//       right: -2px;
+//       bottom: -2px;
+//       background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
+//       z-index: -1;
+//       filter: blur(10px);
+//       opacity: 0;
+//       transition: opacity 0.3s ease;
+//     }
+
+//     &:hover {
+//       transform: translateY(-3px);
+//       box-shadow: inset 6px 6px 12px #c5c5c599, inset 1px -1px 20px #483f3fd4,
+//         0 6px 12px rgba(0, 0, 0, 0.1);
+//       animation: neon-pulse 1.5s infinite;
+//       color: rgb(249, 249, 249);
+
+//       &::after {
+//         opacity: 1;
+//       }
+
+//       &::before {
+//         opacity: 1;
+//         left: -100%;
+//       }
+//     }
+
+//     &:active {
+//       transform: translateY(1px);
+//       box-shadow: inset 6px 6px 12px #c5c5c599, inset 1px -1px 20px #483f3fd4,
+//         0 2px 4px rgba(0, 0, 0, 0.1);
+//     }
+//   }
+
+//   @include mobile {
+//     scale: 0.9;
+//     margin-top: -50px;
+//     font-size: 1.4rem;
+
+//     button {
+//       color: rgb(8 126 164);
+//     }
+
+//     h1 {
+//       font-size: 1.6rem;
+//       background-image: linear-gradient(89deg, #ff0000, #002bff 42%, #06b6d4 74%, #ffffff);
+//     }
+//   }
+// }
+
+
+
 @import '../styles/main.scss';
 
 .welcome-dialog {
   @include card-style;
+  background: none;
+  backdrop-filter: none;
+  box-shadow: none;
+  position: relative;
 
   ul {
     list-style: none;
+    min-height: 150px;
+    font-weight: 100;
+    letter-spacing: 0.15em;
+    
+    line-height: 3rem;
   }
 
   h1 {
@@ -14,30 +102,27 @@
   button {
     @include button-style;
 
-    &::after,
-    &::before {
-      content: '';
-      position: absolute;
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: inset 6px 6px 12px #c5c5c599, inset 1px -1px 20px #483f3fd4, 0 6px 12px rgba(0, 0, 0, 0.1);
+      // animation: neon-pulse 1.5s infinite;
+      color: none;
+      background-image: linear-gradient(90deg, #fda4af, #ffffff, #a5b4fc);
     }
 
-    &::after {
-      top: -2px;
-      left: -2px;
-      right: -2px;
-      bottom: -2px;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
-      z-index: -1;
-      filter: blur(10px);
-      opacity: 0;
-      transition: opacity 0.3s ease;
+    &:active {
+      transform: translateY(1px);
+      box-shadow: inset 6px 6px 12px #c5c5c599, inset 1px -1px 20px #483f3fd4, 0 2px 4px rgba(0, 0, 0, 0.1);
     }
+  
 
     &:hover {
       transform: translateY(-3px);
       box-shadow: inset 6px 6px 12px #c5c5c599, inset 1px -1px 20px #483f3fd4,
         0 6px 12px rgba(0, 0, 0, 0.1);
-      animation: neon-pulse 1.5s infinite;
-      color: rgb(249, 249, 249);
+     
+      color: none;
+      background-image: linear-gradient(90deg, #fda4af, #fdfcfc, #a5b4fc);
 
       &::after {
         opacity: 1;
@@ -61,13 +146,12 @@
     margin-top: -50px;
     font-size: 1.4rem;
 
-    button {
-      color: rgb(8 126 164);
-    }
+
 
     h1 {
       font-size: 1.6rem;
-      background-image: linear-gradient(89deg, #ff0000, #002bff 42%, #06b6d4 74%, #ffffff);
+      background-image: linear-gradient(90deg, #a5b4fc, #ffffff,#fda4af);
     }
   }
 }
+

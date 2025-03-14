@@ -3,31 +3,102 @@
 
 .menu {
     display: flex;
-    gap: 18rem;
+    
     align-items: center;
     margin-left: auto;
-    justify-content: center;
-    font-family: $primary-font-family;
+    justify-content: space-around;
+   
     max-width: 90%;
     width: 100vw;
-    font-size: clamp(3rem, 6vw, 6rem);
-    font-weight: 300;
+    
     letter-spacing: 0.1em;
-    color: #333;
-    margin: 20px;
+    
+    margin: 40px;
 }
 
 .menu-item {
-    font-size: 1.3rem;
+  
     font-weight: 700;
-    color: $primary-text-color;
+    
     text-decoration: none;
-    transition: color 0.3s ease;
+   
 
     &:hover {
-        color: $lamp-color;
+        color: none;
+        background-image: linear-gradient(90deg, #fda4af, #ffffff, #a5b4fc);
     }
-}
+
+  
+   
+
+    transform: scale(0.7);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+    // width: 900px;
+    
+    height: 60px;
+    // margin-right: 40px;
+    
+    border-radius: 2em;
+    background: #e8e8e869;
+    cursor: pointer;
+    // border: none;
+    transition: all 0.3s ease;
+    
+    font-family: $secondary-font-family;
+   
+    color: transparent;
+    
+    -webkit-background-clip: text;
+    position: relative;
+    overflow: hidden;
+    font-size: 2.3rem;
+    border-color: rgb(212, 221, 224);
+    
+    background-image:linear-gradient(90deg, #a5b4fc, #ffffff,#fda4af);
+    
+        &:hover {
+          transform: translateY(-3px);
+          
+          // animation: neon-pulse 1.5s infinite;
+          color: none;
+          background-image: linear-gradient(90deg, #fda4af, #ffffff, #a5b4fc);
+        }
+    
+        &:active {
+          transform: translateY(1px);
+         
+        }
+      
+    
+        &:hover {
+          transform: translateY(-3px);
+          
+         
+          color: none;
+          background-image: linear-gradient(90deg, #fda4af, #fdfcfc, #a5b4fc);
+    
+          &::after {
+            opacity: 1;
+          }
+    
+          &::before {
+            opacity: 1;
+            left: -100%;
+          }
+        }
+    
+        &:active {
+          transform: translateY(1px);
+          
+            
+        }
+      
+    
+    }  
+
 
 .item {
     display: flex;
@@ -39,7 +110,8 @@
 
 @include mobile {
     .menu-item {
-        color: $primary-text-color;
+        height: 30px;
+        font-size: 1.5rem;
     }
 
     .navigacion {
@@ -47,6 +119,6 @@
     }
 
     .menu {
-        gap: 10.5rem;
+        // gap: 10.5rem;
     }
 }

@@ -1,11 +1,13 @@
 // Variables
 $primary-bg-color: #0000008f;
 $primary-text-color: #e8eef5;
-$primary-font-family: 'Urbanist', sans-serif;
-$secondary-font-family: "Candal", sans-serif;
+$primary-font-family:   "poppins", serif;
+$secondary-font-family: "Lexend Peta", serif;
+$tercero-font-family: "Water Brush", cursive;
+$cuatro-font-family: "Zen Dots", sans-serif;
 $border-radius: 10px;
 $box-shadow: 1px 0px 20px 0px #ffffff7a;
-$lamp-color: rgb(8 126 164);
+$lamp-color: rgb(212, 218, 221);
 $mobile-breakpoint: 768px;
 
 // Mixins
@@ -13,8 +15,8 @@ $mobile-breakpoint: 768px;
     padding: 20px;
     text-align: center;
     font-family: $primary-font-family;
-    backdrop-filter: blur(20px);
-    box-shadow: 0px 0px 20px 7px #111111;
+    // backdrop-filter: blur(20px);
+    // box-shadow: 0px 0px 20px 7px #111111;
     border-radius: $border-radius;
     color: $primary-text-color;
     font-weight: 600;
@@ -23,41 +25,44 @@ $mobile-breakpoint: 768px;
     animation: logoBounce 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
     transition: opacity 300ms ease-out-in, transform 300ms ease-out-in;
     text-shadow: 2px 4px 8px rgba(0, 0, 0, 0.15);
-    background: #000000bf 0.6%;
+    // background: #000000bf 0.6%;
 }
 
 @mixin title-style {
     font-optical-sizing: auto;
     font-family: $secondary-font-family;
-    font-weight: 400;
+    font-weight: bolder;
     font-style: normal;
-    font-size: 1.6rem;
+    font-size: 1.9rem;
     padding: 10px;
-    background-image:linear-gradient(90deg, #00c4cc, #7d2ae8);;
+    background-image:linear-gradient(90deg, #a5b4fc, #ffffff,#fda4af);
     background-clip: text;
     -webkit-background-clip: text;
     border-radius: 5px;
     
     
-    color: rgb(8 126 164);
+    color: transparent;
    
 }
 
 @mixin button-style {
-    border-radius: 2em;
+    border-radius: 3em;
     background: #e8e8e869;
     cursor: pointer;
-    border: none;
+    // border: none;
     transition: all 0.3s ease;
-    box-shadow: 0px 0px 20px 7px #111111;
+    
     font-family: $secondary-font-family;
     padding: 25px;
-    color: rgb(8 126 164);
+    color: transparent;
     background-clip: text;
     -webkit-background-clip: text;
     position: relative;
     overflow: hidden;
     font-size: 1rem;
+    border-color: rgb(212, 221, 224);
+    
+    background-image:linear-gradient(90deg, #a5b4fc, #ffffff,#fda4af);
 }
 @mixin absolute-full {
     position: absolute;
@@ -74,21 +79,21 @@ $mobile-breakpoint: 768px;
 }
 
 // Keyframes
-@keyframes neon-pulse {
+// @keyframes neon-pulse {
 
-    0%,
-    100% {
-        box-shadow: 0 0 5px #ffffff, 0 0 10px #ffffff, 0 0 15px #ffffff, 0 0 20px #ffffff;
-    }
+//     0%,
+//     100% {
+//         box-shadow:  0 0 1px #ffffff, 0 0 5px #c00202, 0 0 10px #4da9e6, 0 0 15px #17ea0c;
+//     }
 
-    50% {
-        box-shadow: 0 0 10px #ffffff, 0 0 20px #ffffff, 0 0 30px #ffffff, 0 0 40px #ffffff;
-    }
-}
+//     50% {
+//         box-shadow: inset 0 0 2px #ffffff, 0 0 10px #075c99, 0 0 15px #d8ec06, 0 0 20px #ca0707;
+//     }
+// }
 
 // Placeholder selectors
 %input-style {
-    width: 100%;
+    width: 25%;
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 10px;
@@ -96,6 +101,7 @@ $mobile-breakpoint: 768px;
     background-color: rgb(255 255 255 / 6%);
     color: rgb(255, 253, 253);
     margin-left: 10px;
+    
 
     &:focus {
         outline: none;

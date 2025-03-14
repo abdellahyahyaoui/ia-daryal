@@ -1,0 +1,109 @@
+.hero-geometric-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  background-color: #030303;
+  z-index: -1;
+}
+
+.background-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom right, rgba(99, 102, 241, 0.05), transparent, rgba(244, 63, 94, 0.05));
+  filter: blur(3rem);
+}
+
+.shapes-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.elegant-shape {
+  position: absolute;
+}
+
+.elegant-shape-inner {
+  position: relative;
+}
+
+.elegant-shape-content {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background-image: linear-gradient(to right, var(--gradient-color), transparent);
+  backdrop-filter: blur(2px);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.1);
+}
+
+.elegant-shape-content::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background-image: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.2), transparent 70%);
+}
+
+.shape-1 {
+  left: -10%;
+  top: 15%;
+}
+
+.shape-2 {
+  right: -5%;
+  top: 70%;
+}
+
+.shape-3 {
+  left: 5%;
+  bottom: 5%;
+}
+
+.shape-4 {
+  right: 15%;
+  top: 10%;
+}
+
+.shape-5 {
+  left: 20%;
+  top: 5%;
+}
+
+.overlay-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, #585555, transparent, rgba(3, 3, 3, 0.8));
+  pointer-events: none;
+}
+
+@media (min-width: 768px) {
+  .shape-1 {
+    left: -5%;
+    top: 20%;
+  }
+
+  .shape-2 {
+    right: 0%;
+    top: 75%;
+  }
+
+  .shape-3 {
+    left: 10%;
+    bottom: 10%;
+  }
+
+  .shape-4 {
+    right: 20%;
+    top: 15%;
+  }
+
+  .shape-5 {
+    left: 25%;
+    top: 10%;
+  }
+}
+

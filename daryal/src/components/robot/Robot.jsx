@@ -16,7 +16,7 @@ function Model() {
         }
     }, [actions]);
 
-    return <primitive object={scene} scale={[1.6, 1.6, 1.6,]} />; // Aumenta la escala del modelo
+    return <primitive object={scene} scale={[2.8, 2.8, 2.8,]} />; // Aumenta la escala del modelo
 }
 
 export default function RobotComponent() {
@@ -26,7 +26,7 @@ export default function RobotComponent() {
            
         >
             <Canvas
-                camera={{ position: [1.5, 0, 8], fov: 30 }}
+                camera={{ position: [-6, 0, 8], fov: 30 }}
                 gl={{ alpha: true, antialias: true }}
             >
                 <ambientLight intensity={1} />
