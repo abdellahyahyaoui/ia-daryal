@@ -1,0 +1,74 @@
+
+
+@import '../styles/main.scss';
+
+.welcome-dialog {
+  @include card-style;
+  background: none;
+  backdrop-filter: none;
+  box-shadow: none;
+  position: relative;
+  min-height: 300px; // Mantener altura consistente
+display: flex;
+justify-content: center;
+align-items: center;
+width: 50vw;
+  .text-content {
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+    
+    h1 {
+      @include title-style;
+    }
+    
+    ul {
+      list-style: none;
+      min-height: 150px;
+      font-weight: 250;
+      letter-spacing: 0.15em;
+      line-height: 3rem;
+    }
+  }
+  
+  .button-content {
+    opacity: 0;
+    animation: fadeIn 0.5s forwards;
+    
+    button {
+      @include button-style;
+      
+      &:hover {
+        transform: translateY(-3px);
+        box-shadow: inset 6px 6px 12px #c5c5c599, inset 1px -1px 20px #483f3fd4, 0 6px 12px rgba(0, 0, 0, 0.1);
+        color: none;
+        background-image: linear-gradient(90deg, #e6eaeb, #ffffff, #a5b4fc);
+      }
+      
+      &:active {
+        transform: translateY(1px);
+        box-shadow: inset 6px 6px 12px #c5c5c599, inset 1px -1px 20px #483f3fd4, 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @include mobile {
+    scale: 0.9;
+    margin-top: -50px;
+    font-size: 1.25rem;
+    width: auto;
+
+    h1 {
+      font-size: 1.6rem;
+      background-image: linear-gradient(90deg, #a5b4fc, #ffffff,#e6eaeb);
+    }
+  }
+}
