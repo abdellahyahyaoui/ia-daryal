@@ -23,6 +23,7 @@ import MotorcycleDiagnosis from "./components/MotorcycleForm/MotorcycleDiagnosis
 import ElectricCarDiagnosis from "./components/ElectricCarForm/ElectricCarDiagnosis"
 import ElectricMotorcycleDiagnosis from "./components/ElectricMotorcycleForm/ElectricMotorcycleDiagnosis"
 import ElectricScooterDiagnosis from "./components/ElectricScooterForm/ElectricScooterDiagnosis"
+import OrbeaDiagnosis from "./components/OrbeaForm/OrbeaDiagnosis"
 import Fondo from "./components/fondo/Fondo"
 function App() {
   const robotRef = useRef(null)
@@ -74,6 +75,7 @@ function App() {
                   <Route path="/" element={<Home />} />
                   <Route path="/code" element={<CodeInterpreter />} />
                   <Route path="/moto" element={<MotorcycleDiagnosis />} />
+                  <Route path="/orbea" element={<OrbeaDiagnosis />} />
                   <Route path="/emoto" element={<ElectricMotorcycleDiagnosis />} />
                   <Route path="/ecar" element={<ElectricCarDiagnosis />} />
                   <Route path="/epatinete" element={<ElectricScooterDiagnosis />} />
