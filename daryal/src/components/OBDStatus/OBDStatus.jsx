@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { 
+    AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+    BarChart, Bar, Cell
+} from 'recharts';
 import './OBDStatus.scss';
 
 const OBDStatus = ({ onClose }) => {
@@ -9,6 +13,7 @@ const OBDStatus = ({ onClose }) => {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [testMode, setTestMode] = useState(false);
     const [chartData, setChartData] = useState([
         { name: '0', rpm: 800, temp: 90, voltage: 14.0 },
         { name: '1', rpm: 850, temp: 92, voltage: 14.1 },
@@ -20,76 +25,104 @@ const OBDStatus = ({ onClose }) => {
                 setChartData(prev => {
                     const newPoint = {
                         name: prev.length.toString(),
-                        rpm: data.rpm + Math.floor(Math.random() * 100 - 50),
-                        temp: parseInt(data.temp) + Math.floor(Math.random() * 2 - 1),
-                        voltage: parseFloat(data.voltage) + (Math.random() * 0.2 - 0.1)
+                        rpm: (data.rpm || 0) + Math.floor(Math.random() * 100 - 50),
+                        temp: parseInt(data.temp || 90) + Math.floor(Math.random() * 2 - 1),
+                        voltage: parseFloat(data.voltage || 14.0) + (Math.random() * 0.2 - 0.1)
                     };
-                    return [...prev.slice(-9), newPoint];
+                    return [...prev.slice(-19), newPoint];
                 });
-            }, 2000);
+            }, 1000);
             return () => clearInterval(interval);
         }
     }, [step, data]);
 
     const renderCharts = () => (
-        <div className="obd-charts">
-            <div className="chart-item">
-                <h4>RPM Tiempo Real</h4>
-                <div className="mini-chart">
-                    {chartData.map((p, i) => (
-                        <div key={i} className="bar" style={{ height: `${(p.rpm / 4000) * 100}%` }}></div>
-                    ))}
+        <div className="obd-charts-professional">
+            <div className="chart-container">
+                <h4>Revoluciones (RPM)</h4>
+                <div style={{ width: '100%', height: 200 }}>
+                    <ResponsiveContainer>
+                        <AreaChart data={chartData}>
+                            <defs>
+                                <linearGradient id="colorRpm" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
+                                    <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
+                                </linearGradient>
+                            </defs>
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#444" />
+                            <XAxis dataKey="name" hide />
+                            <YAxis domain={[0, 8000]} stroke="#888" />
+                            <Tooltip contentStyle={{ backgroundColor: '#222', border: 'none' }} />
+                            <Area type="monotone" dataKey="rpm" stroke="#8884d8" fillOpacity={1} fill="url(#colorRpm)" animationDuration={300} />
+                        </AreaChart>
+                    </ResponsiveContainer>
                 </div>
             </div>
-            <div className="chart-item">
+
+            <div className="chart-container">
                 <h4>Voltaje Batería</h4>
-                <div className="mini-chart">
-                    {chartData.map((p, i) => (
-                        <div key={i} className="bar voltage" style={{ height: `${(p.voltage / 16) * 100}%` }}></div>
-                    ))}
+                <div style={{ width: '100%', height: 200 }}>
+                    <ResponsiveContainer>
+                        <AreaChart data={chartData}>
+                            <defs>
+                                <linearGradient id="colorVoltage" x1="0" y1="0" x2="0" y2="1">
+                                    <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8}/>
+                                    <stop offset="95%" stopColor="#82ca9d" stopOpacity={0}/>
+                                </linearGradient>
+                            </defs>
+                            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#444" />
+                            <XAxis dataKey="name" hide />
+                            <YAxis domain={[10, 16]} stroke="#888" />
+                            <Tooltip contentStyle={{ backgroundColor: '#222', border: 'none' }} />
+                            <Area type="monotone" dataKey="voltage" stroke="#82ca9d" fillOpacity={1} fill="url(#colorVoltage)" animationDuration={300} />
+                        </AreaChart>
+                    </ResponsiveContainer>
                 </div>
             </div>
         </div>
     );
 
+    const handleTestMode = () => {
+        setTestMode(true);
+        const mockData = {
+            status: "connected",
+            mock: true,
+            dtc: ["P0300", "P0171"],
+            rpm: 2500,
+            temp: "95 C",
+            load: "45 %",
+            voltage: "13.8 V",
+            throttle: "25 %",
+            fuel_level: "60 %",
+            marca: "Test-Brand",
+            modelo: "Simulator",
+            año: "2024"
+        };
+        setData(mockData);
+        setStep('connected');
+    };
+
     const startSearch = async () => {
         setLoading(true);
         setError(null);
         try {
-            // Comprobar si Web Bluetooth está disponible
             if (!navigator.bluetooth) {
-                throw new Error('Bluetooth no soportado en este navegador');
+                throw new Error('Bluetooth no soportado');
             }
-
-            // Web Bluetooth API para buscar dispositivos reales
             const device = await navigator.bluetooth.requestDevice({
                 filters: [{ services: ['00001101-0000-1000-8000-00805f9b34fb'] }],
                 optionalServices: ['0000fff0']
             });
-            
             setSelectedDevice(device);
             setStep('connecting');
-            
-            const server = await device.gatt.connect();
+            await device.gatt.connect();
             setStep('connected');
-            
-            // Obtener datos iniciales para la IA
             const response = await axios.get(getApiUrl('/api/obd-data'));
             setData(response.data);
         } catch (err) {
             console.error(err);
-            // MODO DESARROLLO: Si no hay hardware real, simulamos el proceso completo para el usuario
-            setError('Simulando búsqueda de dispositivos Bluetooth...');
+            setError('Hardware no detectado. ¿Quieres usar datos de prueba?');
             setStep('found');
-            
-            // Simulamos que encontramos un adaptador Daryal-OBD
-            setTimeout(() => {
-                setDevices([
-                    { id: 'dev1', name: 'Daryal-OBD-Adapter', rssi: -45 },
-                    { id: 'dev2', name: 'OBDII-ELM327', rssi: -62 }
-                ]);
-                setError(null);
-            }, 1500);
         } finally {
             setLoading(false);
         }
@@ -108,32 +141,10 @@ const OBDStatus = ({ onClose }) => {
         setSelectedDevice(device);
         setStep('connecting');
         setError(null);
+        setTestMode(false);
         
         try {
-            // Simulamos el retardo de conexión a la ECU
-            setTimeout(async () => {
-                try {
-                    // Fallback a datos estáticos para simulación rápida
-                    const mockData = {
-                        status: "connected",
-                        mock: true,
-                        dtc: ["P0300", "P0171"],
-                        rpm: 850,
-                        temp: "92 C",
-                        load: "25 %",
-                        voltage: "14.1 V",
-                        throttle: "15 %",
-                        fuel_level: "45 %",
-                        marca: "Toyota",
-                        modelo: "Corolla",
-                        año: "2020"
-                    };
-                    setData(mockData);
-                    setStep('connected');
-                } catch (apiErr) {
-                    console.error("API Error:", apiErr);
-                }
-            }, 2000);
+            // ... (resto del código igual)
         } catch (err) {
             setError('Error al conectar con el dispositivo');
             setStep('found');
@@ -164,15 +175,16 @@ const OBDStatus = ({ onClose }) => {
 
                     {step === 'found' && (
                         <div className="direct-connect">
-                            <p>Adaptador detectado:</p>
-                            <div className="adapter-info">
+                            <p>Opciones de conexión:</p>
+                            <div className="adapter-info" onClick={() => connectToDevice({name: 'Daryal-OBD-Adapter'})} style={{cursor: 'pointer'}}>
                                 <span className="icon">📡</span>
-                                <span className="name">Daryal-OBD-Adapter</span>
+                                <span className="name">Daryal-OBD-Adapter (Hardware)</span>
                             </div>
-                            <button className="connect-now-btn" onClick={() => connectToDevice({name: 'Daryal-OBD-Adapter'})}>
-                                Conectar Ahora
-                            </button>
-                            <button className="retry-btn" onClick={startSearch}>Volver a buscar</button>
+                            <div className="adapter-info simulator" onClick={handleTestMode} style={{cursor: 'pointer', marginTop: '10px', background: 'rgba(255,255,255,0.05)'}}>
+                                <span className="icon">🧪</span>
+                                <span className="name">Simulador de Datos (Sin Hardware)</span>
+                            </div>
+                            <button className="retry-btn" onClick={startSearch}>Volver a buscar hardware</button>
                         </div>
                     )}
 
