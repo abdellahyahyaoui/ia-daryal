@@ -196,7 +196,6 @@ function Home() {
   const handleOBDConnected = (data) => {
     setCurrentOBDData(data)
     setShowOBD(false)
-    // Si el OBD nos da el VIN o datos del coche, saltamos el formulario
     if (data && data.status === 'connected') {
       const autoData = {
         marca: data.marca || "Identificado vía OBD",
@@ -205,7 +204,14 @@ function Home() {
         obd_data: data
       }
       dispatch({ type: "SET_VEHICLE_DATA", payload: autoData })
-      dispatch({ type: "SET_STEP", payload: "chat" })
+      
+      // Si es modo simulador (mock: true), saltamos directo al diagnóstico simulado
+      if (data.mock) {
+        const diagnosticoSimulado = "SISTEMA DE SIMULACIÓN: Se han detectado códigos P0300 (Fallos de encendido aleatorios) y P0171 (Mezcla pobre). \n\nSoluciones sugeridas:\n1. Revisar bobinas de encendido y bujías.\n2. Limpiar sensor MAF.\n3. Verificar posibles fugas de vacío en la admisión."
+        dispatch({ type: "SET_DIAGNOSIS", payload: diagnosticoSimulado })
+      } else {
+        dispatch({ type: "SET_STEP", payload: "chat" })
+      }
     }
   }
 
