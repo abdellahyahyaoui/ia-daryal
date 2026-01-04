@@ -144,8 +144,8 @@ const OBDStatus = ({ onClose }) => {
         if (domain === 'localhost' || domain === '127.0.0.1') {
             return `http://localhost:8000${path}`;
         }
-        // In Replit, use absolute path starting with /api
-        return path.startsWith('/api') ? path : `/api${path}`;
+        // URL de Render para producción
+        return `https://ia-daryal-3.onrender.com${path}`;
     };
 
     const connectToDevice = async (device) => {
