@@ -3,3 +3,11 @@ flask-cors
 openai
 python-dotenv
 gunicorn==20.1.0
+pymupdf
+faiss-cpu
+langchain
+langchain-community
+langchain-openai
+obd
+email-validator
+psycopg2-binary
