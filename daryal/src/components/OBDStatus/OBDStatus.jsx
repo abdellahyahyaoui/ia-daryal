@@ -106,9 +106,19 @@ const OBDStatus = ({ onClose }) => {
         setLoading(true);
         setError(null);
         try {
-            if (!navigator.bluetooth) {
-                throw new Error('Bluetooth no soportado');
+            // Usar Capacitor Bluetooth si está disponible (en el móvil real)
+            // Si estamos en web/simulador, intentamos navigator.bluetooth
+            if (window.Capacitor && window.Capacitor.isNativePlatform) {
+                // Aquí se integraría con un plugin de Capacitor Bluetooth
+                // Por ahora, para la APK, dejamos la lógica preparada
+                console.log('Detectada plataforma nativa Capacitor - Preparando Bluetooth');
             }
+
+            if (!navigator.bluetooth && !(window.Capacitor && window.Capacitor.isNativePlatform)) {
+                throw new Error('Bluetooth no soportado en este navegador');
+            }
+            
+            // Lógica de búsqueda real
             const device = await navigator.bluetooth.requestDevice({
                 filters: [{ services: ['00001101-0000-1000-8000-00805f9b34fb'] }],
                 optionalServices: ['0000fff0']
@@ -121,7 +131,8 @@ const OBDStatus = ({ onClose }) => {
             setData(response.data);
         } catch (err) {
             console.error(err);
-            setError('Hardware no detectado. ¿Quieres usar datos de prueba?');
+            // IMPORTANTE: Eliminamos el mensaje de "usar datos de prueba" por defecto para producción
+            setError('No se pudo encontrar el adaptador OBD-II. Asegúrate de que el Bluetooth esté activo y el aparato conectado al coche.');
             setStep('found');
         } finally {
             setLoading(false);

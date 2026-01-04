@@ -7,18 +7,18 @@ logger = logging.getLogger(__name__)
 def get_obd_data():
     """
     Obtiene telemetría detallada del vehículo.
-    Si no hay conexión real, genera datos realistas para el diagnóstico.
+    En producción (APK), intentará conectar con el hardware real.
     """
     try:
         # Intentar conectar con el adaptador
         ports = obd.scan_serial()
         if not ports:
             logger.warning("No se encontraron puertos seriales para OBD")
-            return get_mock_data()
+            return {"status": "disconnected", "message": "No se detectó adaptador OBD-II"}
 
         connection = obd.OBD(ports[0]) 
         if not connection.is_connected():
-            return get_mock_data()
+            return {"status": "disconnected", "message": "Adaptador detectado pero no conectado al vehículo"}
         
         # Consulta de comandos reales
         commands = [
@@ -34,7 +34,7 @@ def get_obd_data():
         
         data = {"status": "connected", "mock": False, "dtc": []}
         
-        # Obtener códigos de error
+        # Obtener códigos de error reales
         dtc_response = connection.query(obd.commands.GET_DTC)
         if dtc_response and dtc_response.value:
             data["dtc"] = [c.code for c in dtc_response.value]
@@ -45,8 +45,8 @@ def get_obd_data():
             
         return data
     except Exception as e:
-        logger.error(f"Error OBD: {e}")
-        return get_mock_data()
+        logger.error(f"Error OBD Real: {e}")
+        return {"status": "error", "message": str(e)}
 
 def get_mock_data():
     """Genera datos de prueba realistas si no hay hardware."""
