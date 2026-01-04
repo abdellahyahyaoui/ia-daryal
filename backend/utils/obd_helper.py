@@ -69,9 +69,13 @@ def clear_obd_errors():
     Intenta borrar los códigos de error (DTC) del vehículo.
     """
     try:
-        connection = obd.OBD()
+        ports = obd.scan_serial()
+        if not ports:
+            return {"status": "error", "message": "No se detectó adaptador OBD-II"}
+            
+        connection = obd.OBD(ports[0])
         if not connection.is_connected():
-            return {"status": "error", "message": "No conectado al adaptador"}
+            return {"status": "error", "message": "No conectado al vehículo"}
         
         connection.query(obd.commands.CLEAR_DTC)
         return {"status": "success", "message": "Códigos borrados correctamente"}
