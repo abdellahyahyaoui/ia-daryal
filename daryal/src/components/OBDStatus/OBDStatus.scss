@@ -1,3 +1,5 @@
+@import '../styles/main.scss';
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -145,15 +147,7 @@
 
     p { color: #94a3b8; margin: 5px 0; }
   }
-}
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.obd-modal {
-  @import '../styles/main.scss';
-  
   .retry-btn {
     @include button-style;
     padding: 15px;
@@ -168,6 +162,10 @@
       transform: translateY(-2px);
     }
   }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
 }
 
 .confirm-btn {
