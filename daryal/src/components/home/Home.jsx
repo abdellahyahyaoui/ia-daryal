@@ -285,7 +285,7 @@ function Home() {
             })
 
             setTimeout(() => {
-              const diagnostico = generarDiagnosticoBasadoEnHistorial(state.historial)
+              const diagnostico = generarDiagnosticoBasadoEnHistorial([...state.historial, { tipo: "respuesta", texto: finalMessage }])
               dispatch({
                 type: "SET_DIAGNOSIS",
                 payload: diagnostico,
@@ -293,22 +293,31 @@ function Home() {
             }, 3000)
           }
         } catch (error) {
-          if (state.questionCount >= 4) {
+          console.error("API Error during diagnosis:", error)
+          const esUltimaPregunta = state.questionCount >= 4
+          
+          if (esUltimaPregunta) {
             dispatch({
               type: "SET_QUESTION",
-              payload: "Gracias por tu información. He completado mi análisis y tengo un diagnóstico para ti.",
+              payload: "He detectado un problema de conexión con mi base de datos principal, pero basándome en lo que me has contado, ya tengo una idea clara de lo que ocurre. Preparando diagnóstico local...",
               isLastQuestion: true,
             })
 
             setTimeout(() => {
-              const diagnostico = generarDiagnosticoBasadoEnHistorial(state.historial)
+              const diagnostico = generarDiagnosticoBasadoEnHistorial([...state.historial, { tipo: "respuesta", texto: finalMessage }])
               dispatch({
                 type: "SET_DIAGNOSIS",
                 payload: diagnostico,
               })
             }, 3000)
           } else {
-            alert("Ocurrió un error en el proceso de diagnóstico. Intenta nuevamente.")
+            // Fallback de chat interactivo cuando la API falla
+            const fallbackMsg = "Tengo un pequeño problema de conexión técnica, pero no te preocupes. Cuéntame más detalles sobre el síntoma: ¿Cuándo ocurre exactamente? (por ejemplo: en frío, al acelerar, etc.)"
+            dispatch({
+              type: "SET_QUESTION",
+              payload: fallbackMsg,
+              isLastQuestion: false
+            })
           }
         }
       }

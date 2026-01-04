@@ -15,6 +15,16 @@
  
   margin-top: -70px;
   font-size: 1.3rem;
+
+  .error-badge {
+    background: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    margin-left: 10px;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+  }
 }
   .chat-header {
     padding-bottom: 10px;
