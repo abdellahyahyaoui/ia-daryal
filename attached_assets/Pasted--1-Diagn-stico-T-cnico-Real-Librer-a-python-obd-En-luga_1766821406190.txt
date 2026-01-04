@@ -1,0 +1,21 @@
+
+1. Diagnóstico Técnico Real (Librería python-obd)
+En lugar de depender solo de descripciones de texto, podrías integrar soporte para lectores OBD-II. Esta librería permite conectar la aplicación a un adaptador Bluetooth/WiFi en el coche para leer códigos de error (DTC), revoluciones, temperatura y estado del motor en tiempo real, pasando datos exactos a la IA en lugar de suposiciones.
+
+2. Procesamiento de Documentación y Manuales (LangChain + PyMuPDF)
+Puedes mejorar la precisión de la IA usando RAG (Retrieval-Augmented Generation). Si el usuario sube el manual de su coche o una foto de una ficha técnica, LangChain permitiría a la IA consultar esa información específica antes de responder, evitando "alucinaciones" y dando consejos basados en el modelo exacto del vehículo.
+
+3. Visión Artificial para Averías Visibles (OpenCV + PyTorch/TensorFlow)
+Podrías añadir funcionalidad para que el usuario suba una foto de una pieza o un neumático. Con modelos ya entrenados, la aplicación podría detectar automáticamente el desgaste de la banda de rodadura, fugas de líquidos por color o identificar piezas dañadas antes de que la IA genere el informe.
+
+4. Automatización de Informes y Presupuestos (ReportLab)
+Para darle un toque profesional, la aplicación podría generar un PDF detallado del diagnóstico de forma automática. Este informe incluiría los códigos detectados, la gravedad del problema y una estimación de pasos a seguir, listo para que el usuario lo lleve a su mecánico.
+
+5. Gestión de Historial y Base de Datos (SQLAlchemy)
+Actualmente el flujo es volátil. Implementar un sistema de persistencia permitiría crear un "Libro de Mantenimiento Digital" donde se guarden todos los diagnósticos previos, permitiendo a la IA analizar tendencias (por ejemplo, "este ruido ha empeorado desde el mes pasado").
+
+6. Interfaz de Voz (SpeechRecognition + gTTS)
+En un entorno de taller o garaje, tener las manos libres es vital. Podrías permitir que el usuario dicte los síntomas y que la IA responda por voz, haciendo la aplicación mucho más práctica para su uso real mientras se revisa el vehículo.
+
+
+

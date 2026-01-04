@@ -1,0 +1,46 @@
+.scene-container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+  position: fixed;
+  overflow: hidden;
+}
+
+/* Botón para cambiar el preset de iluminación */
+.preset-button {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 8px 16px;
+  font-family: "Urbanist", sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 100;
+  transition: all 0.3s ease;
+  text-transform: capitalize;
+}
+
+.preset-button:hover {
+  background: rgba(0, 0, 0, 0.9);
+  box-shadow: 0 0 10px rgba(0, 150, 255, 0.5);
+}
+
+/* Media query para pantallas pequeñas (móviles) */
+@media (max-width: 768px) {
+  .scene-container {
+    width: 100%;
+    height: 100%;
+  }
+
+  .preset-button {
+    bottom: 10px;
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+}

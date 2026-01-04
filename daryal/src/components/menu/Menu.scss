@@ -1,0 +1,282 @@
+
+@import '../styles/main.scss';
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500&display=swap');
+
+// Menú lateral tipo Gemini
+.sidebar-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 60px; // Ancho cuando está cerrado
+  background: rgb(0 0 0 / 18%);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  overflow: hidden;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: invert(1);
+  &.open {
+    width: 280px; // Ancho cuando está abierto
+  }
+  
+  // Clase para móvil
+  &.mobile {
+    width: 0; // Completamente oculto en móvil cuando está cerrado
+    border-right: none;
+    
+    &.open {
+      width: 100%;
+      backdrop-filter: blur(25px);
+       // Ocupa toda la pantalla en móvil cuando está abierto
+    }
+  }
+}
+
+// Botón de hamburguesa para desktop
+.menu-toggle {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background:rgb(136 136 136 / 79%);
+  color: #e6eaeb;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  border-radius: 28px;
+  &:hover {
+    color: #727377;
+  }
+  svg {
+    transform: scale(0.7);
+    transform-origin: center center;
+  }
+  
+}
+
+// Botón de hamburguesa para móvil (centrado)
+.mobile-menu-toggle {
+  position: fixed;
+  top: 15px;
+  left: 15px;   // 👈 izquierda real
+  transform: none;
+  background: rgb(171 171 171 / 70%);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  font-size: 1.5rem;
+  cursor: pointer;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.9);
+  }
+}
+
+// Contenido del menú lateral
+.sidebar-content {
+  padding-top: 60px;
+  width: 280px; // Ancho fijo del contenido
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+// Logo en el menú lateral
+.sidebar-logo {
+  padding: 10px 15px 20px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  
+  // Ajustes específicos para el logo dentro del menú
+  .container {
+    width: 100%;
+    min-height: auto;
+    padding: 0;
+  }
+  
+  .letters {
+    transform: scale(0.4);
+    transform-origin: left;
+  }
+  
+  .letter.logo {
+    font-size: 2.5rem;
+  }
+  
+  .suffix {
+    font-size: 2rem;
+  }
+}
+
+// Navegación del menú lateral
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 0 15px;
+  
+  .menu-item {
+    font-family: $secondary-font-family;
+    color: #000000;
+    text-decoration: none;
+    padding: 12px 15px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #727377;
+    }
+    
+    // Estilos para el icono
+    .menu-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      width: 30px;
+      height: 30px;
+      transition: all 0.3s ease;
+    }
+    
+    // Estilos para el texto
+    .menu-text {
+      margin-left: 10px;
+      opacity: 0;
+      transform: translateX(10px);
+      transition: all 0.3s ease;
+      white-space: nowrap;
+      
+      // Cuando el menú está abierto, mostrar el texto
+      .sidebar-menu.open & {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+  }
+  
+  // Botón para categoría eléctrica
+  .electric-menu-item {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+  }
+}
+
+// Cuando el menú está abierto, mostrar el texto
+.sidebar-menu.open .menu-text {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+// Submenú eléctrico
+.electric-category {
+  position: relative;
+}
+
+.electric-submenu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  margin-left: 15px;
+  
+  &.show {
+    max-height: 300px; // Altura máxima cuando está visible
+  }
+  
+  .submenu-item {
+    display: block;
+    padding: 8px 15px;
+    color: #000000;
+    text-decoration: none;
+    font-family: $secondary-font-family;
+    font-size: 0.7rem;
+    transition: all 0.2s ease;
+    
+    margin-bottom: 4px;
+    
+    &:hover {
+      color: #727377;
+      background: rgba(255, 255, 255, 0.05);
+    }
+  }
+}
+
+// Centrar los iconos cuando el menú está cerrado
+.sidebar-menu:not(.open) .menu-icon {
+  margin: 0 auto;
+}
+
+// Ajustes para dispositivos móviles
+@include mobile {
+  .menu-completo{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .sidebar-menu.mobile {
+    // Estilos específicos para móvil
+   
+    .sidebar-content {
+      width: 100%;
+    }
+    
+    .sidebar-logo {
+      justify-content: center;
+      
+      .letters {
+        transform: scale(0.5);
+        transform-origin: center;
+      }
+    }
+    
+    .sidebar-nav {
+      padding: 0 20px;
+      
+      .menu-item {
+        font-size: 1.5rem;
+        padding: 15px;
+        color: $primary-text-color;
+        font-weight: 900;
+        .menu-icon {
+          font-size: 1.5rem;
+        }
+        
+        .menu-text {
+          font-size: 1.5rem;
+          // Siempre visible en móvil cuando el menú está abierto
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+    }
+    
+    .electric-submenu .submenu-item {
+      font-size: 1.3rem;
+      padding: 12px 15px;
+      color: #ffffff80;
+    }
+  }
+}
