@@ -94,3 +94,10 @@ node_modules/
 # dataconnect generated files
 .dataconnect
 .env
+# Replit agent state files
+.local/state/replit/agent/*.bin
+.local/state/replit/agent/.latest.json
+.local/state/replit/agent/repl_state.bin
+
+# Replit project config
+.replit

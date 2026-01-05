@@ -3,12 +3,17 @@
 import axios from "axios"
 
 const getBaseUrl = () => {
+  // En la APK, domain suele ser vacío o 'localhost' (interno de WebView)
+  // Forzamos Render para producción si no estamos en un entorno de desarrollo claro
   const domain = window.location.hostname;
-  // Si estamos en Replit/Local usamos el backend local, sino usamos Render
   if (domain === 'localhost' || domain === '127.0.0.1') {
+    // Si estamos en un PC local (browser), permitimos local
+    // Pero si es Capacitor, forzamos Render
+    if (window.Capacitor && window.Capacitor.isNativePlatform) {
+       return "https://ia-daryal-3.onrender.com/api";
+    }
     return "http://localhost:8000/api";
   }
-  // URL de producción para la APK y web desplegada
   return "https://ia-daryal-3.onrender.com/api";
 }
 

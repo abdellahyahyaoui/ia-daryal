@@ -33,7 +33,7 @@ width: 50vw;
   .welcome-options-container {
     display: flex;
     flex-direction: row;
-    gap: 1.5rem;
+
     align-items: center;
     width: 100%;
     animation: fadeIn 0.5s forwards;
@@ -77,10 +77,10 @@ width: 50vw;
       @include button-style;
       padding: 1rem 2.5rem;
       font-size: 1.1rem;
-      background: black;
-      border-radius: 50%;
+      background: rgb(10, 10, 10);
+      
       color: white;
-      padding: 5rem 1rem;
+          padding: 2rem 1rem;
       &:hover {
         transform: translateY(-3px);
         box-shadow: inset 6px 6px 12px #c5c5c599, inset 1px -1px 20px #483f3fd4, 0 6px 12px rgba(0, 0, 0, 0.1);
@@ -100,7 +100,7 @@ width: 50vw;
   }
 
   @include mobile {
-    scale: 0.9;
+    scale: 0.8;
     margin-top: -50px;
     font-size: 1.25rem;
     width: auto;
@@ -116,4 +116,6 @@ width: 50vw;
 .start-btn {
  padding:6rem 1rem;
     scale: 0.7;
-}}
+}
+
+}

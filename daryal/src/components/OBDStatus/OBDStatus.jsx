@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Capacitor } from '@capacitor/core';
+import { BleClient } from '@capacitor-community/bluetooth-le';
 import { 
-    AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-    BarChart, Bar, Cell
+    AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
 import './OBDStatus.scss';
 
@@ -14,20 +15,29 @@ const OBDStatus = ({ onClose }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [testMode, setTestMode] = useState(false);
-    const [chartData, setChartData] = useState([
-        { name: '0', rpm: 800, temp: 90, voltage: 14.0 },
-        { name: '1', rpm: 850, temp: 92, voltage: 14.1 },
-    ]);
+    const [chartData, setChartData] = useState([]);
 
+    /* =========================
+       INICIALIZAR BLUETOOTH
+    ========================= */
+    useEffect(() => {
+        if (Capacitor.isNativePlatform()) {
+            BleClient.initialize();
+        }
+    }, []);
+
+    /* =========================
+       ACTUALIZAR GRÁFICAS
+    ========================= */
     useEffect(() => {
         if (step === 'connected' && data) {
             const interval = setInterval(() => {
                 setChartData(prev => {
                     const newPoint = {
                         name: prev.length.toString(),
-                        rpm: (data.rpm || 0) + Math.floor(Math.random() * 100 - 50),
-                        temp: parseInt(data.temp || 90) + Math.floor(Math.random() * 2 - 1),
-                        voltage: parseFloat(data.voltage || 14.0) + (Math.random() * 0.2 - 0.1)
+                        rpm: typeof data.rpm === 'number' ? data.rpm : parseInt(data.rpm) || 0,
+                        temp: parseInt(data.temp) || 0,
+                        voltage: parseFloat(data.voltage) || 0
                     };
                     return [...prev.slice(-19), newPoint];
                 });
@@ -36,6 +46,94 @@ const OBDStatus = ({ onClose }) => {
         }
     }, [step, data]);
 
+    const getApiUrl = (path) => {
+        const domain = window.location.hostname;
+        if (domain === 'localhost' || domain === '127.0.0.1') {
+            return `http://localhost:8000${path}`;
+        }
+        return `https://ia-daryal-3.onrender.com${path}`;
+    };
+
+    /* =========================
+       REEMPLAZO: BUSCAR Y CONECTAR OBD REAL
+    ========================= */
+    const startSearch = async () => {
+        setLoading(true);
+        setError(null);
+
+        try {
+            if (Capacitor.isNativePlatform()) {
+                // BLE real en APK
+                await BleClient.requestLEScan({}, (device) => {
+                    if (device.name?.toLowerCase().includes('obd')) {
+                        BleClient.stopLEScan();
+                        connectToDevice(device);
+                    }
+                });
+
+                setTimeout(() => BleClient.stopLEScan(), 10000);
+            } else {
+                // Web / fallback
+                throw new Error('Bluetooth no soportado en este navegador');
+            }
+        } catch (err) {
+            console.error(err);
+            setError('No se pudo encontrar el adaptador OBD-II. Asegúrate de que el Bluetooth esté activo y el aparato conectado al coche.');
+            setStep('found');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const connectToDevice = async (device) => {
+        setSelectedDevice(device);
+        setStep('connecting');
+        setError(null);
+        setTestMode(false);
+
+        try {
+            if (Capacitor.isNativePlatform()) {
+                await BleClient.connect(device.deviceId);
+                setStep('connected');
+
+                // Obtener datos desde backend
+                const response = await axios.get(getApiUrl('/api/obd-data'));
+                setData(response.data);
+            }
+        } catch (err) {
+            console.error(err);
+            setError('Error al conectar con el dispositivo');
+            setStep('found');
+        }
+    };
+
+    const handleTestMode = () => {
+        setTestMode(true);
+        const mockData = {
+            status: "connected",
+            mock: true,
+            dtc: ["P0300", "P0171"],
+            rpm: 2500,
+            temp: "95 C",
+            load: "45 %",
+            voltage: "13.8 V",
+            throttle: "25 %",
+            fuel_level: "60 %",
+            marca: "Test-Brand",
+            modelo: "Simulator",
+            año: "2024"
+        };
+        setData(mockData);
+        setStep('connected');
+    };
+
+    useEffect(() => {
+        if (step === 'search') startSearch();
+    }, []);
+
+    /* =========================
+       CHARTS Y RENDER
+    ========================= */
     const renderCharts = () => (
         <div className="obd-charts-professional">
             <div className="chart-container">
@@ -82,97 +180,13 @@ const OBDStatus = ({ onClose }) => {
         </div>
     );
 
-    const handleTestMode = () => {
-        setTestMode(true);
-        const mockData = {
-            status: "connected",
-            mock: true,
-            dtc: ["P0300", "P0171"],
-            rpm: 2500,
-            temp: "95 C",
-            load: "45 %",
-            voltage: "13.8 V",
-            throttle: "25 %",
-            fuel_level: "60 %",
-            marca: "Test-Brand",
-            modelo: "Simulator",
-            año: "2024"
-        };
-        setData(mockData);
-        setStep('connected');
-    };
-
-    const startSearch = async () => {
-        setLoading(true);
-        setError(null);
-        try {
-            // Usar Capacitor Bluetooth si está disponible (en el móvil real)
-            // Si estamos en web/simulador, intentamos navigator.bluetooth
-            if (window.Capacitor && window.Capacitor.isNativePlatform) {
-                // Aquí se integraría con un plugin de Capacitor Bluetooth
-                // Por ahora, para la APK, dejamos la lógica preparada
-                console.log('Detectada plataforma nativa Capacitor - Preparando Bluetooth');
-            }
-
-            if (!navigator.bluetooth && !(window.Capacitor && window.Capacitor.isNativePlatform)) {
-                throw new Error('Bluetooth no soportado en este navegador');
-            }
-            
-            // Lógica de búsqueda real
-            const device = await navigator.bluetooth.requestDevice({
-                filters: [{ services: ['00001101-0000-1000-8000-00805f9b34fb'] }],
-                optionalServices: ['0000fff0']
-            });
-            setSelectedDevice(device);
-            setStep('connecting');
-            await device.gatt.connect();
-            setStep('connected');
-            const response = await axios.get(getApiUrl('/api/obd-data'));
-            setData(response.data);
-        } catch (err) {
-            console.error(err);
-            // IMPORTANTE: Eliminamos el mensaje de "usar datos de prueba" por defecto para producción
-            setError('No se pudo encontrar el adaptador OBD-II. Asegúrate de que el Bluetooth esté activo y el aparato conectado al coche.');
-            setStep('found');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const getApiUrl = (path) => {
-        const domain = window.location.hostname;
-        if (domain === 'localhost' || domain === '127.0.0.1') {
-            return `http://localhost:8000${path}`;
-        }
-        // URL de Render para producción
-        return `https://ia-daryal-3.onrender.com${path}`;
-    };
-
-    const connectToDevice = async (device) => {
-        setSelectedDevice(device);
-        setStep('connecting');
-        setError(null);
-        setTestMode(false);
-        
-        try {
-            // ... (resto del código igual)
-        } catch (err) {
-            setError('Error al conectar con el dispositivo');
-            setStep('found');
-        }
-    };
-
-    useEffect(() => {
-        if (step === 'search') startSearch();
-    }, []);
-
     return (
         <div className="modal-overlay" onClick={onClose}>
             <div className="modal-content obd-modal" onClick={e => e.stopPropagation()}>
                 <button className="close-btn" onClick={onClose}>&times;</button>
                 
                 <div className="modal-header">
-                    <h2>📡 Conexión OBD-II Bluetooth</h2>
+                    <h2> Conexión OBD-II Bluetooth</h2>
                 </div>
 
                 <div className="modal-body">
@@ -187,13 +201,8 @@ const OBDStatus = ({ onClose }) => {
                     {step === 'found' && (
                         <div className="direct-connect">
                             <p>Opciones de conexión:</p>
-                            <div className="adapter-info" onClick={() => connectToDevice({name: 'Daryal-OBD-Adapter'})} style={{cursor: 'pointer'}}>
-                                <span className="icon">📡</span>
+                            <div className="adapter-info" onClick={startSearch} style={{cursor: 'pointer'}}>
                                 <span className="name">Daryal-OBD-Adapter (Hardware)</span>
-                            </div>
-                            <div className="adapter-info simulator" onClick={handleTestMode} style={{cursor: 'pointer', marginTop: '10px', background: 'rgba(255,255,255,0.05)'}}>
-                                <span className="icon">🧪</span>
-                                <span className="name">Simulador de Datos (Sin Hardware)</span>
                             </div>
                             <button className="retry-btn" onClick={startSearch}>Volver a buscar hardware</button>
                         </div>
@@ -257,7 +266,7 @@ const OBDStatus = ({ onClose }) => {
                                         alert('Error al borrar códigos');
                                     }
                                 }}>
-                                    🗑️ Borrar Errores DTC
+                                     Borrar Errores DTC
                                 </button>
                             )}
                             

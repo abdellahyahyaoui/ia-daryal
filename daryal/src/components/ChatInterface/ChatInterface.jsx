@@ -1,6 +1,8 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
+import { Capacitor } from '@capacitor/core'
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera'
 import "./ChatInterface.scss"
 
 function ChatInterface({ vehicleData, onSubmit, currentQuestion, isProcessing, errorMode, mode }) {
@@ -71,11 +73,8 @@ function ChatInterface({ vehicleData, onSubmit, currentQuestion, isProcessing, e
     }
   }, [currentQuestion, messages])
 
-  // Modificar el componente ChatInterface para manejar mejor la transición al diagnóstico
-
   // Añadir un efecto para mostrar un mensaje de transición cuando se va a mostrar el diagnóstico
   useEffect(() => {
-    // Si es la última pregunta y el usuario ya respondió, mostrar mensaje de transición
     if (
       currentQuestion &&
       currentQuestion.includes("última pregunta") &&
@@ -83,7 +82,6 @@ function ChatInterface({ vehicleData, onSubmit, currentQuestion, isProcessing, e
         (m) => m.sender === "user" && messages.indexOf(m) > messages.findIndex((m) => m.text === currentQuestion),
       )
     ) {
-      // Añadir mensaje de transición si no existe ya
       if (!messages.some((m) => m.text.includes("Gracias por tu información"))) {
         setTimeout(() => {
           setMessages((prev) => [
@@ -107,12 +105,34 @@ function ChatInterface({ vehicleData, onSubmit, currentQuestion, isProcessing, e
   const [selectedImage, setSelectedImage] = useState(null)
   const fileInputRef = useRef(null)
 
+  // Función para abrir cámara real o fallback web
+  const handleTakePhoto = async () => {
+    if (!Capacitor.isNativePlatform()) {
+      fileInputRef.current.click()
+      return
+    }
+
+    try {
+      const photo = await Camera.getPhoto({
+        quality: 80,
+        resultType: CameraResultType.Uri,
+        source: CameraSource.Camera
+      })
+
+      const response = await fetch(photo.webPath)
+      const blob = await response.blob()
+      const file = new File([blob], 'camera.jpg', { type: 'image/jpeg' })
+      setSelectedImage(file)
+    } catch (err) {
+      console.error('Error al abrir la cámara:', err)
+    }
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
 
     if ((!inputMessage.trim() && !selectedImage) || isProcessing || isTyping) return
 
-    // Añadir el mensaje del usuario al chat
     const userMessage = {
       sender: "user",
       text: inputMessage || (selectedImage ? "Imagen enviada para análisis" : ""),
@@ -121,15 +141,9 @@ function ChatInterface({ vehicleData, onSubmit, currentQuestion, isProcessing, e
     }
 
     setMessages((prev) => [...prev, userMessage])
-
-    // Enviar la respuesta al componente padre
     onSubmit(inputMessage, selectedImage)
-
-    // Limpiar el input y la imagen
     setInputMessage("")
     setSelectedImage(null)
-
-    // Mostrar indicador de escritura
     setIsTyping(true)
   }
 
@@ -139,18 +153,12 @@ function ChatInterface({ vehicleData, onSubmit, currentQuestion, isProcessing, e
     }
   }
 
-  // Función para formatear la hora
-  const formatTime = (date) => {
-    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
-  }
+  const formatTime = (date) => date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
 
   const [isRecording, setIsRecording] = useState(false)
-
   const handleVoiceInput = () => {
-    // Simulación de reconocimiento de voz para el relato del propietario
     if (!isRecording) {
       setIsRecording(true)
-      // En una implementación real usaríamos Web Speech API
       setTimeout(() => {
         const mockVoiceText = "Hola, mi coche hace un ruido extraño al arrancar por las mañanas, como un chirrido metálico."
         setInputMessage(mockVoiceText)
@@ -187,15 +195,13 @@ function ChatInterface({ vehicleData, onSubmit, currentQuestion, isProcessing, e
         {(isTyping || isProcessing) && (
           <div className="message ai-message">
             <div className="message-content typing-indicator">
-              <span></span>
-              <span></span>
-              <span></span>
+              <span></span><span></span><span></span>
             </div>
           </div>
         )}
 
         <div ref={messagesEndRef} />
-        
+
         {showOptions && mode === "welcome" && (
           <div className="chat-welcome-options">
             <button onClick={() => onSubmit("manual")} className="option-btn">
@@ -224,7 +230,7 @@ function ChatInterface({ vehicleData, onSubmit, currentQuestion, isProcessing, e
               <button 
                 type="button" 
                 className="image-upload-btn"
-                onClick={() => fileInputRef.current.click()}
+                onClick={handleTakePhoto}
                 disabled={isTyping || isProcessing}
               >
                 📷
