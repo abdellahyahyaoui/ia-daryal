@@ -12,9 +12,9 @@
     position: relative;
     margin-top: -30px;
     margin-bottom: 60px;
-    width: 166%;
+
     font-family: $secondary-font-family;
-    line-height: 2.5rem;
+line-height: 2rem;
     .form-title {
         @include title-style;
     }
@@ -23,6 +23,7 @@
         margin-bottom: 15px;
         display: flex;
         align-items: center;
+        
     }
 
     input {
@@ -30,10 +31,10 @@
         font-size: 1.06rem;
         color: rgb(255, 254, 254);
         width: 54%;
-       
+       border: 2px double #bbcacded;
             font-weight: 200;
             letter-spacing: 0.15em;
-            
+            border-radius: 35px;
             line-height: 3rem;
             font-family: $primary-font-family;
     }
@@ -53,6 +54,7 @@
     .submit-button {
         @include button-style;
         font-size: 1.2rem;
+        margin: 30px;
     }
 }
 
@@ -67,11 +69,9 @@
     .resultado {
         margin-bottom: 20px;
         display: flex;
-    background: #000000c4;
+
         flex-direction: column;
         align-items: center;
-        backdrop-filter: invert(1);
-        border-radius: 10px;
         p,li{
            
             font-weight: 200;
@@ -130,11 +130,12 @@
 
 @include mobile {
     .code-interpreter-container {
-        padding: 15px;
-        scale: 0.95;
+                scale: 0.75;
         position: relative;
-        margin-top: -20px;
-        margin-bottom: -20px;
+        /* margin-top: -20px; */
+        /* margin-bottom: -20px; */
+        border: 2px double #bbcacded;
+        background: black;
     }
 
     .resultado {

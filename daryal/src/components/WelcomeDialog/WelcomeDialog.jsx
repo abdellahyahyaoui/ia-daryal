@@ -11,7 +11,7 @@ function WelcomeDialog({ onStart, onOBDClick, onManualClick }) {
   const [showButton, setShowButton] = useState(false)
 
   const fullText =
-    " experto en detectar averías de coches !"
+    " tu experto en  averías de coches!"
   const [index, setIndex] = useState(0)
 
   // Efecto para la animación de escritura

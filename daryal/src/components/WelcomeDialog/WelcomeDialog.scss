@@ -53,12 +53,12 @@ width: 50vw;
 
       .start-btn {
         @include button-style;
-      padding: 1rem 2.5rem;
-      font-size: 1.1rem;
+    
+      font-size: 1.5rem;
       background: black;
       border-radius: 50%;
       color: white;
-      padding: 5rem 1rem;
+      padding: 6rem 2rem;
       &:hover {
         transform: translateY(-3px);
         box-shadow: inset 6px 6px 12px #c5c5c599, inset 1px -1px 20px #483f3fd4, 0 6px 12px rgba(0, 0, 0, 0.1);
@@ -76,11 +76,11 @@ width: 50vw;
     .start-btn {
       @include button-style;
       padding: 1rem 2.5rem;
-      font-size: 1.1rem;
+      font-size: 1.5rem;
       background: rgb(10, 10, 10);
-      
+      border-radius: 95px;
       color: white;
-          padding: 2rem 1rem;
+          padding: 3rem 3rem;
       &:hover {
         transform: translateY(-3px);
         box-shadow: inset 6px 6px 12px #c5c5c599, inset 1px -1px 20px #483f3fd4, 0 6px 12px rgba(0, 0, 0, 0.1);

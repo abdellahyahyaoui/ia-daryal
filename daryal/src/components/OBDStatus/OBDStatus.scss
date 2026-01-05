@@ -16,11 +16,11 @@
   .modal-content {
     background: #1a1a1a;
       
-    padding: 30px 0px 30px 0px;
+    padding: 30px 20px 30px 20px;
     border-radius: 15px;
+   border:1px solid white;
    
-   
-    width: 80%;
+    width: 74%;
     max-width: 800px;
    
     color: white;
@@ -74,8 +74,8 @@
     align-items: center;
     gap: 15px;
     padding: 15px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgb(0, 0, 0);
+    border: 1px solid rgba(255, 255, 255, 0.993);
     border-radius: 12px;
     margin-bottom: 10px;
     transition: all 0.2s;

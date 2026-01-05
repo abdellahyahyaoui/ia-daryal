@@ -21,11 +21,7 @@
   h2,
   h3 {
     @include title-style;
-    margin-bottom: 20px;
-    border-radius: 25px;
-    border: solid 1px;
-    border-color: rgb(212, 221, 224);
-    padding: 15px;
+   
   }
 
   ul {
@@ -71,7 +67,7 @@
   }
 
   @include mobile {
-    scale: 0.9;
+    scale: 0.7;
 
     font-size: 1.4rem;
     padding: 20px;

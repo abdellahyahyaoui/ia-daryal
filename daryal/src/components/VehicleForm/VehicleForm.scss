@@ -124,14 +124,15 @@ textarea::placeholder {
 @include mobile {
   .vehicle-form-container {
     // margin: 10px;
-    scale: 0.75;
+    scale: 0.7;
     margin: 5px;
     font-size: 1.5rem;
 font-weight: 800;
+
     .form-title {
-      font-size: 1.6rem;
+      font-size: 1.4rem;
       width: auto;
-      margin-left: -15px;
+   
       // background-image: linear-gradient(89deg, #ff0000, #002bff 42%, #06b6d4 74%, #ffffff);
     }
   }

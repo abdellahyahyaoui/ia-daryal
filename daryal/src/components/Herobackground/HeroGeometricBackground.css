@@ -12,7 +12,7 @@
 .background-gradient {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, #fffefe, #000000, rgb(0 0 0));
+  background: black;
  
 }
 
