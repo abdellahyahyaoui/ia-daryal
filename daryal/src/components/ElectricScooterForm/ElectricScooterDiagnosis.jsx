@@ -3,7 +3,6 @@
 import { useReducer, useEffect } from "react"
 import WelcomeDialog from "../WelcomeDialog/WelcomeDialog"
 import ElectricScooterForm from "./ElectricScooterForm"
-import ChatInterface from "../ChatInterface/ChatInterface"
 import Diagnosis from "../Diagnosis/Diagnosis"
 import { iniciarDiagnostico, continuarDiagnostico } from "../../api/openai"
 import { useWelcomeState } from "../../hooks/useWelcomeState"
@@ -62,41 +61,31 @@ function ElectricScooterDiagnosis() {
     dispatch({ type: "SET_STEP", payload: "vehicleForm" })
   }
 
-  // Modificar la función handleVehicleSubmit para que no llame a iniciarDiagnostico
-  // y simplemente cambie al paso de chat
   const handleVehicleSubmit = async (data) => {
     dispatch({ type: "SET_VEHICLE_DATA", payload: data })
-    // Cambiar directamente al paso de chat en lugar de iniciar el diagnóstico aquí
     dispatch({ type: "SET_STEP", payload: "chat" })
   }
 
-  // Modificar la función handleChatSubmit para manejar el primer mensaje como la descripción del problema
   const handleChatSubmit = async (message) => {
     try {
-      // Si es el primer mensaje, es la descripción del problema
       if (state.historial.length === 0) {
-        // Añadir el problema al historial
         dispatch({
           type: "ADD_TO_HISTORIAL",
           payload: [{ tipo: "problema", texto: message }],
         })
 
-        // Iniciar el diagnóstico con los datos del vehículo y el problema
         const vehicleDataWithProblem = {
           ...state.vehicleData,
           problema: message,
         }
 
-        // Llamar a la API para iniciar el diagnóstico
         const response = await iniciarDiagnostico(vehicleDataWithProblem)
 
-        // Establecer la primera pregunta
         if (response.pregunta) {
           dispatch({ type: "SET_QUESTION", payload: response.pregunta })
           if (response.es_ultima) dispatch({ type: "SET_LAST_QUESTION" })
         }
       } else {
-        // Para los mensajes subsiguientes (respuestas a preguntas)
         dispatch({
           type: "ADD_TO_HISTORIAL",
           payload: [
@@ -118,12 +107,10 @@ function ElectricScooterDiagnosis() {
           }
         } catch (error) {
           console.error("Error al continuar el diagnóstico:", error)
-          alert("Ocurrió un error al continuar el diagnóstico. Intenta nuevamente.")
         }
       }
     } catch (error) {
       console.error("Error en el proceso de diagnóstico:", error)
-      alert("Ocurrió un error en el proceso de diagnóstico. Intenta nuevamente.")
     }
   }
 
@@ -136,13 +123,9 @@ function ElectricScooterDiagnosis() {
       {state.step === "welcome" && <WelcomeDialog onStart={handleStartDiagnosis} />}
       {state.step === "vehicleForm" && <ElectricScooterForm onSubmit={handleVehicleSubmit} />}
       {state.step === "chat" && (
-        <ChatInterface
-          vehicleData={state.vehicleData}
-          onSubmit={handleChatSubmit}
-          currentQuestion={state.currentQuestion}
-          isProcessing={false}
-          errorMode={false}
-        />
+        <div className="chat-placeholder">
+          Chat Interface integration needed
+        </div>
       )}
       {state.step === "diagnosis" && <Diagnosis diagnosis={state.diagnosis} />}
     </div>

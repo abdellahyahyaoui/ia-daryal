@@ -3,7 +3,6 @@
 import { useReducer, useEffect } from "react"
 import WelcomeDialog from "../WelcomeDialog/WelcomeDialog"
 import OrbeaForm from "./OrbeaForm"
-import ChatInterface from "../ChatInterface/ChatInterface"
 import Diagnosis from "../Diagnosis/Diagnosis"
 import { iniciarDiagnostico, continuarDiagnostico } from "../../api/openai"
 import { useWelcomeState } from "../../hooks/useWelcomeState"
@@ -69,7 +68,6 @@ function OrbeaDiagnosis() {
 
   const handleChatSubmit = async (message) => {
     try {
-      // Si es el primer mensaje, es la descripción del problema
       if (state.historial.length === 0) {
         dispatch({
           type: "ADD_TO_HISTORIAL",
@@ -109,12 +107,10 @@ function OrbeaDiagnosis() {
           }
         } catch (error) {
           console.error("Error al continuar el diagnóstico:", error)
-          alert("Ocurrió un error al continuar el diagnóstico. Intenta nuevamente.")
         }
       }
     } catch (error) {
       console.error("Error en el proceso de diagnóstico:", error)
-      alert("Ocurrió un error en el proceso de diagnóstico. Intenta nuevamente.")
     }
   }
 
@@ -127,26 +123,9 @@ function OrbeaDiagnosis() {
       {state.step === "welcome" && <WelcomeDialog onStart={handleStartDiagnosis} />}
       {state.step === "vehicleForm" && <OrbeaForm onSubmit={handleVehicleSubmit} />}
       {state.step === "chat" && (
-        <>
-          <div className="diagnosis-header">
-            <h2>Vamos a diagnosticar tu Orbea E-Bike</h2>
-            <div className="vehicle-info">
-              {state.vehicleData && (
-                <span>
-                  {state.vehicleData.marca} {state.vehicleData.modelo} ({state.vehicleData.año}) -{" "}
-                  {state.vehicleData.categoria}
-                </span>
-              )}
-            </div>
-          </div>
-          <ChatInterface
-            vehicleData={state.vehicleData}
-            onSubmit={handleChatSubmit}
-            currentQuestion={state.currentQuestion}
-            isProcessing={false}
-            errorMode={false}
-          />
-        </>
+        <div className="chat-placeholder">
+          Chat Interface integration needed
+        </div>
       )}
       {state.step === "diagnosis" && <Diagnosis diagnosis={state.diagnosis} />}
     </div>
