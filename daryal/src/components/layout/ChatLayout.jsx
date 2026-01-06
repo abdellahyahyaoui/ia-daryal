@@ -28,9 +28,7 @@ export default function ChatLayout({
           <Menu size={24} />
         </div>
         <div className="header-center">
-          <div style={{ width: '40px', height: '40px' }}>
-            <Robot />
-          </div>
+          <div className="logo-icon">D</div>
           <span>DARYAL AI</span>
         </div>
         <div className="header-right">
