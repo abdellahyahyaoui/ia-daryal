@@ -116,31 +116,32 @@
 
 
 
-import { useReducer, useState } from "react"
+import { useReducer, useState, useEffect } from "react"
 import axios from "axios"
+import ChatLayout from "../layout/ChatLayout"
 import WelcomeDialog from "../WelcomeDialog/WelcomeDialog"
 import VehicleForm from "../VehicleForm/VehicleForm"
-import ChatInterface from "../ChatInterface/ChatInterface"
 import Diagnosis from "../Diagnosis/Diagnosis"
 import OBDStatus from "../OBDStatus/OBDStatus"
 import TechnicalSheetUpload from "../ManualUpload/ManualUpload"
-import Header from "../Header/Header"
 import { iniciarDiagnostico, continuarDiagnostico } from "../../api/openai"
 import "./Home.scss"
 
 const initialState = {
-  step: "welcome",
+  messages: [],
+  step: "welcome", // welcome, vehicleForm, obd, manual, chat, diagnosis
   vehicleData: null,
   currentQuestion: "",
   questionCount: 0,
   historial: [],
   diagnosis: "",
   isLastQuestion: false,
-  manualId: null,
 }
 
 const diagnosisReducer = (state, action) => {
   switch (action.type) {
+    case "ADD_MESSAGE":
+      return { ...state, messages: [...state.messages, action.payload] }
     case "SET_STEP":
       return { ...state, step: action.payload }
     case "SET_VEHICLE_DATA":
@@ -156,8 +157,6 @@ const diagnosisReducer = (state, action) => {
       return { ...state, historial: [...state.historial, ...action.payload] }
     case "SET_DIAGNOSIS":
       return { ...state, diagnosis: action.payload, step: "diagnosis" }
-    case "SET_MANUAL_ID":
-      return { ...state, manualId: action.payload }
     default:
       return state
   }
@@ -165,292 +164,124 @@ const diagnosisReducer = (state, action) => {
 
 function Home() {
   const [state, dispatch] = useReducer(diagnosisReducer, initialState)
-  const [isProcessing, setIsProcessing] = useState(false)
-  const [showOBD, setShowOBD] = useState(false)
-  const [showManual, setShowManual] = useState(false)
-  const [currentOBDData, setCurrentOBDData] = useState(null)
+  const [isTyping, setIsTyping] = useState(false)
 
-  const [extractedSpecs, setExtractedSpecs] = useState("")
+  // Welcome message
+  useEffect(() => {
+    if (state.messages.length === 0) {
+      setIsTyping(true)
+      setTimeout(() => {
+        dispatch({
+          type: "ADD_MESSAGE",
+          payload: {
+            sender: "ai",
+            text: "¡Hola! Soy Daryal, tu experto en diagnóstico. ¿Cómo quieres empezar?",
+            component: "welcome"
+          }
+        })
+        setIsTyping(false)
+      }, 1000)
+    }
+  }, [state.messages.length])
 
-  const handleStartDiagnosis = () => {
-    dispatch({ type: "SET_STEP", payload: "vehicleForm" })
-  }
-
-  const handleTechSheetSuccess = (specs) => {
-    setExtractedSpecs(specs)
-    setShowManual(false)
-    // Si la ficha técnica tiene datos suficientes, podemos ir directo al chat
-    if (specs && specs.marca && specs.modelo) {
-      const autoData = {
-        marca: specs.marca,
-        modelo: specs.modelo,
-        año: specs.año || "Desconocido",
-        combustible: specs.combustible || "Desconocido",
-        extracted_specs: specs
-      }
-      dispatch({ type: "SET_VEHICLE_DATA", payload: autoData })
-      dispatch({ type: "SET_STEP", payload: "chat" })
+  const handleSendMessage = async (text, attachment) => {
+    dispatch({ type: "ADD_MESSAGE", payload: { sender: "user", text } })
+    
+    // Process user input
+    if (state.step === "chat") {
+      setIsTyping(true)
+      await processChatInput(text, attachment)
     }
   }
 
-  const handleOBDConnected = (data) => {
-    setCurrentOBDData(data)
-    setShowOBD(false)
-    if (data && data.status === 'connected') {
-      const autoData = {
-        marca: data.marca || "Identificado vía OBD",
-        modelo: data.modelo || "Estandar OBD-II",
-        año: data.año || "Auto-detectado",
-        obd_data: data
-      }
-      dispatch({ type: "SET_VEHICLE_DATA", payload: autoData })
-      
-      // Si es modo simulador (mock: true), saltamos directo al diagnóstico simulado
-      if (data.mock) {
-        const diagnosticoSimulado = "SISTEMA DE SIMULACIÓN: Se han detectado códigos P0300 (Fallos de encendido aleatorios) y P0171 (Mezcla pobre). \n\nSoluciones sugeridas:\n1. Revisar bobinas de encendido y bujías.\n2. Limpiar sensor MAF.\n3. Verificar posibles fugas de vacío en la admisión."
-        dispatch({ type: "SET_DIAGNOSIS", payload: diagnosticoSimulado })
-      } else {
-        dispatch({ type: "SET_STEP", payload: "chat" })
-      }
-    }
-  }
-
-  const handleVehicleSubmit = async (data) => {
-    // Si tenemos specs extraídas, las añadimos al vehículo
-    const updatedData = { ...data, extracted_specs: extractedSpecs }
-    dispatch({ type: "SET_VEHICLE_DATA", payload: updatedData })
-    dispatch({ type: "SET_STEP", payload: "chat" })
-  }
-
-  const handleChatSubmit = async (message, imageFile = null) => {
-    setIsProcessing(true)
-
+  const processChatInput = async (message, imageFile) => {
     try {
-      let finalMessage = message;
+      let finalMessage = message
       if (imageFile) {
-        const formData = new FormData();
-        formData.append('file', imageFile);
-        
-        const domain = window.location.hostname;
-        const apiUrl = domain === 'localhost' ? 'http://localhost:8000' : '';
-        
-        const visionResponse = await axios.post(`${apiUrl}/api/vision/analizar`, formData);
-        finalMessage = `[Análisis de Imagen: ${visionResponse.data.analysis}]\n\n${message}`;
+        const formData = new FormData()
+        formData.append('file', imageFile)
+        const domain = window.location.hostname
+        const apiUrl = domain === 'localhost' ? 'http://localhost:8000' : ''
+        const visionResponse = await axios.post(`${apiUrl}/api/vision/analizar`, formData)
+        finalMessage = `[Imagen: ${visionResponse.data.analysis}] ${message}`
       }
 
       if (state.historial.length === 0) {
-        dispatch({
-          type: "ADD_TO_HISTORIAL",
-          payload: [{ tipo: "problema", texto: finalMessage }],
-        })
-
-        const vehicleDataWithProblem = {
-          ...state.vehicleData,
-          problema: finalMessage,
-          extracted_specs: extractedSpecs,
-          obd_data: currentOBDData,
-        }
-
-        const response = await iniciarDiagnostico(vehicleDataWithProblem)
-
-        if (response.pregunta) {
-          dispatch({
-            type: "SET_QUESTION",
-            payload: response.pregunta,
-            isLastQuestion: response.es_ultima || false,
-          })
-        }
+        dispatch({ type: "ADD_TO_HISTORIAL", payload: [{ tipo: "problema", texto: finalMessage }] })
+        const response = await iniciarDiagnostico({ ...state.vehicleData, problema: finalMessage })
+        dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: response.pregunta } })
+        dispatch({ type: "SET_QUESTION", payload: response.pregunta, isLastQuestion: response.es_ultima })
       } else {
-        dispatch({
-          type: "ADD_TO_HISTORIAL",
-          payload: [{ tipo: "respuesta", texto: finalMessage }],
-        })
-
-        try {
-          const response = await continuarDiagnostico(
-            [...state.historial, { tipo: "respuesta", texto: finalMessage }],
-            state.vehicleData,
-          )
-
-          const esUltimaPregunta = state.questionCount >= 4
-
-          if (response.pregunta && !esUltimaPregunta) {
-            dispatch({
-              type: "SET_QUESTION",
-              payload: response.pregunta,
-              isLastQuestion: response.es_ultima || esUltimaPregunta,
-            })
-          } else {
-            const mensajeTransicion =
-              "Gracias por tu información. He completado mi análisis y tengo un diagnóstico para ti."
-
-            dispatch({
-              type: "SET_QUESTION",
-              payload: mensajeTransicion,
-              isLastQuestion: true,
-            })
-
-            setTimeout(() => {
-              const diagnostico = generarDiagnosticoBasadoEnHistorial([...state.historial, { tipo: "respuesta", texto: finalMessage }])
-              dispatch({
-                type: "SET_DIAGNOSIS",
-                payload: diagnostico,
-              })
-            }, 3000)
-          }
-        } catch (error) {
-          console.error("API Error during diagnosis:", error)
-          const esUltimaPregunta = state.questionCount >= 4
-          
-          if (esUltimaPregunta) {
-            dispatch({
-              type: "SET_QUESTION",
-              payload: "He detectado un problema de conexión con mi base de datos principal, pero basándome en lo que me has contado, ya tengo una idea clara de lo que ocurre. Preparando diagnóstico local...",
-              isLastQuestion: true,
-            })
-
-            setTimeout(() => {
-              const diagnostico = generarDiagnosticoBasadoEnHistorial([...state.historial, { tipo: "respuesta", texto: finalMessage }])
-              dispatch({
-                type: "SET_DIAGNOSIS",
-                payload: diagnostico,
-              })
-            }, 3000)
-          } else {
-            // Fallback de chat interactivo cuando la API falla
-            const fallbackMsg = "Tengo un pequeño problema de conexión técnica, pero no te preocupes. Cuéntame más detalles sobre el síntoma: ¿Cuándo ocurre exactamente? (por ejemplo: en frío, al acelerar, etc.)"
-            dispatch({
-              type: "SET_QUESTION",
-              payload: fallbackMsg,
-              isLastQuestion: false
-            })
-          }
+        dispatch({ type: "ADD_TO_HISTORIAL", payload: [{ tipo: "respuesta", texto: finalMessage }] })
+        const response = await continuarDiagnostico([...state.historial, { tipo: "respuesta", texto: finalMessage }], state.vehicleData)
+        
+        if (response.pregunta) {
+          dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: response.pregunta } })
+          dispatch({ type: "SET_QUESTION", payload: response.pregunta, isLastQuestion: response.es_ultima })
+        } else if (response.diagnostico_y_soluciones) {
+          dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: "He terminado mi análisis.", component: "diagnosis" } })
+          dispatch({ type: "SET_DIAGNOSIS", payload: response.diagnostico_y_soluciones })
         }
       }
     } catch (error) {
-      alert("Ocurrió un error en el proceso de diagnóstico. Intenta nuevamente.")
+      dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: "Lo siento, tuve un error procesando tu mensaje." } })
     } finally {
-      setIsProcessing(false)
+      setIsTyping(false)
     }
   }
 
-  const generarDiagnosticoBasadoEnHistorial = (historial) => {
-    const todosLosTextos = historial.map((item) => item.texto.toLowerCase())
-    const textoCompleto = todosLosTextos.join(" ")
-
-    let diagnostico = ""
-    let soluciones = []
-
-    if (textoCompleto.includes("humo") || textoCompleto.includes("escape")) {
-      if (textoCompleto.includes("blanco")) {
-        diagnostico = "Problema con la junta de culata o posible fuga de refrigerante"
-        soluciones = [
-          "Revisar el nivel de refrigerante y verificar si hay fugas",
-          "Realizar una prueba de presión del sistema de refrigeración",
-          "Considerar la posibilidad de reemplazar la junta de culata",
-          "Consultar con un mecánico especializado para una evaluación completa",
-        ]
-      } else if (textoCompleto.includes("azul")) {
-        diagnostico =
-          "Consumo excesivo de aceite, posiblemente debido a desgaste en guías de válvulas o segmentos de pistón"
-        soluciones = [
-          "Verificar el nivel y estado del aceite del motor",
-          "Realizar una prueba de compresión para evaluar el estado de los cilindros",
-          "Considerar una reparación del motor si el desgaste es significativo",
-          "Consultar con un mecánico especializado",
-        ]
-      } else if (textoCompleto.includes("negro")) {
-        diagnostico = "Mezcla de combustible demasiado rica, posible problema en el sistema de inyección"
-        soluciones = [
-          "Revisar y limpiar los inyectores de combustible",
-          "Verificar el sensor de oxígeno y el sensor MAF",
-          "Comprobar el filtro de aire y reemplazarlo si es necesario",
-          "Realizar un diagnóstico electrónico completo",
-        ]
-      } else {
-        diagnostico = "Problema en el sistema de escape o combustión"
-        soluciones = [
-          "Realizar un diagnóstico completo del sistema de escape",
-          "Verificar el estado de los sensores de oxígeno",
-          "Comprobar el catalizador",
-          "Consultar con un mecánico especializado",
-        ]
-      }
-    } else if (textoCompleto.includes("ruido") || textoCompleto.includes("golpeteo")) {
-      diagnostico = "Posible problema mecánico en el motor o la transmisión"
-      soluciones = [
-        "Verificar el nivel y estado del aceite del motor",
-        "Revisar los soportes del motor",
-        "Realizar un diagnóstico de la transmisión",
-        "Consultar con un mecánico para una evaluación detallada",
-      ]
-    } else if (textoCompleto.includes("arranc") || textoCompleto.includes("encend")) {
-      diagnostico = "Problema en el sistema de arranque o encendido"
-      soluciones = [
-        "Verificar el estado de la batería y las conexiones",
-        "Comprobar el motor de arranque y el alternador",
-        "Revisar el sistema de encendido (bujías, cables, bobinas)",
-        "Realizar un diagnóstico electrónico completo",
-      ]
-    } else if (textoCompleto.includes("freno") || textoCompleto.includes("frenar")) {
-      diagnostico = "Problema en el sistema de frenos"
-      soluciones = [
-        "Verificar el nivel y estado del líquido de frenos",
-        "Inspeccionar el estado de las pastillas y discos de freno",
-        "Comprobar el funcionamiento del servofreno",
-        "Realizar una revisión completa del sistema de frenos",
-      ]
-    } else {
-      diagnostico =
-        "Basado en la información proporcionada, es posible que exista un problema en el sistema relacionado con los síntomas descritos"
-      soluciones = [
-        "Realizar un diagnóstico electrónico completo",
-        "Verificar los niveles de todos los fluidos del vehículo",
-        "Inspeccionar los componentes relacionados con los síntomas descritos",
-        "Consultar con un mecánico especializado para una evaluación detallada",
-      ]
+  const renderComponent = (type) => {
+    switch(type) {
+      case "welcome":
+        return <WelcomeDialog 
+          onStart={() => {
+            dispatch({ type: "SET_STEP", payload: "vehicleForm" })
+            dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: "Por favor, completa los datos del vehículo.", component: "vehicleForm" } })
+          }}
+          onOBDClick={() => {
+            dispatch({ type: "SET_STEP", payload: "obd" })
+            dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: "Conectando al dispositivo OBD2...", component: "obd" } })
+          }}
+          onManualClick={() => {
+            dispatch({ type: "SET_STEP", payload: "manual" })
+            dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: "Sube la ficha técnica.", component: "manual" } })
+          }}
+        />
+      case "vehicleForm":
+        return <VehicleForm onSubmit={(data) => {
+          dispatch({ type: "SET_VEHICLE_DATA", payload: data })
+          dispatch({ type: "SET_STEP", payload: "chat" })
+          dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: "¿Qué problema tiene tu vehículo?" } })
+        }} />
+      case "obd":
+        return <OBDStatus onClose={(data) => {
+          if (data?.status === 'connected') {
+            dispatch({ type: "SET_VEHICLE_DATA", payload: data })
+            dispatch({ type: "SET_STEP", payload: "chat" })
+            dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: "OBD Conectado. ¿Qué problema has notado?" } })
+          }
+        }} />
+      case "manual":
+        return <TechnicalSheetUpload onExtractionSuccess={(specs) => {
+          dispatch({ type: "SET_VEHICLE_DATA", payload: specs })
+          dispatch({ type: "SET_STEP", payload: "chat" })
+          dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: "Ficha procesada. Describe el problema." } })
+        }} onClose={() => {}} />
+      case "diagnosis":
+        return <Diagnosis diagnosis={state.diagnosis} />
+      default:
+        return null
     }
-
-    return `${diagnostico}\n${soluciones.join("\n")}`
   }
 
   return (
     <div className="home">
-      <Header 
-        onOBDClick={() => setShowOBD(true)} 
-        onManualClick={() => setShowManual(true)} 
+      <ChatLayout 
+        messages={state.messages} 
+        onSendMessage={handleSendMessage}
+        isTyping={isTyping}
+        renderComponent={renderComponent}
       />
-      
-      {showOBD && <OBDStatus onClose={handleOBDConnected} />}
-      {showManual && (
-        <TechnicalSheetUpload 
-          onExtractionSuccess={handleTechSheetSuccess} 
-          onClose={() => setShowManual(false)} 
-        />
-      )}
-
-      <div className="main-content">
-        {state.step === "welcome" && (
-          <WelcomeDialog 
-            onStart={handleStartDiagnosis} 
-            onOBDClick={() => setShowOBD(true)}
-            onManualClick={() => setShowManual(true)}
-          />
-        )}
-
-        {state.step === "vehicleForm" && <VehicleForm onSubmit={handleVehicleSubmit} />}
-
-        {state.step === "chat" && (
-          <ChatInterface
-            vehicleData={state.vehicleData}
-            onSubmit={handleChatSubmit}
-            currentQuestion={state.currentQuestion}
-            isProcessing={isProcessing}
-          />
-        )}
-
-        {state.step === "diagnosis" && <Diagnosis diagnosis={state.diagnosis} />}
-      </div>
     </div>
   )
 }
