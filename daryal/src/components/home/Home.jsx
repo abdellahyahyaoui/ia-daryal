@@ -53,7 +53,7 @@ function Home() {
   const [isTyping, setIsTyping] = useState(false)
 
   // API URL
-  const API_BASE_URL = process.env.REACT_APP_API_URL || "https://tu-api-en-render.com/api"
+  const API_BASE_URL = "https://ia-daryal-3.onrender.com/api"
 
   const processChatInput = async (message, imageFile) => {
     try {
@@ -63,7 +63,6 @@ function Home() {
 
       let finalMessage = message
       if (imageFile) {
-        // En un entorno Capacitor real, aquí procesaríamos la imagen localmente o la subiríamos
         finalMessage = `[Análisis de Imagen/Archivo] ${message}`
       }
 
@@ -71,12 +70,7 @@ function Home() {
         const payload = [{ tipo: "problema", texto: finalMessage }]
         dispatch({ type: "ADD_TO_HISTORIAL", payload })
         
-        // Llamada a API Real
-        const response = await fetch(`${API_BASE_URL}/iniciar-diagnostico`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ...state.vehicleData, problema: finalMessage })
-        }).then(res => res.json())
+        const response = await iniciarDiagnostico({ ...state.vehicleData, problema: finalMessage })
         
         if (response.pregunta) {
           dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: response.pregunta } })
@@ -87,12 +81,7 @@ function Home() {
         dispatch({ type: "ADD_TO_HISTORIAL", payload })
         const fullHistorial = [...state.historial, ...payload]
         
-        // Llamada a API Real
-        const response = await fetch(`${API_BASE_URL}/continuar-diagnostico`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ historial: fullHistorial, vehiculo: state.vehicleData })
-        }).then(res => res.json())
+        const response = await continuarDiagnostico(fullHistorial, state.vehicleData)
         
         if (response.pregunta) {
           dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: response.pregunta } })
