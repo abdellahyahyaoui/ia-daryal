@@ -22,7 +22,6 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-import "./Diagnosis.scss"
 
 function Diagnosis({ diagnosis, obdData }) {
   const [clearing, setClearing] = useState(false)

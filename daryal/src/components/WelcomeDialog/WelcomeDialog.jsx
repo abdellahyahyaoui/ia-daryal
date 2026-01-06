@@ -3,7 +3,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import "./WelcomeDialog.scss"
 
 function WelcomeDialog({ onStart, onOBDClick, onManualClick }) {
   const [text, setText] = useState("")
