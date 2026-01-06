@@ -7,7 +7,7 @@ const apiClient = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  timeout: 30000, // Añadido timeout para evitar esperas infinitas
+  timeout: 60000, // Aumentado a 60s por si Render está arrancando
 })
 
 export const iniciarDiagnostico = async (datosVehiculo) => {
