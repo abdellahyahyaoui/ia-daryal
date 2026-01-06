@@ -262,7 +262,19 @@ const OBDStatus = ({ onClose }) => {
                                 </button>
                             )}
                             
-                            <button className="confirm-btn" onClick={() => onClose(data)}>Analizar con IA</button>
+                            <button className="confirm-btn" onClick={async () => {
+                                try {
+                                    // Primero interpretamos los códigos con el backend
+                                    const interpretation = await interpretarCodigos(data.dtc);
+                                    // Pasamos los datos combinados para que la IA tenga el contexto completo
+                                    onClose({
+                                        ...data,
+                                        interpretacion_inicial: interpretation.diagnostico
+                                    });
+                                } catch (err) {
+                                    onClose(data);
+                                }
+                            }}>Analizar con IA</button>
                         </div>
                     )}
                     
