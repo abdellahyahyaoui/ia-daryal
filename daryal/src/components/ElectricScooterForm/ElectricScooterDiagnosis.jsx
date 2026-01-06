@@ -70,12 +70,15 @@ function ElectricScooterDiagnosis() {
 
   const handleChatSubmit = async (message) => {
     try {
-      if (state.historial.length === 0) {
-        dispatch({
-          type: "ADD_TO_HISTORIAL",
-          payload: [{ tipo: "problema", texto: message }],
-        })
+      const newUserMessage = { tipo: "respuesta", texto: message }
+      const updatedHistorial = [...state.historial, newUserMessage]
+      
+      dispatch({
+        type: "ADD_TO_HISTORIAL",
+        payload: [newUserMessage],
+      })
 
+      if (state.historial.length === 0) {
         const vehicleDataWithProblem = {
           ...state.vehicleData,
           problema: message,
@@ -85,30 +88,25 @@ function ElectricScooterDiagnosis() {
 
         if (response.pregunta) {
           dispatch({ type: "SET_QUESTION", payload: response.pregunta })
-          if (response.es_ultima) dispatch({ type: "SET_LAST_QUESTION" })
+          dispatch({
+            type: "ADD_TO_HISTORIAL",
+            payload: [{ tipo: "pregunta", texto: response.pregunta }],
+          })
         }
       } else {
-        dispatch({
-          type: "ADD_TO_HISTORIAL",
-          payload: [
-            { tipo: "pregunta", texto: state.currentQuestion },
-            { tipo: "respuesta", texto: message },
-          ],
-        })
-
-        try {
-          const response = await continuarDiagnostico(state.historial, state.vehicleData)
-          if (response.pregunta) {
-            dispatch({ type: "SET_QUESTION", payload: response.pregunta })
-            if (response.es_ultima) dispatch({ type: "SET_LAST_QUESTION" })
-          } else if (response.diagnostico_y_soluciones) {
-            dispatch({
-              type: "SET_DIAGNOSIS",
-              payload: response.diagnostico_y_soluciones,
-            })
-          }
-        } catch (error) {
-          console.error("Error al continuar el diagnóstico:", error)
+        const response = await continuarDiagnostico(updatedHistorial, state.vehicleData)
+        if (response.pregunta) {
+          dispatch({ type: "SET_QUESTION", payload: response.pregunta })
+          dispatch({
+            type: "ADD_TO_HISTORIAL",
+            payload: [{ tipo: "pregunta", texto: response.pregunta }],
+          })
+          if (response.es_ultima) dispatch({ type: "SET_LAST_QUESTION" })
+        } else if (response.diagnostico_y_soluciones) {
+          dispatch({
+            type: "SET_DIAGNOSIS",
+            payload: response.diagnostico_y_soluciones,
+          })
         }
       }
     } catch (error) {
