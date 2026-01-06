@@ -1,0 +1,6 @@
+{
+  "appId": "com.daryal.app",
+  "appName": "Daryal",
+  "webDir": "build",
+  "bundledWebRuntime": false
+}

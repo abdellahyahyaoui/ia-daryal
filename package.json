@@ -5,7 +5,7 @@
     "@react-three/fiber": "^8.17.10",
     "dotenv": "^16.4.7",
     "lucide-react": "^0.562.0",
-    "openai": "^4.76.3",
+    "openai": "^4.104.0",
     "three": "^0.170.0"
   }
 }

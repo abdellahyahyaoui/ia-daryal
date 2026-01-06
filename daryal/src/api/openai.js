@@ -1,11 +1,10 @@
 
 
-import axios from "axios"
 import OpenAI from "openai"
 
 const openai = new OpenAI({
-  apiKey: "dummy", // Replit integration handles this
-  baseURL: "/api/ai", // Proxy to Replit AI integration or local server
+  apiKey: "dummy", 
+  baseURL: "/api/ai", 
   dangerouslyAllowBrowser: true
 })
 
