@@ -69,7 +69,7 @@ function MotorcycleForm({ onSubmit }) {
   const [formTitle, setFormTitle] = useState("")
   const [showTitle, setShowTitle] = useState(true)
   const [showForm, setShowForm] = useState(false)
-  const fullTitle = "Rellana el formulario"
+  const fullTitle = ""
 
   // Efecto para la animación de escritura del título
   useEffect(() => {

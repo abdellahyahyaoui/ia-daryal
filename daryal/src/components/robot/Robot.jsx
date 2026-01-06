@@ -1,6 +1,6 @@
 import React, { Suspense, useEffect, useState, Component } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls, useGLTF, useAnimations,} from '@react-three/drei';
+import { OrbitControls, useGLTF, useAnimations } from '@react-three/drei';
 
 class WebGLErrorBoundary extends Component {
     constructor(props) {
@@ -27,19 +27,17 @@ function Model() {
     useEffect(() => {
         if (actions) {
             const firstAnimation = Object.keys(actions)[0];
-            if (firstAnimation) {
-                actions[firstAnimation].play();
-            }
+            if (firstAnimation) actions[firstAnimation].play();
         }
     }, [actions]);
 
-    return <primitive object={scene} scale={[3.4, 3.4, 3.4,]} />;
+    return <primitive object={scene} scale={[3, 3, 3]} />;
 }
 
 function checkWebGLSupport() {
     try {
         const canvas = document.createElement('canvas');
-        return !!(window.WebGLRenderingContext && 
+        return !!(window.WebGLRenderingContext &&
             (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
     } catch (e) {
         return false;
@@ -55,21 +53,19 @@ export default function RobotComponent() {
 
     if (!webGLSupported) {
         return (
-            <div className="robot-component robot-fallback">
+            <div className="robot-fixed-container">
                 <div className="robot-placeholder"></div>
             </div>
         );
     }
 
     return (
-        <div className="robot-component">
+        <div className="robot-fixed-container">
             <WebGLErrorBoundary fallback={<div className="robot-placeholder"></div>}>
                 <Canvas
-                    camera={{ position: [-6, 0, 8], fov: 30 }}
+                    camera={{ position: [-6, 0, 12], fov: 30 }}
                     gl={{ alpha: true, antialias: true }}
-                    onCreated={({ gl }) => {
-                        gl.setClearColor(0x000000, 0);
-                    }}
+                    onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
                 >
                     <ambientLight intensity={1} />
                     <directionalLight intensity={1.5} position={[5, 5, 5]} />

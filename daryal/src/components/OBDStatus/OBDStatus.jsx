@@ -174,7 +174,7 @@ const OBDStatus = ({ onClose }) => {
                 <button className="close-btn" onClick={onClose}>&times;</button>
                 
                 <div className="modal-header">
-                    <h2>📡 Conexión OBD-II Bluetooth</h2>
+                    <h2> Conexión OBD-II Bluetooth</h2>
                 </div>
 
                 <div className="modal-body">
@@ -190,8 +190,8 @@ const OBDStatus = ({ onClose }) => {
                         <div className="direct-connect">
                             <p>Opciones de conexión:</p>
                             <div className="adapter-info" onClick={() => connectToDevice({name: 'Daryal-OBD-Adapter'})} style={{cursor: 'pointer'}}>
-                                <span className="icon">📡</span>
-                                <span className="name">Daryal-OBD-Adapter (Hardware)</span>
+                              
+                                <span className="name">Daryal-OBD-Adapter </span>
                             </div>
                             <div className="adapter-info simulator" onClick={handleTestMode} style={{cursor: 'pointer', marginTop: '10px', background: 'rgba(255,255,255,0.05)'}}>
                                 <span className="icon">🧪</span>
@@ -259,7 +259,7 @@ const OBDStatus = ({ onClose }) => {
                                         alert('Error al borrar códigos');
                                     }
                                 }}>
-                                    🗑️ Borrar Errores DTC
+                                     Borrar Errores 
                                 </button>
                             )}
                             

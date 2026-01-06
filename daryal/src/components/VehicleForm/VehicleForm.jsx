@@ -67,7 +67,7 @@ function VehicleForm({ onSubmit }) {
   const [formTitle, setFormTitle] = useState("")
   const [showTitle, setShowTitle] = useState(true) // Nuevo estado para controlar la visibilidad del título
   const [showForm, setShowForm] = useState(false)
-  const fullTitle = "Completa el formulario"
+  const fullTitle = ""
 
   // Efecto para la animación de escritura del título
   useEffect(() => {
