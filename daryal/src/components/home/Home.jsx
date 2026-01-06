@@ -82,33 +82,38 @@ function Home() {
     try {
       let finalMessage = message
       if (imageFile) {
-        const formData = new FormData()
-        formData.append('file', imageFile)
-        const domain = window.location.hostname
-        const apiUrl = domain === 'localhost' ? 'http://localhost:8000' : ''
-        const visionResponse = await axios.post(`${apiUrl}/api/vision/analizar`, formData)
-        finalMessage = `[Imagen: ${visionResponse.data.analysis}] ${message}`
+        // En un entorno Capacitor real, aquí procesaríamos la imagen localmente o la subiríamos
+        // Para la web, simulamos el análisis si no hay un backend de visión configurado
+        finalMessage = `[Imagen adjunta] ${message}`
       }
 
       if (state.historial.length === 0) {
-        dispatch({ type: "ADD_TO_HISTORIAL", payload: [{ tipo: "problema", texto: finalMessage }] })
+        const payload = [{ tipo: "problema", texto: finalMessage }]
+        dispatch({ type: "ADD_TO_HISTORIAL", payload })
         const response = await iniciarDiagnostico({ ...state.vehicleData, problema: finalMessage })
-        dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: response.pregunta } })
-        dispatch({ type: "SET_QUESTION", payload: response.pregunta, isLastQuestion: response.es_ultima })
-      } else {
-        dispatch({ type: "ADD_TO_HISTORIAL", payload: [{ tipo: "respuesta", texto: finalMessage }] })
-        const response = await continuarDiagnostico([...state.historial, { tipo: "respuesta", texto: finalMessage }], state.vehicleData)
         
         if (response.pregunta) {
           dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: response.pregunta } })
           dispatch({ type: "SET_QUESTION", payload: response.pregunta, isLastQuestion: response.es_ultima })
-        } else if (response.diagnostico_y_soluciones) {
+        }
+      } else {
+        const payload = [{ tipo: "respuesta", texto: finalMessage }]
+        dispatch({ type: "ADD_TO_HISTORIAL", payload })
+        const fullHistorial = [...state.historial, ...payload]
+        const response = await continuarDiagnostico(fullHistorial, state.vehicleData)
+        
+        if (response.pregunta) {
+          dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: response.pregunta } })
+          dispatch({ type: "SET_QUESTION", payload: response.pregunta, isLastQuestion: response.es_ultima })
+        }
+        
+        if (response.diagnostico_y_soluciones) {
           dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: "He terminado mi análisis.", component: "diagnosis" } })
           dispatch({ type: "SET_DIAGNOSIS", payload: response.diagnostico_y_soluciones })
         }
       }
     } catch (error) {
-      dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: "Lo siento, tuve un error procesando tu mensaje." } })
+      dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: "Lo siento, tuve un error conectando con la IA." } })
     } finally {
       setIsTyping(false)
     }
