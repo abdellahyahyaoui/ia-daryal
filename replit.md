@@ -1,52 +1,57 @@
-# Daryal - Vehicle Diagnosis App
+# Daryal - Diagnostic Expert Application
 
 ## Overview
-Daryal is a React-based vehicle diagnosis application that helps users diagnose issues with various vehicle types including motorcycles, electric cars, electric motorcycles, electric scooters, and Orbea bikes. The app features an AI-powered chat interface for diagnostics.
+Daryal is a Spanish-language diagnostic expert application built with React. It features a chat interface where users can interact with an AI diagnostic assistant. The application supports various vehicle types including cars, motorcycles, electric vehicles, and scooters.
 
 ## Project Structure
 ```
-daryal/               # Main React application
-├── public/           # Static assets
-│   ├── planosGLb/   # GLB files and photos
+daryal/
+├── public/           # Static assets, GLB models, images
 ├── src/
-│   ├── api/         # API integrations (OpenAI)
-│   ├── components/  # React components
-│   │   ├── CodeInterpreterForm/
-│   │   ├── ElectricCarForm/
-│   │   ├── ElectricMotorcycleForm/
-│   │   ├── ElectricScooterForm/
-│   │   ├── MotorcycleForm/
-│   │   ├── OrbeaForm/
-│   │   ├── home/
-│   │   ├── layout/
-│   │   ├── navbar/
-│   │   └── robot/
-│   ├── hooks/       # Custom React hooks
-│   ├── utils/       # Utility functions
-│   └── styles/      # Global styles
+│   ├── api/          # API integrations (OpenAI)
+│   ├── components/   # React components
+│   │   ├── chat/     # Chat functionality
+│   │   ├── layout/   # Layout components (Sidebar, ChatLayout)
+│   │   ├── VehicleForm/    # Vehicle diagnostic forms
+│   │   ├── MotorcycleForm/ # Motorcycle diagnostics
+│   │   ├── ElectricCarForm/ # Electric car diagnostics
+│   │   └── ...       # Other component folders
+│   ├── hooks/        # Custom React hooks
+│   ├── styles/       # Global styles
+│   └── utils/        # Utility functions
+├── package.json      # Dependencies
+└── tailwind.config.js # Tailwind CSS configuration
 ```
 
-## Tech Stack
-- React 18 with React Router v6
-- Create React App (react-scripts)
-- SASS for styling
-- Tailwind CSS
-- Three.js with @react-three/fiber and @react-three/drei for 3D elements
+## Technology Stack
+- React 18.3.1 (Create React App)
+- React Router DOM 6.27
+- Three.js with @react-three/fiber and @react-three/drei
+- Tailwind CSS 3.4
+- OpenAI API integration
+- Firebase
 - Framer Motion for animations
-- Firebase for backend services
-- OpenAI for AI-powered diagnostics
+- SASS for styling
 
 ## Running the Application
-The app runs on port 5000 using the "Frontend" workflow:
-```
-cd daryal && npm start
+The application runs on port 5000 with:
+```bash
+cd daryal && PORT=5000 npm start
 ```
 
-## Configuration
-Environment variables are set in `daryal/.env`:
-- PORT=5000
-- HOST=0.0.0.0
-- DANGEROUSLY_DISABLE_HOST_CHECK=true (required for Replit proxy)
+## Key Features
+- AI-powered diagnostic chat interface
+- Vehicle diagnostic forms for different vehicle types
+- 3D model viewing capabilities
+- Media capture functionality
+- PDF export utilities
+- Firebase integration
 
 ## Recent Changes
-- 2026-01-06: Initial import and configuration for Replit environment
+- January 6, 2026: Project imported to Replit environment
+  - Installed npm dependencies
+  - Configured workflow to run on port 5000
+  - Verified application is working
+
+## User Preferences
+(To be updated based on user feedback)
