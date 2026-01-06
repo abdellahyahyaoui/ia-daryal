@@ -115,6 +115,24 @@ function ElectricCarDiagnosis() {
     }
   }
 
+  const renderComponent = (type) => {
+    switch (type) {
+      case "vehicleForm":
+        return <ElectricCarForm onSubmit={handleVehicleSubmit} />
+      case "obd":
+        return (
+          <OBDStatus onClose={(data) => {
+            if (data?.status === 'connected') {
+              dispatch({ type: "SET_VEHICLE_DATA", payload: data })
+              dispatch({ type: "SET_STEP", payload: "chat" })
+            }
+          }} />
+        )
+      default:
+        return null
+    }
+  }
+
   if (isLoading || state.step === "initial") {
     return <div className="loading">Cargando...</div>
   }
@@ -127,25 +145,19 @@ function ElectricCarDiagnosis() {
           <button onClick={handleOBDSelection} className="selection-btn">OBD2</button>
         </div>
       )}
-      {state.step === "obd" && (
-        <OBDStatus onClose={(data) => {
-          if (data?.status === 'connected') {
-            dispatch({ type: "SET_VEHICLE_DATA", payload: data })
-            dispatch({ type: "SET_STEP", payload: "chat" })
-          }
-        }} />
-      )}
-      {state.step === "vehicleForm" && <ElectricCarForm onSubmit={handleVehicleSubmit} />}
-      {(state.step === "chat" || state.step === "diagnosis") && (
+      {(state.step === "obd" || state.step === "vehicleForm" || state.step === "chat" || state.step === "diagnosis") && (
         <ChatLayout
           messages={state.historial.map(h => ({
             sender: h.sender || (h.tipo === "respuesta" || h.tipo === "problema" ? "user" : "ai"),
             text: h.texto
-          })).concat(state.currentQuestion ? [{ sender: "ai", text: state.currentQuestion }] : [])
-             .concat(state.diagnosis ? [{ sender: "ai", text: `**Diagnóstico Final:**\n\n${state.diagnosis}` }] : [])}
+          }))
+          .concat(state.step === "obd" ? [{ sender: "ai", text: "Conectando al dispositivo OBD2...", component: "obd" }] : [])
+          .concat(state.step === "vehicleForm" ? [{ sender: "ai", text: "Por favor, completa los datos del coche eléctrico.", component: "vehicleForm" }] : [])
+          .concat(state.currentQuestion ? [{ sender: "ai", text: state.currentQuestion }] : [])
+          .concat(state.diagnosis ? [{ sender: "ai", text: `**Diagnóstico Final:**\n\n${state.diagnosis}` }] : [])}
           onSendMessage={handleChatSubmit}
           isTyping={false}
-          renderComponent={() => null}
+          renderComponent={renderComponent}
         />
       )}
     </div>

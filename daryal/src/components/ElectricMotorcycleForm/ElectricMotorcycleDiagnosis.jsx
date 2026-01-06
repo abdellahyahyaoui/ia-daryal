@@ -112,6 +112,15 @@ function ElectricMotorcycleDiagnosis() {
     }
   }
 
+  const renderComponent = (type) => {
+    switch (type) {
+      case "vehicleForm":
+        return <ElectricMotorcycleForm onSubmit={handleVehicleSubmit} />
+      default:
+        return null
+    }
+  }
+
   if (isLoading || state.step === "initial") {
     return <div className="loading">Cargando...</div>
   }
@@ -119,17 +128,18 @@ function ElectricMotorcycleDiagnosis() {
   return (
     <div className="electric-motorcycle-diagnosis">
       {state.step === "welcome" && <WelcomeDialog onStart={handleStartDiagnosis} />}
-      {state.step === "vehicleForm" && <ElectricMotorcycleForm onSubmit={handleVehicleSubmit} />}
-      {(state.step === "chat" || state.step === "diagnosis") && (
+      {(state.step === "vehicleForm" || state.step === "chat" || state.step === "diagnosis") && (
         <ChatLayout
           messages={state.historial.map(h => ({
             sender: h.sender || (h.tipo === "respuesta" || h.tipo === "problema" ? "user" : "ai"),
             text: h.texto
-          })).concat(state.currentQuestion ? [{ sender: "ai", text: state.currentQuestion }] : [])
-             .concat(state.diagnosis ? [{ sender: "ai", text: `**Diagnóstico Final:**\n\n${state.diagnosis}` }] : [])}
+          }))
+          .concat(state.step === "vehicleForm" ? [{ sender: "ai", text: "Por favor, completa los datos de la moto eléctrica.", component: "vehicleForm" }] : [])
+          .concat(state.currentQuestion ? [{ sender: "ai", text: state.currentQuestion }] : [])
+          .concat(state.diagnosis ? [{ sender: "ai", text: `**Diagnóstico Final:**\n\n${state.diagnosis}` }] : [])}
           onSendMessage={handleChatSubmit}
           isTyping={false}
-          renderComponent={() => null}
+          renderComponent={renderComponent}
         />
       )}
     </div>
