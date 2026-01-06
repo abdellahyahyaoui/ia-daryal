@@ -113,9 +113,9 @@ function Home() {
 
   // Welcome message
   useEffect(() => {
-    if (state.messages.length === 0) {
+    if (state.messages.length === 0 && state.step === "welcome") {
       setIsTyping(true)
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         dispatch({
           type: "ADD_MESSAGE",
           payload: {
@@ -126,8 +126,9 @@ function Home() {
         })
         setIsTyping(false)
       }, 1000)
+      return () => clearTimeout(timer)
     }
-  }, [state.messages.length])
+  }, [state.messages.length, state.step])
 
   const renderComponent = (type) => {
     switch(type) {

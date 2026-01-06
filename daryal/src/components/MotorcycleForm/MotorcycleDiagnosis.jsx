@@ -3,6 +3,7 @@
 import { useReducer, useEffect } from "react"
 import WelcomeDialog from "../WelcomeDialog/WelcomeDialog"
 import MotorcycleForm from "./MotorcycleForm"
+import Diagnosis from "../Diagnosis/Diagnosis"
 import { iniciarDiagnostico, continuarDiagnostico } from "../../api/openai"
 import { useWelcomeState } from "../../hooks/useWelcomeState"
 import ChatLayout from "../layout/ChatLayout"
