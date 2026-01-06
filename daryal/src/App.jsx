@@ -8,6 +8,7 @@
 
 import { useEffect, useRef } from "react"
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
+import { SpeedInsights } from "@vercel/speed-insights/react"
 import ErrorBoundary from "./ErrorBoundary"
 import Navbar from "./components/navbar/Navbar"
 import Home from "./components/home/Home"
@@ -88,6 +89,7 @@ function App() {
               <Lamp />
             </div>
           </div>
+          <SpeedInsights />
         </div>
       </ErrorBoundary>
     </Router>
