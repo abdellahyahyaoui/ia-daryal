@@ -118,6 +118,12 @@ function ElectricScooterDiagnosis() {
     switch (type) {
       case "vehicleForm":
         return <ElectricScooterForm onSubmit={handleVehicleSubmit} />
+      case "diagnosis":
+        return (
+          <div className="vehicle-form-container">
+            <Diagnosis diagnosis={state.diagnosis} />
+          </div>
+        )
       default:
         return null
     }
@@ -138,7 +144,7 @@ function ElectricScooterDiagnosis() {
           }))
           .concat(state.step === "vehicleForm" ? [{ sender: "ai", text: "Por favor, completa los datos del patinete.", component: "vehicleForm" }] : [])
           .concat(state.currentQuestion ? [{ sender: "ai", text: state.currentQuestion }] : [])
-          .concat(state.diagnosis ? [{ sender: "ai", text: `**Diagnóstico Final:**\n\n${state.diagnosis}` }] : [])}
+          .concat(state.diagnosis ? [{ sender: "ai", text: "He terminado mi análisis.", component: "diagnosis" }] : [])}
           onSendMessage={handleChatSubmit}
           isTyping={false}
           renderComponent={renderComponent}
