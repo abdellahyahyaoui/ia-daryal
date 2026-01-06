@@ -87,7 +87,7 @@ function ElectricScooterForm({ onSubmit }) {
   }
 
   return (
-    <div className="electric-scooter-form-container">
+    <div className="vehicle-form-container">
       {/* Título con animación de escritura que desaparece */}
       {showTitle && (
         <h2 className={`form-title ${formTitle.length === fullTitle.length ? "complete" : ""}`}>
@@ -97,7 +97,7 @@ function ElectricScooterForm({ onSubmit }) {
       )}
 
       {showForm && (
-        <form className="electric-scooter-form" onSubmit={handleSubmit}>
+        <form className="vehicle-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="brand">Marca del patinete:</label>
             <select
@@ -130,35 +130,6 @@ function ElectricScooterForm({ onSubmit }) {
               disabled={isLoading}
             />
           </div>
-{/* 
-          <div className="form-group">
-            <label htmlFor="year">Año:</label>
-            <input
-              type="number"
-              id="year"
-              value={year}
-              onChange={(e) => setYear(e.target.value)}
-              required
-              min="2010"
-              max={new Date().getFullYear()}
-              className="form-input"
-              disabled={isLoading}
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="mileage">Kilómetros:</label>
-            <input
-              type="number"
-              id="mileage"
-              value={mileage}
-              onChange={(e) => setMileage(e.target.value)}
-              required
-              min="0"
-              className="form-input"
-              disabled={isLoading}
-            />
-          </div> */}
 
           <div className="form-group">
             <label htmlFor="batteryRange">Autonomía:</label>

@@ -117,7 +117,7 @@ function MotorcycleForm({ onSubmit }) {
   }
 
   return (
-    <div className="motorcycle-form-container">
+    <div className="vehicle-form-container">
       {/* Título con animación de escritura que desaparece */}
       {showTitle && (
         <h2 className={`form-title ${formTitle.length === fullTitle.length ? "complete" : ""}`}>
@@ -127,7 +127,7 @@ function MotorcycleForm({ onSubmit }) {
       )}
 
       {showForm && (
-        <form className="motorcycle-form" onSubmit={handleSubmit}>
+        <form className="vehicle-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="brand">Marca de la moto:</label>
             <select
@@ -161,25 +161,6 @@ function MotorcycleForm({ onSubmit }) {
             />
           </div>
 
-          {/* <div className="form-group">
-            <label htmlFor="motorcycleType">Tipo de moto:</label>
-            <select
-              id="motorcycleType"
-              value={motorcycleType}
-              onChange={(e) => setMotorcycleType(e.target.value)}
-              required
-              className="form-select"
-              disabled={isLoading}
-            >
-              <option value="">Selecciona el tipo</option>
-              {motorcycleTypes.map((type) => (
-                <option key={type} value={type}>
-                  {type}
-                </option>
-              ))}
-            </select>
-          </div> */}
-
           <div className="form-group">
             <label htmlFor="year">Año:</label>
             <input
@@ -208,25 +189,6 @@ function MotorcycleForm({ onSubmit }) {
               disabled={isLoading}
             />
           </div>
-
-          {/* <div className="form-group">
-            <label htmlFor="fuelType">Combustible:</label>
-            <select
-              id="fuelType"
-              value={fuelType}
-              onChange={(e) => setFuelType(e.target.value)}
-              required
-              className="form-select"
-              disabled={isLoading}
-            >
-              <option value="">Selecciona el combustible</option>
-              {fuelTypes.map((fuel) => (
-                <option key={fuel} value={fuel}>
-                  {fuel}
-                </option>
-              ))}
-            </select>
-          </div> */}
 
           <button type="submit" className="submit-button" disabled={isLoading}>
             {isLoading ? "Procesando..." : "Continuar"}
