@@ -15,7 +15,6 @@ import Logo from "./components/logo/Logo"
 import Robot from "./components/robot/Robot"
 
 import CodeInterpreter from "./components/CodeInterpreterForm/CodeInterpreter"
-import "./App.scss"
 
 // Importar los componentes de diagnóstico
 import MotorcycleDiagnosis from "./components/MotorcycleForm/MotorcycleDiagnosis"

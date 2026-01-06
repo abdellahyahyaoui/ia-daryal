@@ -10,7 +10,6 @@ import Diagnosis from "../Diagnosis/Diagnosis"
 import OBDStatus from "../OBDStatus/OBDStatus"
 import TechnicalSheetUpload from "../ManualUpload/ManualUpload"
 import { iniciarDiagnostico, continuarDiagnostico } from "../../api/openai"
-import "./Home.scss"
 
 const initialState = {
   messages: [],

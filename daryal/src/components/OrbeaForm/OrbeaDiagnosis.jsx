@@ -7,8 +7,6 @@ import Diagnosis from "../Diagnosis/Diagnosis"
 import { iniciarDiagnostico, continuarDiagnostico } from "../../api/openai"
 import { useWelcomeState } from "../../hooks/useWelcomeState"
 import ChatLayout from "../layout/ChatLayout"
-import "./OrbeaForm.scss"
-import "./OrbeaDiagnosis.scss"
 
 const initialState = {
   step: "initial",

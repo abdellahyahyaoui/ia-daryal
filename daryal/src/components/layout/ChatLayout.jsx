@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useRef } from "react"
-import { Menu } from "lucide-react"
-import Header from "../Header/Header"
 import ChatInput from "./ChatInput"
 import Robot from "../robot/Robot"
-import "./ChatLayout.scss"
 
 export default function ChatLayout({ 
   messages, 

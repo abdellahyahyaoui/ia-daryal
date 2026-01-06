@@ -4,11 +4,10 @@ import { useReducer, useEffect } from "react"
 import WelcomeDialog from "../WelcomeDialog/WelcomeDialog"
 import ElectricCarForm from "./ElectricCarForm"
 import Diagnosis from "../Diagnosis/Diagnosis"
+import OBDStatus from "../OBDStatus/OBDStatus"
 import { iniciarDiagnostico, continuarDiagnostico } from "../../api/openai"
 import { useWelcomeState } from "../../hooks/useWelcomeState"
 import ChatLayout from "../layout/ChatLayout"
-import "./ElectricCarForm.scss"
-import "./ElectricCarDiagnosis.scss"
 
 const initialState = {
   step: "initial",
@@ -67,6 +66,14 @@ function ElectricCarDiagnosis() {
     dispatch({ type: "SET_STEP", payload: "chat" })
   }
 
+  const handleManualSelection = () => {
+    dispatch({ type: "SET_STEP", payload: "vehicleForm" })
+  }
+
+  const handleOBDSelection = () => {
+    dispatch({ type: "SET_STEP", payload: "obd" })
+  }
+
   const handleChatSubmit = async (message) => {
     try {
       if (state.historial.length === 0) {
@@ -121,7 +128,20 @@ function ElectricCarDiagnosis() {
 
   return (
     <div className="electric-car-diagnosis">
-      {state.step === "welcome" && <WelcomeDialog onStart={handleStartDiagnosis} />}
+      {state.step === "welcome" && (
+        <div className="selection-screen">
+          <button onClick={handleManualSelection} className="selection-btn">Manual</button>
+          <button onClick={handleOBDSelection} className="selection-btn">OBD2</button>
+        </div>
+      )}
+      {state.step === "obd" && (
+        <OBDStatus onClose={(data) => {
+          if (data?.status === 'connected') {
+            dispatch({ type: "SET_VEHICLE_DATA", payload: data })
+            dispatch({ type: "SET_STEP", payload: "chat" })
+          }
+        }} />
+      )}
       {state.step === "vehicleForm" && <ElectricCarForm onSubmit={handleVehicleSubmit} />}
       {state.step === "chat" && (
         <ChatLayout

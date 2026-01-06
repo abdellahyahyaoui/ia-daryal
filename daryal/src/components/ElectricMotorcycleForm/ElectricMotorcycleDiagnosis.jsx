@@ -7,8 +7,6 @@ import Diagnosis from "../Diagnosis/Diagnosis"
 import { iniciarDiagnostico, continuarDiagnostico } from "../../api/openai"
 import { useWelcomeState } from "../../hooks/useWelcomeState"
 import ChatLayout from "../layout/ChatLayout"
-import "./ElectricMotorcycleForm.scss"
-import "./ElectricMotorcycleDiagnosis.scss"
 
 const initialState = {
   step: "initial",

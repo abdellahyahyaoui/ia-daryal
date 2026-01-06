@@ -1,7 +1,6 @@
 import React, { useState } from "react"
 import { Link } from "react-router-dom"
 import { Menu as MenuIcon, X } from "lucide-react"
-import "./Navbar.scss"
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)

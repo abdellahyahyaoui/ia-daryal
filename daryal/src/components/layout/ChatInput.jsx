@@ -3,7 +3,6 @@
 import { useState, useRef } from "react"
 import { Send, Plus, ImageIcon, Mic, Camera, X, Square } from "lucide-react"
 import MediaCapture from "../media/MediaCapture"
-import "./ChatInput.css"
 
 export default function ChatInput({ onSubmit, onAttachment, disabled }) {
   const [input, setInput] = useState("")
