@@ -62,6 +62,10 @@ function OrbeaDiagnosis() {
   const handleVehicleSubmit = async (data) => {
     dispatch({ type: "SET_VEHICLE_DATA", payload: data })
     dispatch({ type: "SET_STEP", payload: "chat" })
+    dispatch({
+      type: "SET_QUESTION",
+      payload: "¿Qué problema técnico tiene tu Orbea? Describe lo que sucede para que pueda ayudarte.",
+    })
   }
 
   const handleChatSubmit = async (message) => {

@@ -62,6 +62,10 @@ function ElectricMotorcycleDiagnosis() {
   const handleVehicleSubmit = async (data) => {
     dispatch({ type: "SET_VEHICLE_DATA", payload: data })
     dispatch({ type: "SET_STEP", payload: "chat" })
+    dispatch({
+      type: "SET_QUESTION",
+      payload: "¿Qué síntomas presenta tu moto eléctrica? Por favor, descríbelos para empezar el análisis.",
+    })
   }
 
   const handleChatSubmit = async (message) => {

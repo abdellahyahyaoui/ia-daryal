@@ -62,6 +62,10 @@ function MotorcycleDiagnosis() {
   const handleVehicleSubmit = async (data) => {
     dispatch({ type: "SET_VEHICLE_DATA", payload: data })
     dispatch({ type: "SET_STEP", payload: "chat" })
+    dispatch({
+      type: "SET_QUESTION",
+      payload: "¿Qué problema estás experimentando con tu motocicleta? Por favor, descríbelo detalladamente.",
+    })
   }
 
   const handleChatSubmit = async (message) => {

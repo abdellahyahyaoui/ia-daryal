@@ -65,6 +65,10 @@ function ElectricCarDiagnosis() {
   const handleVehicleSubmit = async (data) => {
     dispatch({ type: "SET_VEHICLE_DATA", payload: data })
     dispatch({ type: "SET_STEP", payload: "chat" })
+    dispatch({
+      type: "SET_QUESTION",
+      payload: "¿Qué problema has notado en tu coche eléctrico? Describe los síntomas para iniciar el diagnóstico.",
+    })
   }
 
   const handleChatSubmit = async (message) => {

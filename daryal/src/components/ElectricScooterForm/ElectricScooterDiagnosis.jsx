@@ -62,6 +62,10 @@ function ElectricScooterDiagnosis() {
   const handleVehicleSubmit = async (data) => {
     dispatch({ type: "SET_VEHICLE_DATA", payload: data })
     dispatch({ type: "SET_STEP", payload: "chat" })
+    dispatch({
+      type: "SET_QUESTION",
+      payload: "¿Qué le ocurre a tu patinete? Cuéntame los detalles del problema.",
+    })
   }
 
   const handleChatSubmit = async (message) => {

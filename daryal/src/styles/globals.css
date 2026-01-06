@@ -62,3 +62,9 @@
     width: 100%;
     height: 100%;
   }
+}
+
+/* Fix for broken styles */
+* {
+  box-sizing: border-box;
+}
