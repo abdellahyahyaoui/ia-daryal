@@ -61,9 +61,6 @@ function App() {
 
           <div className="centro">
             <div className="cuerpo">
-              <div className="robot-fixed-container">
-                <Robot />
-              </div>
               <div className="contenido">
                 
                 <Routes>
