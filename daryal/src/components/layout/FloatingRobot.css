@@ -1,18 +1,19 @@
 .floating-robot {
-  position: fixed;
-  top: 80px;
+  position: absolute;
+  top: 20px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 30;
-  width: 200px;
-  height: 200px;
+  z-index: 5;
+  width: 150px;
+  height: 150px;
   pointer-events: none;
+  opacity: 0.8;
 }
 
 @media (max-width: 768px) {
   .floating-robot {
-    width: 150px;
-    height: 150px;
-    top: 60px;
+    width: 100px;
+    height: 100px;
+    top: 10px;
   }
 }

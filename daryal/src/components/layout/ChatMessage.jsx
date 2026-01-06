@@ -29,18 +29,18 @@ export default function ChatMessage({ message, onExport }) {
       <div className={`flex-1 max-w-[70%] ${isUser ? "flex justify-end" : ""}`}>
         <div
           className={`rounded-2xl px-4 py-3 ${
-            isUser ? "bg-primary text-primary-foreground" : "bg-card text-card-foreground"
+            isUser ? "bg-primary text-primary-foreground" : "bg-card text-card-foreground shadow-sm border border-border"
           }`}
         >
           {message.type === "buttons" ? (
             <div className="space-y-3">
-              <p className="text-sm mb-3">{message.content}</p>
+              <p className="text-base mb-3">{message.content}</p>
               <div className="flex flex-wrap gap-2">
                 {message.buttons.map((button, idx) => (
                   <button
                     key={idx}
                     onClick={button.onClick}
-                    className="px-4 py-2 bg-secondary hover:bg-secondary/80 text-secondary-foreground rounded-full text-sm transition-colors"
+                    className="px-4 py-2 bg-secondary hover:bg-secondary/80 text-secondary-foreground rounded-full text-base transition-colors border border-border"
                   >
                     {button.label}
                   </button>
@@ -57,7 +57,7 @@ export default function ChatMessage({ message, onExport }) {
             </div>
           ) : (
             <div>
-              <p className="text-sm leading-relaxed whitespace-pre-wrap">{message.content}</p>
+              <p className="text-base leading-relaxed whitespace-pre-wrap">{message.content}</p>
               {message.showExport && onExport && (
                 <button
                   onClick={onExport}
