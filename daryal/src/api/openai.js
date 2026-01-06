@@ -3,12 +3,7 @@
 import axios from "axios"
 
 const getBaseUrl = () => {
-  const domain = window.location.hostname;
-  // Si estamos en Replit/Local usamos el backend local, sino usamos Render
-  if (domain === 'localhost' || domain === '127.0.0.1') {
-    return "http://localhost:8000/api";
-  }
-  // URL de producción para la APK y web desplegada
+  // URL de producción en Render (funciona tanto en desarrollo como producción)
   return "https://ia-daryal-3.onrender.com/api";
 }
 

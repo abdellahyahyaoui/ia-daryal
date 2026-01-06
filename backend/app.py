@@ -33,6 +33,6 @@ def handle_options(path):
     return "", 204
 
 if __name__ == '__main__':
-    # Usar el puerto de Replit o 8000 por defecto
-    port = int(os.environ.get("PORT", 8000))
-    app.run(debug=True, host='0.0.0.0', port=port)
+    # Backend siempre corre en puerto 8000 en localhost
+    port = 8000
+    app.run(debug=True, host='localhost', port=port)
