@@ -1,0 +1,127 @@
+Objetivo general
+Adaptar y reorganizar los componentes existentes del sistema de diagnóstico OBD2 para que todo el flujo ocurra dentro de una interfaz de chat, con una experiencia visual y de uso equivalente a ChatGPT.
+
+No se deben crear nuevos formularios ni componentes funcionales, todos ya existen (formularios de diagnóstico OBD2 incluidos).
+El trabajo consiste únicamente en organización, layout, renderizado condicional y experiencia conversacional.
+
+🎨 Apariencia y experiencia (OBLIGATORIO)
+
+La interfaz debe comportarse y verse como ChatGPT:
+
+🔹 Barra inferior fija (input de chat)
+
+Input de texto fijo en la parte inferior.
+
+Botón “+” a la izquierda del input con opciones:
+
+Subir imagen
+
+Tomar foto
+
+Grabar audio
+
+Subir audio
+
+Botón enviar a la derecha.
+
+El input nunca se mueve al hacer scroll.
+
+🔹 Área de mensajes (chat)
+
+Mensajes del usuario y de la IA en formato burbuja.
+
+Formularios y acciones aparecen como mensajes especiales del chat, no como pantallas separadas.
+
+El scroll solo afecta al área de mensajes.
+
+🔹 Header superior fijo
+
+Header fijo arriba, siempre visible.
+
+Contiene:
+
+☰ Menú hamburguesa (izquierda)
+
+🤖 Robot / logo centrado
+
+El header no desaparece al hacer scroll.
+
+🧠 Flujo 1 – Diagnóstico manual (sin OBD2)
+
+Chat de bienvenida
+
+La IA saluda y explica el proceso.
+
+Formulario de datos del vehículo
+
+Form existente (marca, modelo, año, motor, etc.).
+
+Renderizado dentro del chat como solicitud de la IA.
+
+Descripción del problema
+
+Texto libre del usuario.
+
+Envío a la IA
+
+Preguntas de seguimiento
+
+La IA pregunta dentro del chat.
+
+Diagnóstico final
+
+Respuesta estructurada en el chat.
+
+Opción: Exportar PDF
+
+🧠 Flujo 2 – Diagnóstico con OBD2
+
+Chat de bienvenida
+
+Buscar dispositivo OBD2 → Conectar
+
+Componente existente.
+
+Aparece como acción solicitada por la IA dentro del chat.
+
+Lectura automática de datos OBD2
+
+Resumen mostrado como mensaje del chat.
+
+Envío automático a la IA.
+
+Formulario de datos del vehículo
+
+Descripción del problema
+
+Envío a la IA
+
+Preguntas de seguimiento
+
+Diagnóstico final
+
+Opción: Exportar PDF
+
+🧩 Reglas técnicas clave
+
+El chat es el contenedor principal.
+
+Header superior y barra inferior son fixed.
+
+Los formularios no cambian su lógica interna.
+
+El botón + reutiliza funcionalidades existentes (imagen, audio, etc.).
+
+Toda acción se presenta como interacción con la IA.
+
+🎯 Resultado esperado
+
+Experiencia idéntica a ChatGPT en uso y disposición visual.
+
+Flujo conversacional claro.
+
+Diagnóstico OBD2 integrado naturalmente en el chat.
+
+Exportación a PDF al finalizar.
+
+Sensación de estar hablando con una IA, no rellenando formularios.
