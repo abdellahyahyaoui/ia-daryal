@@ -89,9 +89,9 @@ function Home() {
         }
         
         if (response.diagnostico_y_soluciones || state.questionCount >= MAX_PREGUNTAS) {
-          const finalDiagnosis = response.diagnostico_y_soluciones || response.diagnostico || "No se pudo generar un diagnóstico detallado. Por favor, revisa los síntomas con un mecánico."
-          dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: "He terminado mi análisis.", component: "diagnosis" } })
+          const finalDiagnosis = response.diagnostico_y_soluciones || response.diagnostico || "No se pudo generar un diagnóstico detallado."
           dispatch({ type: "SET_DIAGNOSIS", payload: finalDiagnosis })
+          dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: "He terminado mi análisis. Aquí tienes los resultados:", component: "diagnosis" } })
         }
       }
     } catch (error) {

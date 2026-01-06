@@ -19,14 +19,10 @@ export default function ChatLayout({
   }, [messages, isTyping])
 
   return (
-    <div className="chat-layout">
-      <div className="chat-robot-overlay">
-        <Robot />
-      </div>
-      <header className="chat-header-fixed">
-      </header>
-
       <main className="chat-messages-area">
+        <div className="chat-robot-top">
+          <Robot />
+        </div>
         {messages.map((msg, index) => (
           <div key={index} className={`message-row ${msg.sender}`}>
             <div className="message-bubble">
