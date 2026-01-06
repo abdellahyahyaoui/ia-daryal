@@ -123,119 +123,120 @@ function OrbeaForm({ onSubmit }) {
   }
 
   return (
-    <form className="orbea-form" onSubmit={handleSubmit}>
+    <div className="vehicle-form-container">
       <h2 className="form-title">Diagnóstico Orbea E-Bike</h2>
-
-      <div className="form-group">
-        <label htmlFor="category">Categoría:</label>
-        <select
-          id="category"
-          value={category}
-          onChange={handleCategoryChange}
-          required
-          className="form-select"
-          disabled={isLoading}
-        >
-          <option value="">Selecciona una categoría</option>
-          {Object.keys(orbeaModels).map((cat) => (
-            <option key={cat} value={cat}>
-              {cat}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="form-group">
-        <label htmlFor="model">Modelo:</label>
-        <select
-          id="model"
-          value={model}
-          onChange={(e) => setModel(e.target.value)}
-          required
-          className="form-select"
-          disabled={isLoading || !category}
-        >
-          <option value="">Selecciona un modelo</option>
-          {category &&
-            orbeaModels[category].map((mod) => (
-              <option key={mod} value={mod}>
-                {mod}
+      <form className="vehicle-form" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label htmlFor="category">Categoría:</label>
+          <select
+            id="category"
+            value={category}
+            onChange={handleCategoryChange}
+            required
+            className="form-select"
+            disabled={isLoading}
+          >
+            <option value="">Selecciona una categoría</option>
+            {Object.keys(orbeaModels).map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
               </option>
             ))}
-        </select>
-      </div>
+          </select>
+        </div>
 
-      <div className="form-group">
-        <label htmlFor="year">Año:</label>
-        <input
-          type="number"
-          id="year"
-          value={year}
-          onChange={(e) => setYear(e.target.value)}
-          required
-          min="2015"
-          max={new Date().getFullYear()}
-          className="form-input"
-          disabled={isLoading}
-        />
-      </div>
+        <div className="form-group">
+          <label htmlFor="model">Modelo:</label>
+          <select
+            id="model"
+            value={model}
+            onChange={(e) => setModel(e.target.value)}
+            required
+            className="form-select"
+            disabled={isLoading || !category}
+          >
+            <option value="">Selecciona un modelo</option>
+            {category &&
+              orbeaModels[category].map((mod) => (
+                <option key={mod} value={mod}>
+                  {mod}
+                </option>
+              ))}
+          </select>
+        </div>
 
-      <div className="form-group">
-        <label htmlFor="mileage">Kilómetros:</label>
-        <input
-          type="number"
-          id="mileage"
-          value={mileage}
-          onChange={(e) => setMileage(e.target.value)}
-          required
-          min="0"
-          className="form-input"
-          disabled={isLoading}
-        />
-      </div>
+        <div className="form-group">
+          <label htmlFor="year">Año:</label>
+          <input
+            type="number"
+            id="year"
+            value={year}
+            onChange={(e) => setYear(e.target.value)}
+            required
+            min="2015"
+            max={new Date().getFullYear()}
+            className="form-input"
+            disabled={isLoading}
+          />
+        </div>
 
-      <div className="form-group">
-        <label htmlFor="motorType">Tipo de motor:</label>
-        <select
-          id="motorType"
-          value={motorType}
-          onChange={(e) => setMotorType(e.target.value)}
-          required
-          className="form-select"
-          disabled={isLoading}
-        >
-          <option value="">Selecciona el motor</option>
-          {motorTypes.map((motor) => (
-            <option key={motor} value={motor}>
-              {motor}
-            </option>
-          ))}
-        </select>
-      </div>
+        <div className="form-group">
+          <label htmlFor="mileage">Kilómetros:</label>
+          <input
+            type="number"
+            id="mileage"
+            value={mileage}
+            onChange={(e) => setMileage(e.target.value)}
+            required
+            min="0"
+            className="form-input"
+            disabled={isLoading}
+          />
+        </div>
 
-      <div className="form-group">
-        <label htmlFor="batteryType">Tipo de batería:</label>
-        <select
-          id="batteryType"
-          value={batteryType}
-          onChange={(e) => setBatteryType(e.target.value)}
-          required
-          className="form-select"
-          disabled={isLoading}
-        >
-          <option value="">Selecciona la batería</option>
-          {batteryTypes.map((battery) => (
-            <option key={battery} value={battery}>
-              {battery}
-            </option>
-          ))}
-        </select>
-      </div>
+        <div className="form-group">
+          <label htmlFor="motorType">Tipo de motor:</label>
+          <select
+            id="motorType"
+            value={motorType}
+            onChange={(e) => setMotorType(e.target.value)}
+            required
+            className="form-select"
+            disabled={isLoading}
+          >
+            <option value="">Selecciona el motor</option>
+            {motorTypes.map((motor) => (
+              <option key={motor} value={motor}>
+                {motor}
+              </option>
+            ))}
+          </select>
+        </div>
 
-      <button type="submit" className="submit-button" disabled={isLoading}>
-        {isLoading ? "Procesando..." : "Continuar"}
-      </button>
-    </form>
+        <div className="form-group">
+          <label htmlFor="batteryType">Tipo de batería:</label>
+          <select
+            id="batteryType"
+            value={batteryType}
+            onChange={(e) => setBatteryType(e.target.value)}
+            required
+            className="form-select"
+            disabled={isLoading}
+          >
+            <option value="">Selecciona la batería</option>
+            {batteryTypes.map((battery) => (
+              <option key={battery} value={battery}>
+                {battery}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <button type="submit" className="submit-button" disabled={isLoading}>
+          {isLoading ? "Procesando..." : "Continuar"}
+        </button>
+      </form>
+    </div>
   )
 }
 

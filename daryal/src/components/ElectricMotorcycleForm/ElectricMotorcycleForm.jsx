@@ -104,7 +104,7 @@ function ElectricMotorcycleForm({ onSubmit }) {
   }
 
   return (
-    <div className="electric-motorcycle-form-container">
+    <div className="vehicle-form-container">
       {/* Título con animación de escritura que desaparece */}
       {showTitle && (
         <h2 className={`form-title ${formTitle.length === fullTitle.length ? "complete" : ""}`}>
@@ -114,7 +114,7 @@ function ElectricMotorcycleForm({ onSubmit }) {
       )}
 
       {showForm && (
-        <form className="electric-motorcycle-form" onSubmit={handleSubmit}>
+        <form className="vehicle-form" onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="brand">Marca de la moto:</label>
             <select
@@ -147,25 +147,6 @@ function ElectricMotorcycleForm({ onSubmit }) {
               disabled={isLoading}
             />
           </div>
-
-          {/* <div className="form-group">
-            <label htmlFor="motorcycleType">Tipo de moto:</label>
-            <select
-              id="motorcycleType"
-              value={motorcycleType}
-              onChange={(e) => setMotorcycleType(e.target.value)}
-              required
-              className="form-select"
-              disabled={isLoading}
-            >
-              <option value="">Selecciona el tipo</option>
-              {motorcycleTypes.map((type) => (
-                <option key={type} value={type}>
-                  {type}
-                </option>
-              ))}
-            </select>
-          </div> */}
 
           <div className="form-group">
             <label htmlFor="year">Año:</label>
