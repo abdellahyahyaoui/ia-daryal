@@ -108,34 +108,32 @@ const OBDStatus = ({ onClose }) => {
             // Lógica para Capacitor/Móvil real
             if (window.Capacitor && window.Capacitor.isNativePlatform) {
                 console.log('Detectada plataforma nativa Capacitor - Iniciando Bluetooth OBD2');
-                // Aquí se llamaría al plugin: const data = await OBD2Plugin.connect();
+                // En el futuro, aquí se llamará al plugin real
+                // const data = await OBD2Plugin.connect();
             }
 
-            // Simulación profesional para desarrollo/web
-            if (!navigator.bluetooth && !window.Capacitor) {
-                console.warn('Bluetooth no disponible, iniciando simulador profesional');
+            // Intentar obtener datos reales del backend de Python
+            try {
+                const response = await axios.get(getApiUrl('/api/obd-data'));
+                if (response.data && response.data.status === 'connected') {
+                    setData(response.data);
+                    setStep('connected');
+                    setLoading(false);
+                    return;
+                }
+            } catch (apiErr) {
+                console.warn('No se pudo conectar al backend de Python para datos OBD en tiempo real:', apiErr);
             }
-            
-            // Simulamos una conexión exitosa con datos reales después de 2 segundos
-            setTimeout(() => {
-                const realData = {
-                    status: "connected",
-                    dtc: ["P0101", "P0300"], // Datos de ejemplo que irán a la IA
-                    rpm: 850,
-                    temp: "92 C",
-                    load: "15 %",
-                    voltage: "14.1 V",
-                    throttle: "0 %",
-                    fuel_level: "45 %",
-                    vin: "1HGCM82633A00432"
-                };
-                setData(realData);
-                setStep('connected');
+
+            // Fallback solo si falla el backend y no estamos en móvil
+            if (!navigator.bluetooth && !window.Capacitor) {
+                setError('No se detectó el adaptador OBD2. Asegúrate de que el Bluetooth esté encendido y el adaptador conectado al coche.');
+                setStep('found');
                 setLoading(false);
-            }, 2000);
+            }
 
         } catch (err) {
-            setError('Error al conectar con el aparato OBD2. Revisa el Bluetooth.');
+            setError('Error crítico al conectar con el aparato OBD2.');
             setStep('found');
             setLoading(false);
         }
