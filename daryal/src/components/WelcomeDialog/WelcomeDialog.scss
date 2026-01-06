@@ -1,119 +1,51 @@
-
-
-@import '../styles/main.scss';
-
 .welcome-dialog {
-  @include card-style;
-  background: none;
-  backdrop-filter: none;
-  box-shadow: none;
-  position: relative;
-  min-height: 300px; // Mantener altura consistente
-display: flex;
-justify-content: center;
-align-items: center;
-width: 50vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  color: #000;
+
   .text-content {
-    opacity: 1;
-    transition: opacity 0.5s ease-out;
-    
     h1 {
-      @include title-style;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 16px;
     }
     
     ul {
       list-style: none;
-      min-height: 150px;
-      font-weight: 250;
-      letter-spacing: 0.15em;
-      line-height: 3rem;
+      font-size: 1.25rem;
+      color: #666;
+      line-height: 1.5;
     }
   }
-  
+
   .welcome-options-container {
     display: flex;
-    flex-direction: row;
-    gap: 1.5rem;
-    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 32px;
     width: 100%;
-    animation: fadeIn 0.5s forwards;
-  }
+    max-width: 600px;
 
-  .quick-access {
-   
-    
-
-    p {
-     
-    }
-
-    .quick-buttons {
-       opacity: 0;
-    animation: fadeIn 0.5s forwards;
-
-      .start-btn {
-        @include button-style;
-      padding: 1rem 2.5rem;
-      font-size: 1.1rem;
-      background: black;
-      border-radius: 50%;
-      color: white;
-      padding: 5rem 1rem;
+    button.start-btn {
+      flex: 1;
+      min-width: 200px;
+      padding: 16px 24px;
+      background: #000;
+      color: #fff;
+      font-weight: 600;
+      font-size: 1rem;
+      border: 1px solid #000;
+      transition: all 0.2s;
+      
       &:hover {
-        transform: translateY(-3px);
-        box-shadow: inset 6px 6px 12px #c5c5c599, inset 1px -1px 20px #483f3fd4, 0 6px 12px rgba(0, 0, 0, 0.1);
-        background-image: linear-gradient(90deg, #d1d3d3, #ffffff, #ffffff);
-        color: black;
+        background: #fff;
+        color: #000;
       }
-      }
-    }
-  }
-
-  .button-content {
-    opacity: 0;
-    animation: fadeIn 0.5s forwards;
-    
-    .start-btn {
-      @include button-style;
-      padding: 1rem 2.5rem;
-      font-size: 1.1rem;
-      background: black;
-      border-radius: 50%;
-      color: white;
-      padding: 5rem 1rem;
-      &:hover {
-        transform: translateY(-3px);
-        box-shadow: inset 6px 6px 12px #c5c5c599, inset 1px -1px 20px #483f3fd4, 0 6px 12px rgba(0, 0, 0, 0.1);
-        background-image: linear-gradient(90deg, #d1d3d3, #ffffff, #ffffff);
-        color: black;
-      }
-    }
-  }
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  @include mobile {
-    scale: 0.9;
-    margin-top: -50px;
-    font-size: 1.25rem;
-    width: auto;
-
-    h1 {
-      font-size: 1.6rem;
-      background-image: linear-gradient(90deg, #a5b4fc, #ffffff,#e6eaeb);
     }
   }
 }
-
-@include mobile {
-.start-btn {
- padding:6rem 1rem;
-    scale: 0.7;
-}}

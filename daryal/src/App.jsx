@@ -13,9 +13,8 @@ import Navbar from "./components/navbar/Navbar"
 import Home from "./components/home/Home"
 import Logo from "./components/logo/Logo"
 import Robot from "./components/robot/Robot"
-import Lamp from "./components/Lamp/Lamp"
+
 import CodeInterpreter from "./components/CodeInterpreterForm/CodeInterpreter"
-import HeroGeometricBackground from "./components/Herobackground/HeroGeometricBackground"
 import "./App.scss"
 
 // Importar los componentes de diagnóstico
@@ -24,7 +23,7 @@ import ElectricCarDiagnosis from "./components/ElectricCarForm/ElectricCarDiagno
 import ElectricMotorcycleDiagnosis from "./components/ElectricMotorcycleForm/ElectricMotorcycleDiagnosis"
 import ElectricScooterDiagnosis from "./components/ElectricScooterForm/ElectricScooterDiagnosis"
 import OrbeaDiagnosis from "./components/OrbeaForm/OrbeaDiagnosis"
-import Fondo from "./components/fondo/Fondo"
+
 function App() {
   const robotRef = useRef(null)
 
@@ -52,7 +51,7 @@ function App() {
       <ErrorBoundary>
         <div>
         
-          <HeroGeometricBackground />
+         
           
           <div className="menu-completo">
             <div className="Logo">
@@ -82,11 +81,9 @@ function App() {
               </div>
               
               
-              <Fondo />
+            
             </div>
-            <div className="lamp">
-              <Lamp />
-            </div>
+            
           </div>
         </div>
       </ErrorBoundary>

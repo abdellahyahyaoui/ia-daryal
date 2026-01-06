@@ -23,18 +23,7 @@ export default function ChatLayout({
 
   return (
     <div className="chat-layout">
-      <header className="chat-header-fixed">
-        <div className="header-left">
-          <Menu size={24} />
-        </div>
-        <div className="header-center">
-          <div className="logo-icon">D</div>
-          <span>DARYAL AI</span>
-        </div>
-        <div className="header-right">
-          {/* Space for additional icons if needed */}
-        </div>
-      </header>
+     
 
       <main className="chat-messages-area">
         {messages.map((msg, index) => (
