@@ -1,0 +1,4 @@
+/* Adjust textarea height dynamically */
+textarea {
+  field-sizing: content;
+}

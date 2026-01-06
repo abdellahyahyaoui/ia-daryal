@@ -1,0 +1,18 @@
+.floating-robot {
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 30;
+  width: 200px;
+  height: 200px;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .floating-robot {
+    width: 150px;
+    height: 150px;
+    top: 60px;
+  }
+}
