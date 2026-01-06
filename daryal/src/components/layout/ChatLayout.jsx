@@ -1,6 +1,5 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useEffect, useRef } from "react"
 import ChatInput from "./ChatInput"
-import Robot from "../robot/Robot"
 
 export default function ChatLayout({ 
   messages, 

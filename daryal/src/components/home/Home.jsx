@@ -138,7 +138,7 @@ function Home() {
         />
       case "vehicleForm":
         return (
-          <div className="bg-white p-6 border border-gray-200">
+          <div className="vehicle-form-container">
             <VehicleForm onSubmit={(data) => {
               dispatch({ type: "SET_VEHICLE_DATA", payload: data })
               dispatch({ type: "SET_STEP", payload: "chat" })
@@ -148,7 +148,7 @@ function Home() {
         )
       case "obd":
         return (
-          <div className="bg-white p-6 border border-gray-200">
+          <div className="vehicle-form-container">
             <OBDStatus onClose={(data) => {
               if (data?.status === 'connected') {
                 dispatch({ type: "SET_VEHICLE_DATA", payload: data })
@@ -160,7 +160,7 @@ function Home() {
         )
       case "manual":
         return (
-          <div className="bg-white p-6 border border-gray-200">
+          <div className="vehicle-form-container">
             <TechnicalSheetUpload onExtractionSuccess={(specs) => {
               dispatch({ type: "SET_VEHICLE_DATA", payload: specs })
               dispatch({ type: "SET_STEP", payload: "chat" })
@@ -170,7 +170,7 @@ function Home() {
         )
       case "diagnosis":
         return (
-          <div className="bg-white p-6 border border-gray-200">
+          <div className="vehicle-form-container">
             <Diagnosis diagnosis={state.diagnosis} />
           </div>
         )

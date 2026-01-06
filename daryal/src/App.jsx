@@ -11,7 +11,6 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
 import ErrorBoundary from "./ErrorBoundary"
 import Navbar from "./components/navbar/Navbar"
 import Home from "./components/home/Home"
-import Logo from "./components/logo/Logo"
 import Robot from "./components/robot/Robot"
 
 import CodeInterpreter from "./components/CodeInterpreterForm/CodeInterpreter"

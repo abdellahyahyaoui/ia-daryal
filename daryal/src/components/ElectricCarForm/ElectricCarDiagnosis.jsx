@@ -1,9 +1,7 @@
 "use client"
 
 import { useReducer, useEffect } from "react"
-import WelcomeDialog from "../WelcomeDialog/WelcomeDialog"
 import ElectricCarForm from "./ElectricCarForm"
-import Diagnosis from "../Diagnosis/Diagnosis"
 import OBDStatus from "../OBDStatus/OBDStatus"
 import { iniciarDiagnostico, continuarDiagnostico } from "../../api/openai"
 import { useWelcomeState } from "../../hooks/useWelcomeState"
@@ -56,22 +54,17 @@ function ElectricCarDiagnosis() {
     }
   }, [hasSeenWelcome, isLoading])
 
-  const handleStartDiagnosis = () => {
-    markWelcomeSeen()
-    dispatch({ type: "SET_STEP", payload: "vehicleForm" })
-  }
-
-  const handleVehicleSubmit = async (data) => {
-    dispatch({ type: "SET_VEHICLE_DATA", payload: data })
-    dispatch({ type: "SET_STEP", payload: "chat" })
-  }
-
   const handleManualSelection = () => {
     dispatch({ type: "SET_STEP", payload: "vehicleForm" })
   }
 
   const handleOBDSelection = () => {
     dispatch({ type: "SET_STEP", payload: "obd" })
+  }
+
+  const handleVehicleSubmit = async (data) => {
+    dispatch({ type: "SET_VEHICLE_DATA", payload: data })
+    dispatch({ type: "SET_STEP", payload: "chat" })
   }
 
   const handleChatSubmit = async (message) => {
