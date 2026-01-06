@@ -19,6 +19,7 @@ export default function ChatLayout({
   }, [messages, isTyping])
 
   return (
+    <div className="chat-layout">
       <main className="chat-messages-area">
         <div className="chat-robot-top">
           <Robot />
