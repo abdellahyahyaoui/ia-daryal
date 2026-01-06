@@ -426,3 +426,22 @@ body {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+/* ===== Global Fixed Robot Styles ===== */
+.robot-fixed-container {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;
+  pointer-events: none;
+}
+
+.robot-fixed-container .robot {
+  pointer-events: auto;
+}
+
+/* Adjusting message area to not overlap with fixed robot if needed */
+.chat-messages-area {
+  padding-top: 120px;
+}

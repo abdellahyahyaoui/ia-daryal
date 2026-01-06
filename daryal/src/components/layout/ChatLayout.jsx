@@ -20,8 +20,8 @@ export default function ChatLayout({
 
   return (
     <div className="chat-layout">
+      {/* Robot removed from here because it's now fixed globally in App.jsx */}
       <header className="chat-header-fixed">
-        <Robot />
       </header>
 
       <main className="chat-messages-area">

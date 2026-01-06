@@ -121,18 +121,18 @@ function ElectricMotorcycleDiagnosis() {
     <div className="electric-motorcycle-diagnosis">
       {state.step === "welcome" && <WelcomeDialog onStart={handleStartDiagnosis} />}
       {state.step === "vehicleForm" && <ElectricMotorcycleForm onSubmit={handleVehicleSubmit} />}
-      {state.step === "chat" && (
+      {(state.step === "chat" || state.step === "diagnosis") && (
         <ChatLayout
           messages={state.historial.map(h => ({
-            sender: h.tipo === "respuesta" || h.tipo === "problema" ? "user" : "ai",
+            sender: h.sender || (h.tipo === "respuesta" || h.tipo === "problema" ? "user" : "ai"),
             text: h.texto
-          })).concat(state.currentQuestion ? [{ sender: "ai", text: state.currentQuestion }] : [])}
+          })).concat(state.currentQuestion ? [{ sender: "ai", text: state.currentQuestion }] : [])
+             .concat(state.diagnosis ? [{ sender: "ai", text: `**Diagnóstico Final:**\n\n${state.diagnosis}` }] : [])}
           onSendMessage={handleChatSubmit}
           isTyping={false}
           renderComponent={() => null}
         />
       )}
-      {state.step === "diagnosis" && <Diagnosis diagnosis={state.diagnosis} />}
     </div>
   )
 }

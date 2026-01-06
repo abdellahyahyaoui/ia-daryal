@@ -62,7 +62,7 @@ function App() {
 
           <div className="centro">
             <div className="cuerpo">
-              <div className="robot" ref={robotRef}>
+              <div className="robot-fixed-container">
                 <Robot />
               </div>
 
