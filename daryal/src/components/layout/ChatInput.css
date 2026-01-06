@@ -1,27 +1,31 @@
 .chat-input-form {
   display: flex;
-  align-items: flex-end;
-  gap: 8px;
-  background: #ffffff;
-  border: 1px solid #e5e5e5;
-  padding: 8px 12px;
-  min-height: 52px;
-  transition: border-color 0.2s;
+  align-items: center;
+  gap: 12px;
+  background: #f4f4f4;
+  border: 1px solid #d1d1d1;
+  padding: 8px 16px;
+  min-height: 44px;
+  border-radius: 24px;
+  transition: all 0.2s;
 
   &:focus-within {
     border-color: #000000;
+    background: #ffffff;
+    box-shadow: 0 0 0 1px #000;
   }
 
   .attach-btn {
-    padding: 8px;
-    color: #666;
+    padding: 6px;
+    color: #555;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 50%;
     
     &:hover {
       color: #000;
-      background: #f0f0f0;
+      background: #e0e0e0;
     }
   }
 
@@ -29,25 +33,28 @@
     flex: 1;
     border: none;
     outline: none;
-    padding: 8px 4px;
-    font-size: 1rem;
+    padding: 8px 0;
+    font-size: 0.95rem;
     resize: none;
     max-height: 200px;
     background: transparent;
     color: #000;
     
     &::placeholder {
-      color: #999;
+      color: #888;
     }
   }
 
   .send-btn {
-    padding: 8px;
+    padding: 6px;
     background: #000;
     color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
     
     &:disabled {
       background: #e5e5e5;

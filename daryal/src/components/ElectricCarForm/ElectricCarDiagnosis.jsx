@@ -6,6 +6,7 @@ import ElectricCarForm from "./ElectricCarForm"
 import Diagnosis from "../Diagnosis/Diagnosis"
 import { iniciarDiagnostico, continuarDiagnostico } from "../../api/openai"
 import { useWelcomeState } from "../../hooks/useWelcomeState"
+import ChatLayout from "../layout/ChatLayout"
 import "./ElectricCarForm.scss"
 import "./ElectricCarDiagnosis.scss"
 
@@ -123,9 +124,15 @@ function ElectricCarDiagnosis() {
       {state.step === "welcome" && <WelcomeDialog onStart={handleStartDiagnosis} />}
       {state.step === "vehicleForm" && <ElectricCarForm onSubmit={handleVehicleSubmit} />}
       {state.step === "chat" && (
-        <div className="chat-placeholder">
-          Chat Interface integration needed
-        </div>
+        <ChatLayout
+          messages={state.historial.map(h => ({
+            sender: h.tipo === "respuesta" || h.tipo === "problema" ? "user" : "ai",
+            text: h.texto
+          })).concat(state.currentQuestion ? [{ sender: "ai", text: state.currentQuestion }] : [])}
+          onSendMessage={handleChatSubmit}
+          isTyping={false}
+          renderComponent={() => null}
+        />
       )}
       {state.step === "diagnosis" && <Diagnosis diagnosis={state.diagnosis} />}
     </div>

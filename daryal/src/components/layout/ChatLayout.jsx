@@ -23,7 +23,9 @@ export default function ChatLayout({
 
   return (
     <div className="chat-layout">
-     
+      <header className="chat-header-fixed">
+        <Robot />
+      </header>
 
       <main className="chat-messages-area">
         {messages.map((msg, index) => (
