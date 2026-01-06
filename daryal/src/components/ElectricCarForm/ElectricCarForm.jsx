@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import "./ElectricCarForm.scss"
 
 const electricCarBrands = [
   "Tesla",

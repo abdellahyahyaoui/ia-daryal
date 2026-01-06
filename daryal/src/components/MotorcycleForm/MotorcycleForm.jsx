@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import "./MotorcycleForm.scss"
 
 const motorcycleBrands = [
   "Aprilia",
@@ -64,8 +63,6 @@ function MotorcycleForm({ onSubmit }) {
   const [model, setModel] = useState("")
   const [year, setYear] = useState("")
   const [mileage, setMileage] = useState("")
-  const [fuelType, setFuelType] = useState("")
-  const [motorcycleType, setMotorcycleType] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
   // Estado para el efecto de escritura del título

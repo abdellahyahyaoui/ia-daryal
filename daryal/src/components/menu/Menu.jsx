@@ -4,7 +4,6 @@
 import { useState, useRef, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { FaBars, FaTimes, FaBolt, FaCar, FaCode, FaMotorcycle } from "react-icons/fa"
-import "./Menu.scss"
 import Logo from "../logo/Logo"
 
 export default function Menu() {

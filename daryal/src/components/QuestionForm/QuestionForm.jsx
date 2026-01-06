@@ -31,7 +31,6 @@
 
 // export default QuestionForm;
 import React, { useState } from 'react';
-import './QuestionForm.scss';
 
 function QuestionForm({ question, questionNumber, maxQuestions, onSubmit, isLastQuestion }) {
   const [answer, setAnswer] = useState('');

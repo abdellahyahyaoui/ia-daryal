@@ -1,7 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import "./OrbeaForm.scss"
 
 const orbeaModels = {
   Carretera: ["Gain D30", "Gain D40", "Gain D50", "Gain M30", "Gain M20", "Gain M10"],

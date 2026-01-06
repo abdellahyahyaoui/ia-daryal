@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { Menu, X, Car, Bike, Zap, CloverIcon as ScooterIcon } from "lucide-react"
-import "./Sidebar.css"
 
 export default function Sidebar({ currentSection, onSectionChange }) {
   const [isOpen, setIsOpen] = useState(false)

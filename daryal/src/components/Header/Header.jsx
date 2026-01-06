@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "./Header.scss";
 
 const Header = ({ onOBDClick, onManualClick, onHomeClick, showBack }) => {
   return (

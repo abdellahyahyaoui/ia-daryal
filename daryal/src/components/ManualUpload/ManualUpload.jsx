@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './ManualUpload.scss';
 
 const TechnicalSheetUpload = ({ onExtractionSuccess, onClose }) => {
     const [file, setFile] = useState(null);

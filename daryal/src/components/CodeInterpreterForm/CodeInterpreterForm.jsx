@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './CodeInterpreterForm.scss';
 
 const CodeInterpreterForm = ({ onSubmit, isLoading, error }) => {
     const [codigos, setCodigos] = useState(['']);

@@ -1,7 +1,6 @@
 import React, { Suspense, useEffect, useState, Component } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF, useAnimations,} from '@react-three/drei';
-import './Robot.css'
 
 class WebGLErrorBoundary extends Component {
     constructor(props) {

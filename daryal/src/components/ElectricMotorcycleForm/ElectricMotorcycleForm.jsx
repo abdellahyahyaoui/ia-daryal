@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import "./ElectricMotorcycleForm.scss"
 
 const electricMotorcycleBrands = [
   "Zero",
@@ -51,7 +50,6 @@ function ElectricMotorcycleForm({ onSubmit }) {
   const [model, setModel] = useState("")
   const [year, setYear] = useState("")
   const [mileage, setMileage] = useState("")
-  const [motorcycleType, setMotorcycleType] = useState("")
   const [batteryRange, setBatteryRange] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
