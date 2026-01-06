@@ -66,11 +66,6 @@ function App() {
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/code" element={<CodeInterpreter />} />
-                  <Route path="/moto" element={<MotorcycleDiagnosis />} />
-                  <Route path="/orbea" element={<OrbeaDiagnosis />} />
-                  <Route path="/emoto" element={<ElectricMotorcycleDiagnosis />} />
-                  <Route path="/ecar" element={<ElectricCarDiagnosis />} />
-                  <Route path="/epatinete" element={<ElectricScooterDiagnosis />} />
                 </Routes>
               </div>
               

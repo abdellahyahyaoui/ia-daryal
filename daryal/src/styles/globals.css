@@ -58,13 +58,36 @@
     z-index: 2;
   }
 
-  .home {
-    width: 100%;
+  .chat-layout {
+    position: relative;
+    display: flex;
+    flex-direction: column;
     height: 100%;
+    overflow: hidden;
+  }
+
+  .chat-robot-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 250px;
+    height: 250px;
+    z-index: 1;
+    opacity: 0.15;
+    pointer-events: none;
+  }
+
+  .chat-messages-area {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    background: transparent;
   }
 }
 
-/* Fix for broken styles */
 * {
   box-sizing: border-box;
 }

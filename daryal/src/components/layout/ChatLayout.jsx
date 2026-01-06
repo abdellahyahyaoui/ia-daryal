@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react"
 import ChatInput from "./ChatInput"
+import Robot from "../robot/Robot"
 
 export default function ChatLayout({ 
   messages, 
@@ -19,7 +20,9 @@ export default function ChatLayout({
 
   return (
     <div className="chat-layout">
-      {/* Robot removed from here because it's now fixed globally in App.jsx */}
+      <div className="chat-robot-overlay">
+        <Robot />
+      </div>
       <header className="chat-header-fixed">
       </header>
 
