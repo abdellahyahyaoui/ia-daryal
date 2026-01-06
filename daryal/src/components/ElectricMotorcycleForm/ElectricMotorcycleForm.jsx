@@ -90,15 +90,14 @@ function ElectricMotorcycleForm({ onSubmit }) {
     setIsLoading(true)
 
     try {
-      await onSubmit({
-        marca: brand,
-        modelo: model,
-        año: year,
-        kilometraje: mileage,
-        tipo_moto: motorcycleType,
-        autonomia: batteryRange,
-        tipo_vehiculo: "moto eléctrica", // Identificador para el backend
-      })
+     await onSubmit({
+  marca: brand,
+  modelo: model,
+  año: year,
+  kilometraje: mileage,
+  tipo_vehiculo: "moto",
+})
+
     } finally {
       setIsLoading(false)
     }

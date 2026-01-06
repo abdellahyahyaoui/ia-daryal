@@ -39,14 +39,7 @@ function WelcomeDialog({ onStart, onOBDClick, onManualClick }) {
 
   return (
     <div className="welcome-dialog">
-      {showText && (
-        <div className="text-content">
-          <h1>¡Hola! Soy Daryal</h1>
-          <ul>
-            <li>{text}</li>
-          </ul>
-        </div>
-      )}
+     
 
       {showButton && (
         <div className="welcome-options-container">

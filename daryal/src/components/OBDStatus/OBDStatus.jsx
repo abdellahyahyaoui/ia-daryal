@@ -3,6 +3,7 @@ import axios from 'axios';
 import { 
     AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer
 } from 'recharts';
+import { interpretarCodigos } from '../../api/openai';
 
 const OBDStatus = ({ onClose }) => {
     const [step, setStep] = useState('search'); // search, found, connecting, connected
@@ -165,7 +166,7 @@ const OBDStatus = ({ onClose }) => {
 
     useEffect(() => {
         if (step === 'search') startSearch();
-    }, []);
+    }, [step]);
 
     return (
         <div className="modal-overlay" onClick={onClose}>

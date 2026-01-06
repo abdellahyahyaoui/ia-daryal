@@ -102,15 +102,15 @@ function MotorcycleForm({ onSubmit }) {
     setIsLoading(true)
 
     try {
-      await onSubmit({
-        marca: brand,
-        modelo: model,
-        año: year,
-        kilometraje: mileage,
-        combustible: fuelType,
-        tipo_moto: motorcycleType,
-        tipo_vehiculo: "moto", // Identificador para el backend
-      })
+     await onSubmit({
+  marca: brand,
+  modelo: model,
+  año: year,
+  kilometraje: mileage,
+  tipo_vehiculo: "moto",
+})
+
+
     } finally {
       setIsLoading(false)
     }

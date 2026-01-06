@@ -74,14 +74,13 @@ function ElectricScooterForm({ onSubmit }) {
     setIsLoading(true)
 
     try {
-      await onSubmit({
-        marca: brand,
-        modelo: model,
-        año: year,
-        kilometraje: mileage,
-        autonomia: batteryRange,
-        tipo_vehiculo: "patinete eléctrico", // Identificador para el backend
-      })
+     await onSubmit({
+  marca: brand,
+  modelo: model,
+  autonomia: batteryRange,
+  tipo_vehiculo: "patinete eléctrico",
+})
+
     } finally {
       setIsLoading(false)
     }
