@@ -1,31 +1,43 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 
 const carBrands = [
-  "Abarth", "Alfa Romeo", "Aston Martin", "Audi", "Bentley", "BMW", "Bugatti",
-  "Cadillac", "Chevrolet", "Chrysler", "Citroën", "Dacia", "Dodge", "Ferrari",
-  "Fiat", "Ford", "Honda", "Hyundai", "Infiniti", "Jaguar", "Jeep", "Kia",
-  "Lamborghini", "Lancia", "Land Rover", "Lexus", "Lotus", "Maserati", "Mazda",
-  "McLaren", "Mercedes-Benz", "Mini", "Mitsubishi", "Nissan", "Opel", "Peugeot",
-  "Porsche", "Renault", "Rolls-Royce", "Seat", "Škoda", "Smart", "Subaru",
-  "Suzuki", "Tesla", "Toyota", "Volkswagen", "Volvo",
+  "Abarth","Alfa Romeo","Aston Martin","Audi","Bentley","BMW","Bugatti",
+  "Cadillac","Chevrolet","Chrysler","Citroën","Dacia","Dodge","Ferrari",
+  "Fiat","Ford","Honda","Hyundai","Infiniti","Jaguar","Jeep","Kia",
+  "Lamborghini","Lancia","Land Rover","Lexus","Lotus","Maserati","Mazda",
+  "McLaren","Mercedes-Benz","Mini","Mitsubishi","Nissan","Opel","Peugeot",
+  "Porsche","Renault","Rolls-Royce","Seat","Škoda","Smart","Subaru",
+  "Suzuki","Tesla","Toyota","Volkswagen","Volvo"
 ]
 
-const fuelTypes = ["Gasolina", "Diésel", "Eléctrico", "Híbrido", "Gas Natural", "GLP"]
+const fuelTypes = ["Gasolina","Diésel","Eléctrico","Híbrido","Gas Natural","GLP"]
 
 function VehicleForm({ onSubmit }) {
   const [brand, setBrand] = useState("")
+  const [brandOpen, setBrandOpen] = useState(false)
+
+  const [fuelType, setFuelType] = useState("")
+  const [fuelOpen, setFuelOpen] = useState(false)
+
   const [model, setModel] = useState("")
   const [year, setYear] = useState("")
   const [mileage, setMileage] = useState("")
-  const [fuelType, setFuelType] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleSubmit = async (event) => {
-    event.preventDefault()
-    setIsLoading(true)
+  useEffect(() => {
+    const close = () => {
+      setBrandOpen(false)
+      setFuelOpen(false)
+    }
+    window.addEventListener("click", close)
+    return () => window.removeEventListener("click", close)
+  }, [])
 
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setIsLoading(true)
     try {
       await onSubmit({
         marca: brand,
@@ -42,85 +54,121 @@ function VehicleForm({ onSubmit }) {
   return (
     <div className="vehicle-form-container">
       <form className="vehicle-form" onSubmit={handleSubmit}>
+
+        {/* MARCA */}
         <div className="form-group">
-          <label htmlFor="brand">Marca del coche:</label>
-          <select
-            id="brand"
-            value={brand}
-            onChange={(e) => setBrand(e.target.value)}
-            required
-            className="form-select"
-            disabled={isLoading}
+          <label>Marca del coche:</label>
+          <div
+            className="dropdown-container"
+            onClick={(e) => e.stopPropagation()}
           >
-            <option value="">Selecciona una marca</option>
-            {carBrands.map((brand) => (
-              <option key={brand} value={brand}>
-                {brand}
-              </option>
-            ))}
-          </select>
+            <button
+              type="button"
+              className={`dropdown-trigger ${brandOpen ? "open" : ""}`}
+              onClick={() => {
+                setBrandOpen(!brandOpen)
+                setFuelOpen(false)
+              }}
+              disabled={isLoading}
+            >
+              {brand || "Selecciona una marca"}
+              <span className="dropdown-icon">+</span>
+            </button>
+
+            {brandOpen && (
+              <div className="dropdown-menu">
+                {carBrands.map((item) => (
+                  <button
+                    type="button"
+                    key={item}
+                    className="dropdown-item"
+                    onClick={() => {
+                      setBrand(item)
+                      setBrandOpen(false)
+                    }}
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
+        {/* MODELO */}
         <div className="form-group">
-          <label htmlFor="model">Modelo:</label>
+          <label>Modelo:</label>
           <input
             type="text"
-            id="model"
+            className="form-input"
             value={model}
             onChange={(e) => setModel(e.target.value)}
             required
-            className="form-input"
-            placeholder="Ej: Corolla 2.0"
-            disabled={isLoading}
           />
         </div>
 
+        {/* AÑO */}
         <div className="form-group">
-          <label htmlFor="year">Año:</label>
+          <label>Año:</label>
           <input
             type="number"
-            id="year"
+            className="form-input"
             value={year}
             onChange={(e) => setYear(e.target.value)}
             required
-            min="1900"
-            max={new Date().getFullYear()}
-            className="form-input"
-            disabled={isLoading}
           />
         </div>
 
+        {/* KILÓMETROS */}
         <div className="form-group">
-          <label htmlFor="mileage">Kilómetros:</label>
+          <label>Kilómetros:</label>
           <input
             type="number"
-            id="mileage"
+            className="form-input"
             value={mileage}
             onChange={(e) => setMileage(e.target.value)}
             required
-            min="0"
-            className="form-input"
-            disabled={isLoading}
           />
         </div>
 
+        {/* COMBUSTIBLE */}
         <div className="form-group">
-          <label htmlFor="fuelType">Combustible:</label>
-          <select
-            id="fuelType"
-            value={fuelType}
-            onChange={(e) => setFuelType(e.target.value)}
-            required
-            className="form-select"
-            disabled={isLoading}
+          <label>Combustible:</label>
+          <div
+            className="dropdown-container"
+            onClick={(e) => e.stopPropagation()}
           >
-            <option value="">Selecciona el combustible</option>
-            {fuelTypes.map((fuel) => (
-              <option key={fuel} value={fuel}>
-                {fuel}
-              </option>
-            ))}
-          </select>
+            <button
+              type="button"
+              className={`dropdown-trigger ${fuelOpen ? "open" : ""}`}
+              onClick={() => {
+                setFuelOpen(!fuelOpen)
+                setBrandOpen(false)
+              }}
+              disabled={isLoading}
+            >
+              {fuelType || "Selecciona combustible"}
+              <span className="dropdown-icon">+</span>
+            </button>
+
+            {fuelOpen && (
+              <div className="dropdown-menu">
+                {fuelTypes.map((item) => (
+                  <button
+                    type="button"
+                    key={item}
+                    className="dropdown-item"
+                    onClick={() => {
+                      setFuelType(item)
+                      setFuelOpen(false)
+                    }}
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         <button type="submit" className="submit-button" disabled={isLoading}>

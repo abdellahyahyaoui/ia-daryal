@@ -3,39 +3,68 @@
 import { useState, useCallback } from "react"
 import { BleClient } from "@capacitor-community/bluetooth-le"
 
-const OBD2_SERVICE_UUID = "0000fff0-0000-1000-8000-00805f9b34fb"
-const OBD2_CHARACTERISTIC_UUID = "0000fff1-0000-1000-8000-00805f9b34fb"
-
 export default function OBD2Manager() {
+  const [devices, setDevices] = useState([])
   const [device, setDevice] = useState(null)
   const [isConnected, setIsConnected] = useState(false)
   const [dtcCodes, setDtcCodes] = useState([])
+  const [isScanning, setIsScanning] = useState(false)
 
   const initializeBluetooth = useCallback(async () => {
     try {
       await BleClient.initialize()
-      console.log("[v0] Bluetooth initialized")
+
+      const permissions = await BleClient.requestLocationPermission()
+
+      if (!permissions) {
+        throw new Error("Permisos de ubicación denegados. Son necesarios para Bluetooth.")
+      }
+
+      console.log("[v0] Bluetooth initialized with permissions")
       return true
     } catch (error) {
       console.error("[v0] Error initializing Bluetooth:", error)
+      alert(`Error al inicializar Bluetooth: ${error.message}`)
       return false
     }
   }, [])
 
   const scanForDevices = useCallback(async () => {
     try {
-      console.log("[v0] Scanning for OBD2 devices...")
+      setIsScanning(true)
+      setDevices([])
+      console.log("[v0] Scanning for ALL Bluetooth devices...")
 
-      const devices = await BleClient.requestDevice({
-        services: [OBD2_SERVICE_UUID],
-        optionalServices: [],
+      const foundDevices = []
+
+      await BleClient.requestLEScan({}, (result) => {
+        console.log("[v0] Device found:", result.device)
+
+        if (!foundDevices.find((d) => d.deviceId === result.device.deviceId)) {
+          foundDevices.push({
+            deviceId: result.device.deviceId,
+            name: result.device.name || "Dispositivo sin nombre",
+            rssi: result.rssi,
+          })
+          setDevices([...foundDevices])
+        }
       })
 
-      console.log("[v0] Device found:", devices)
-      setDevice(devices)
-      return devices
+      setTimeout(async () => {
+        await BleClient.stopLEScan()
+        setIsScanning(false)
+        console.log("[v0] Scan complete. Found devices:", foundDevices.length)
+
+        if (foundDevices.length === 0) {
+          alert("No se encontraron dispositivos Bluetooth. Asegúrate de que estén encendidos y cerca.")
+        }
+      }, 10000)
+
+      return foundDevices
     } catch (error) {
       console.error("[v0] Error scanning for devices:", error)
+      setIsScanning(false)
+      alert(`Error al buscar dispositivos: ${error.message}`)
       throw error
     }
   }, [])
@@ -47,13 +76,17 @@ export default function OBD2Manager() {
       await BleClient.connect(deviceId, (disconnectedDeviceId) => {
         console.log("[v0] Device disconnected:", disconnectedDeviceId)
         setIsConnected(false)
+        alert("Dispositivo desconectado")
       })
 
       setIsConnected(true)
-      console.log("[v0] Connected to OBD2 device")
+      setDevice(deviceId)
+      console.log("[v0] Connected to device successfully")
+      alert("Conectado exitosamente al dispositivo")
       return true
     } catch (error) {
       console.error("[v0] Error connecting to device:", error)
+      alert(`Error al conectar: ${error.message}`)
       return false
     }
   }, [])
@@ -62,17 +95,17 @@ export default function OBD2Manager() {
     try {
       console.log("[v0] Reading DTC codes...")
 
-      // Send command to read DTCs (Mode 03)
+      const OBD2_SERVICE_UUID = "0000fff0-0000-1000-8000-00805f9b34fb"
+      const OBD2_CHARACTERISTIC_UUID = "0000fff1-0000-1000-8000-00805f9b34fb"
+
       const command = "03\r"
       const encoder = new TextEncoder()
       const data = encoder.encode(command)
 
       await BleClient.write(deviceId, OBD2_SERVICE_UUID, OBD2_CHARACTERISTIC_UUID, data)
 
-      // Read response
       const response = await BleClient.read(deviceId, OBD2_SERVICE_UUID, OBD2_CHARACTERISTIC_UUID)
 
-      // Parse DTC codes from response
       const decoder = new TextDecoder()
       const responseText = decoder.decode(response)
       const codes = parseDTCCodes(responseText)
@@ -82,6 +115,7 @@ export default function OBD2Manager() {
       return codes
     } catch (error) {
       console.error("[v0] Error reading DTC codes:", error)
+      alert("Este dispositivo no es compatible con OBD2 o no tiene el servicio adecuado.")
       return []
     }
   }, [])
@@ -89,6 +123,9 @@ export default function OBD2Manager() {
   const clearDTCCodes = useCallback(async (deviceId) => {
     try {
       console.log("[v0] Clearing DTC codes...")
+
+      const OBD2_SERVICE_UUID = "0000fff0-0000-1000-8000-00805f9b34fb"
+      const OBD2_CHARACTERISTIC_UUID = "0000fff1-0000-1000-8000-00805f9b34fb"
 
       const command = "04\r"
       const encoder = new TextEncoder()
@@ -110,15 +147,17 @@ export default function OBD2Manager() {
       await BleClient.disconnect(deviceId)
       setIsConnected(false)
       setDevice(null)
-      console.log("[v0] Disconnected from OBD2 device")
+      console.log("[v0] Disconnected from device")
     } catch (error) {
       console.error("[v0] Error disconnecting:", error)
     }
   }, [])
 
   return {
+    devices,
     device,
     isConnected,
+    isScanning,
     dtcCodes,
     initializeBluetooth,
     scanForDevices,
@@ -129,13 +168,11 @@ export default function OBD2Manager() {
   }
 }
 
-// Helper function to parse DTC codes from OBD2 response
 function parseDTCCodes(response) {
   const codes = []
   const lines = response.split("\n")
 
   for (const line of lines) {
-    // Remove whitespace and check if it's a valid DTC code
     const cleaned = line.trim()
     if (/^[PCBU][0-9A-F]{4}$/i.test(cleaned)) {
       codes.push(cleaned.toUpperCase())

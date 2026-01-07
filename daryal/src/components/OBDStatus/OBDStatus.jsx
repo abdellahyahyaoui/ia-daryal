@@ -180,7 +180,7 @@ const OBDStatus = ({ onClose }) => {
                         <div className="searching">
                             <div className="spinner"></div>
                             <p>Listo para buscar adaptadores Bluetooth...</p>
-                            <button className="scan-btn" onClick={startSearch}>Buscar Adaptador Real</button>
+                            <button className="scan-btn" onClick={startSearch}>Buscar Adaptador </button>
                         </div>
                     )}
 

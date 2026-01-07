@@ -44,7 +44,7 @@ const CodeInterpreter = () => {
                 <div className="resultado-container">
                     <ResultadoDiagnostico resultado={resultado} />
                     <button onClick={reiniciarFormulario} className="reset-button">
-                        Interpretar Nuevos Códigos
+                    Nuevos Códigos
                     </button>
                 </div>
             )}

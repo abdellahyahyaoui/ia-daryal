@@ -1,7 +1,5 @@
-import React from 'react';
-
 const ResultadoDiagnostico = ({ resultado }) => {
-  if (!resultado) return null;
+  if (!resultado) return null
 
   return (
     <div className="resultado">
@@ -11,12 +9,13 @@ const ResultadoDiagnostico = ({ resultado }) => {
       <h3 className="resultado-subtitulo">Sugerencias</h3>
       <ul className="resultado-sugerencias">
         {resultado.sugerencias.map((sugerencia, index) => (
-          <li key={index} className="resultado-sugerencia">{sugerencia}</li>
+          <li key={index} className="resultado-sugerencia">
+            {sugerencia}
+          </li>
         ))}
       </ul>
     </div>
-  );
-};
+  )
+}
 
-export default ResultadoDiagnostico;
-
+export default ResultadoDiagnostico

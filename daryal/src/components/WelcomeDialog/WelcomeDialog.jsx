@@ -6,13 +6,13 @@ function WelcomeDialog({ onStart, onOBDClick }) {
       <div className="welcome-options-container">
         <div className="button-content">
           <button onClick={onStart} className="start-btn">
-            Diagnóstico Manual
+          Manual
           </button>
         </div>
         <div className="quick-access">
           <div className="quick-buttons">
             <button className="start-btn" onClick={onOBDClick}>
-              Diagnóstico OBD-II
+              OBD-II
             </button>
           </div>
         </div>

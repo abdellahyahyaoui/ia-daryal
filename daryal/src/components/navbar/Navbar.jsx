@@ -1,24 +1,46 @@
-import React, { useState } from "react"
+"use client"
+
+import { useState } from "react"
 import { Link } from "react-router-dom"
-import { Menu as MenuIcon, X } from "lucide-react"
+import { Home, Facebook, Twitter, Instagram } from "lucide-react"
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
     <nav className="navbar-container">
-      <button className="menu-toggle" onClick={() => setIsOpen(!isOpen)}>
-        {isOpen ? <X size={24} /> : <MenuIcon size={24} />}
-      </button>
-      
+      <button
+  className={`menu-toggle ${isOpen ? "open" : ""}`}
+  onClick={() => setIsOpen(!isOpen)}
+>
+  <span />
+  <span />
+</button>
+
       <div className={`nav-links ${isOpen ? "open" : ""}`}>
-        <Link to="/" onClick={() => setIsOpen(false)}>Home</Link>
-        {/* <Link to="/moto" onClick={() => setIsOpen(false)}>Moto</Link>
-        <Link to="/ecar" onClick={() => setIsOpen(false)}>Coche Eléctrico</Link>
-        <Link to="/emoto" onClick={() => setIsOpen(false)}>Moto Eléctrica</Link>
-        <Link to="/epatinete" onClick={() => setIsOpen(false)}>Patinete Eléctrico</Link>
-        <Link to="/orbea" onClick={() => setIsOpen(false)}>Orbea</Link> */}
-        <Link to="/code" onClick={() => setIsOpen(false)}>Enterpretar Código</Link>
+        <Link to="/" onClick={() => setIsOpen(false)}>
+          <Home size={20} style={{ display: "inline-block", marginRight: "8px" }} />
+          Home
+        </Link>
+        <Link to="/code" onClick={() => setIsOpen(false)}>
+          Interpretar Código
+        </Link>
+
+        <div className="social-media-menu">
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+            <Facebook size={20} />
+          </a>
+          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+            <Twitter size={20} />
+          </a>
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+            <Instagram size={20} />
+          </a>
+        </div>
+
+        <button className="close-btn" onClick={() => setIsOpen(false)}>
+          ×
+        </button>
       </div>
     </nav>
   )
