@@ -1,15 +1,13 @@
+import { useReducer, useState, useEffect } from "react";
+import ChatLayout from "../layout/ChatLayout";
+import WelcomeDialog from "../WelcomeDialog/WelcomeDialog";
+import VehicleForm from "../VehicleForm/VehicleForm";
+import Diagnosis from "../Diagnosis/Diagnosis";
+import OBDStatus from "../OBDStatus/OBDStatus";
+import TechnicalSheetUpload from "../ManualUpload/ManualUpload";
+import { iniciarDiagnostico, continuarDiagnostico } from "../../api/openai";
 
-
-
-import { useReducer, useState, useEffect } from "react"
-import axios from "axios"
-import ChatLayout from "../layout/ChatLayout"
-import WelcomeDialog from "../WelcomeDialog/WelcomeDialog"
-import VehicleForm from "../VehicleForm/VehicleForm"
-import Diagnosis from "../Diagnosis/Diagnosis"
-import OBDStatus from "../OBDStatus/OBDStatus"
-import TechnicalSheetUpload from "../ManualUpload/ManualUpload"
-import { iniciarDiagnostico, continuarDiagnostico } from "../../api/openai"
+const MAX_QUESTIONS = 5;
 
 const initialState = {
   messages: [],
@@ -20,186 +18,227 @@ const initialState = {
   historial: [],
   diagnosis: "",
   isLastQuestion: false,
-}
+};
 
 const diagnosisReducer = (state, action) => {
   switch (action.type) {
     case "ADD_MESSAGE":
-      return { ...state, messages: [...state.messages, action.payload] }
+      return { ...state, messages: [...state.messages, action.payload] };
     case "SET_STEP":
-      return { ...state, step: action.payload }
+      return { ...state, step: action.payload };
     case "SET_VEHICLE_DATA":
-      return { ...state, vehicleData: action.payload }
+      return { ...state, vehicleData: action.payload };
     case "SET_QUESTION":
       return {
         ...state,
         currentQuestion: action.payload,
         questionCount: state.questionCount + 1,
         isLastQuestion: action.isLastQuestion || false,
-      }
+      };
     case "ADD_TO_HISTORIAL":
-      return { ...state, historial: [...state.historial, ...action.payload] }
+      return { ...state, historial: [...state.historial, ...action.payload] };
     case "SET_DIAGNOSIS":
-      return { ...state, diagnosis: action.payload, step: "diagnosis" }
+      return { ...state, diagnosis: action.payload, step: "diagnosis" };
     default:
-      return state
+      return state;
   }
-}
-
-const MAX_PREGUNTAS = 5
+};
 
 function Home() {
-  const [state, dispatch] = useReducer(diagnosisReducer, initialState)
-  const [isTyping, setIsTyping] = useState(false)
+  const [state, dispatch] = useReducer(diagnosisReducer, initialState);
+  const [isTyping, setIsTyping] = useState(false);
 
-  // API URL
-  const API_BASE_URL = "https://ia-daryal-3.onrender.com/api"
-
-  const processChatInput = async (message, imageFile) => {
+  const processChatInput = async (message, attachment) => {
     try {
-      if (state.questionCount >= MAX_PREGUNTAS && !state.isLastQuestion) {
-        dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: "He alcanzado el límite de preguntas. Generando diagnóstico final..." } })
-      }
+      let finalMessage = attachment ? `[Archivo adjunto] ${message}` : message;
 
-      let finalMessage = message
-      if (imageFile) {
-        finalMessage = `[Análisis de Imagen/Archivo] ${message}`
-      }
-
+      // PRIMER MENSAJE
       if (state.historial.length === 0) {
-        const payload = [{ tipo: "problema", texto: finalMessage }]
-        dispatch({ type: "ADD_TO_HISTORIAL", payload })
-        
-        const response = await iniciarDiagnostico({ ...state.vehicleData, problema: finalMessage })
-        
-        if (response.pregunta) {
-          dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: response.pregunta } })
-          dispatch({ type: "SET_QUESTION", payload: response.pregunta, isLastQuestion: response.es_ultima })
+        const payload = [{ tipo: "problema", texto: finalMessage }];
+        dispatch({ type: "ADD_TO_HISTORIAL", payload });
+
+        const response = await iniciarDiagnostico({
+          ...state.vehicleData,
+          problema: finalMessage,
+          tipo_vehiculo: "coche"
+        });
+
+        if (response?.pregunta) {
+          dispatch({
+            type: "ADD_MESSAGE",
+            payload: { sender: "ai", text: response.pregunta },
+          });
+          dispatch({
+            type: "SET_QUESTION",
+            payload: response.pregunta,
+          });
+          // Guardamos la pregunta en el historial para el backend
+          dispatch({ type: "ADD_TO_HISTORIAL", payload: [{ tipo: "pregunta", texto: response.pregunta }] });
         }
-      } else {
-        const payload = [{ tipo: "respuesta", texto: finalMessage }]
-        dispatch({ type: "ADD_TO_HISTORIAL", payload })
-        const fullHistorial = [...state.historial, ...payload]
-        
-        const response = await continuarDiagnostico(fullHistorial, state.vehicleData)
-        
-        if (response.pregunta) {
-          dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: response.pregunta } })
-          dispatch({ type: "SET_QUESTION", payload: response.pregunta, isLastQuestion: response.es_ultima || state.questionCount >= MAX_PREGUNTAS - 1 })
-        }
-        
-        if (response.diagnostico_y_soluciones || state.questionCount >= MAX_PREGUNTAS) {
-          const finalDiagnosis = response.diagnostico_y_soluciones || response.diagnostico || "No se pudo generar un diagnóstico detallado."
-          dispatch({ type: "SET_DIAGNOSIS", payload: finalDiagnosis })
-          dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: "He terminado mi análisis. Aquí tienes los resultados:", component: "diagnosis" } })
-        }
+        return;
+      }
+
+      // RESPUESTAS POSTERIORES
+      const payload = [{ tipo: "respuesta", texto: finalMessage }];
+      const fullHistorial = [...state.historial, ...payload];
+      dispatch({ type: "ADD_TO_HISTORIAL", payload });
+
+      const response = await continuarDiagnostico(fullHistorial, state.vehicleData);
+
+      // SI HAY DIAGNÓSTICO FINAL
+      if (response?.diagnostico_y_soluciones || response?.diagnostico) {
+        dispatch({
+          type: "SET_DIAGNOSIS",
+          payload: response.diagnostico_y_soluciones || response.diagnostico,
+        });
+        return;
+      }
+
+      // SI HAY SIGUIENTE PREGUNTA
+      if (response?.pregunta) {
+        dispatch({
+          type: "ADD_MESSAGE",
+          payload: { sender: "ai", text: response.pregunta },
+        });
+        dispatch({
+          type: "SET_QUESTION",
+          payload: response.pregunta,
+          isLastQuestion: response.es_ultima
+        });
+        // Añadir pregunta al historial para la próxima iteración
+        dispatch({ type: "ADD_TO_HISTORIAL", payload: [{ tipo: "pregunta", texto: response.pregunta }] });
+      } else if (state.questionCount >= MAX_QUESTIONS) {
+        // Fallback si alcanzamos el límite y el backend no devolvió el diagnóstico esperado
+        dispatch({
+          type: "SET_DIAGNOSIS",
+          payload: "Análisis completado basándose en la información proporcionada. Por favor, revise los síntomas con un profesional.",
+        });
       }
     } catch (error) {
-      dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: "Lo siento, tuve un error conectando con la IA." } })
+      console.error("Error en el proceso:", error);
+      dispatch({
+        type: "ADD_MESSAGE",
+        payload: { sender: "ai", text: "Lo siento, hubo un error procesando tu solicitud." },
+      });
     } finally {
-      setIsTyping(false)
+      setIsTyping(false);
     }
-  }
+  };
 
   const handleSendMessage = async (text, attachment) => {
-    dispatch({ type: "ADD_MESSAGE", payload: { sender: "user", text } })
-    
-    // Process user input
+    dispatch({ type: "ADD_MESSAGE", payload: { sender: "user", text } });
     if (state.step === "chat") {
-      setIsTyping(true)
-      await processChatInput(text, attachment)
+      setIsTyping(true);
+      await processChatInput(text, attachment);
     }
-  }
+  };
 
-  // Welcome message
   useEffect(() => {
     if (state.messages.length === 0 && state.step === "welcome") {
-      setIsTyping(true)
+      setIsTyping(true);
       const timer = setTimeout(() => {
         dispatch({
           type: "ADD_MESSAGE",
           payload: {
             sender: "ai",
             text: "¡Hola! Soy Daryal, tu experto en diagnóstico. ¿Cómo quieres empezar?",
-            component: "welcome"
-          }
-        })
-        setIsTyping(false)
-      }, 1000)
-      return () => clearTimeout(timer)
+            component: "welcome",
+          },
+        });
+        setIsTyping(false);
+      }, 1000);
+      return () => clearTimeout(timer);
     }
-  }, [state.messages.length, state.step])
+  }, [state.messages.length, state.step]);
 
   const renderComponent = (type) => {
-    switch(type) {
+    switch (type) {
       case "welcome":
-        return <WelcomeDialog 
-          onStart={() => {
-            dispatch({ type: "SET_STEP", payload: "vehicleForm" })
-            dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: "Por favor, completa los datos del vehículo.", component: "vehicleForm" } })
-          }}
-          onOBDClick={() => {
-            dispatch({ type: "SET_STEP", payload: "obd" })
-            dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: "Conectando al dispositivo OBD2...", component: "obd" } })
-          }}
-          onManualClick={() => {
-            dispatch({ type: "SET_STEP", payload: "manual" })
-            dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: "Sube la ficha técnica.", component: "manual" } })
-          }}
-        />
+        return (
+          <WelcomeDialog
+            onStart={() => {
+              dispatch({ type: "SET_STEP", payload: "vehicleForm" });
+              dispatch({
+                type: "ADD_MESSAGE",
+                payload: { sender: "ai", text: "Por favor, completa los datos del vehículo.", component: "vehicleForm" },
+              });
+            }}
+            onOBDClick={() => {
+              dispatch({ type: "SET_STEP", payload: "obd" });
+              dispatch({
+                type: "ADD_MESSAGE",
+                payload: { sender: "ai", text: "Conectando al dispositivo OBD2...", component: "obd" },
+              });
+            }}
+            onManualClick={() => {
+              dispatch({ type: "SET_STEP", payload: "manual" });
+              dispatch({
+                type: "ADD_MESSAGE",
+                payload: { sender: "ai", text: "Sube la ficha técnica.", component: "manual" },
+              });
+            }}
+          />
+        );
       case "vehicleForm":
         return (
           <div className="vehicle-form-container">
-            <VehicleForm onSubmit={(data) => {
-              dispatch({ type: "SET_VEHICLE_DATA", payload: data })
-              dispatch({ type: "SET_STEP", payload: "chat" })
-              dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: "¿Qué problema tiene tu vehículo?" } })
-            }} />
+            <VehicleForm
+              onSubmit={(data) => {
+                dispatch({ type: "SET_VEHICLE_DATA", payload: { ...data, tipo_vehiculo: "coche" } });
+                dispatch({ type: "SET_STEP", payload: "chat" });
+                dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: "¿Qué problema tiene tu vehículo?" } });
+              }}
+            />
           </div>
-        )
+        );
       case "obd":
         return (
           <div className="vehicle-form-container">
-            <OBDStatus onClose={(data) => {
-              if (data?.status === 'connected') {
-                dispatch({ type: "SET_VEHICLE_DATA", payload: data })
-                dispatch({ type: "SET_STEP", payload: "chat" })
-                dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: "OBD Conectado. ¿Qué problema has notado?" } })
-              }
-            }} />
+            <OBDStatus
+              onClose={(data) => {
+                if (data?.status === "connected") {
+                  dispatch({ type: "SET_VEHICLE_DATA", payload: { ...data, tipo_vehiculo: "coche" } });
+                  dispatch({ type: "SET_STEP", payload: "chat" });
+                  dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: "OBD conectado. ¿Qué problema has notado?" } });
+                }
+              }}
+            />
           </div>
-        )
+        );
       case "manual":
         return (
           <div className="vehicle-form-container">
-            <TechnicalSheetUpload onExtractionSuccess={(specs) => {
-              dispatch({ type: "SET_VEHICLE_DATA", payload: specs })
-              dispatch({ type: "SET_STEP", payload: "chat" })
-              dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: "Ficha procesada. Describe el problema." } })
-            }} onClose={() => {}} />
+            <TechnicalSheetUpload
+              onExtractionSuccess={(specs) => {
+                dispatch({ type: "SET_VEHICLE_DATA", payload: { ...specs, tipo_vehiculo: "coche" } });
+                dispatch({ type: "SET_STEP", payload: "chat" });
+                dispatch({ type: "ADD_MESSAGE", payload: { sender: "ai", text: "Ficha procesada. Describe el problema." } });
+              }}
+              onClose={() => {}}
+            />
           </div>
-        )
-      case "diagnosis":
-        return (
-          <div className="vehicle-form-container">
-            <Diagnosis diagnosis={state.diagnosis} />
-          </div>
-        )
+        );
       default:
-        return null
+        return null;
     }
-  }
+  };
 
   return (
     <div className="home">
-      <ChatLayout 
-        messages={state.messages} 
-        onSendMessage={handleSendMessage}
-        isTyping={isTyping}
-        renderComponent={renderComponent}
-      />
+      {state.step === "diagnosis" ? (
+        <div className="vehicle-form-container">
+          <Diagnosis diagnosis={state.diagnosis} />
+        </div>
+      ) : (
+        <ChatLayout
+          messages={state.messages}
+          onSendMessage={handleSendMessage}
+          isTyping={isTyping}
+          renderComponent={renderComponent}
+        />
+      )}
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;

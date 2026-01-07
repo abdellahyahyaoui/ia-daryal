@@ -16,6 +16,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+
 }
 
 body {
@@ -26,17 +27,22 @@ body {
   line-height: 1.6;
   letter-spacing: 0.2px;
   -webkit-font-smoothing: antialiased;
-  overflow: hidden;
+
+  height: 100%;
+  overflow: hidden; /* 🔥 CLAVE */
 }
+
 
 /* ===== Layout ===== */
 
 .chat-layout {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  width: 100vw;
+  height: calc(var(--vh) * 100);
+  width: 100%;
+  overflow: hidden;
 }
+
 
 /* ===== Header ===== */
 
@@ -62,7 +68,7 @@ body {
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
-  height: 150px;
+  height: 0;
 }
 
 .chat-robot-top canvas {
@@ -71,8 +77,10 @@ body {
 }
 
 .chat-messages-area {
-  flex: 1;
+  
+ flex: 1;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   padding: 20px 24px 140px;
   display: flex;
   flex-direction: column;
@@ -83,23 +91,26 @@ body {
 }
 
 .diagnosis {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: 24px;
   padding: 24px;
   margin-top: 20px;
   color: var(--text-primary);
+
+  max-height: calc(var(--vh, 1vh) * 100);
+  overflow-y: auto;   /* Activa scroll si se excede */
+  
 }
 
+
 .diagnosis h2 {
-  font-size: 1.2rem;
-  margin-bottom: 16px;
-  color: var(--text-primary);
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  text-align: center;
+  color: #a1a6ab;
 }
 
 .ai-analysis-section h3 {
   font-size: 1rem;
-  margin-bottom: 12px;
+  margin: 20px 0px 20px 0px;
   color: var(--text-secondary);
 }
 
@@ -107,24 +118,30 @@ body {
   font-size: 1rem;
   line-height: 1.6;
   margin-bottom: 20px;
+  text-align: center;
+  line-height: 1.7rem;
+    letter-spacing: 0.3rem;
 }
 
 .solutions-list h4 {
-  font-size: 0.95rem;
+  font-size: 1.4rem;
   margin-bottom: 10px;
+  text-align: center;
+  color: #a1a6ab;
 }
 
 .solutions-list ul {
   list-style: none;
   padding: 0;
+  text-align: center;
 }
 
 .solutions-list li {
-  background: var(--bg-tertiary);
-  padding: 12px 16px;
-  border-radius: 12px;
-  margin-bottom: 8px;
-  font-size: 0.9rem;
+  
+  margin-bottom: 28px;
+  font-size: 1rem;
+  line-height: 1.7rem;
+    letter-spacing: 0.3rem;
 }
 
 .action-buttons {
@@ -144,13 +161,43 @@ body {
 }
 
 .primary-button {
-  background: var(--text-primary);
-  color: var(--bg-primary);
+   display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background:#2b3240;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 400;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+  font-size: 0.8rem;
+  padding: 3.5rem 1rem;
+      letter-spacing: 0.2rem;
 }
 
 .secondary-button {
-  background: var(--bg-tertiary);
-  color: var(--text-primary);
+   display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background:#2b3240;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 400;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+  font-size: 0.8rem;
+  padding: 3.5rem 1rem;
+   letter-spacing: 0.2rem;
 }
 
 .chat-robot-overlay {
@@ -198,15 +245,17 @@ body {
 /* ===== Input ===== */
 
 .chat-input-fixed {
-  position: fixed;
+  position: relative;
   bottom: 0;
   left: 0;
   right: 0;
   padding: 20px;
+  height: 20vh;
   background: linear-gradient(
     0deg,
     var(--bg-primary) 60%,
     rgba(11, 15, 20, 0) 100%
+  
   );
   z-index: 1000;
 }
@@ -397,7 +446,7 @@ body {
 
 .menu-toggle {
     position: fixed;         /* Fijo en pantalla */
-    top: 15px;               /* Ajusta según tu header */
+    top: 40px;               /* Ajusta según tu header */
     right: 15px;
     z-index: 6000;           /* Más alto que el robot (3000) y el menú (5000) */
     background: #2b3240;
@@ -415,7 +464,7 @@ body {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 100vh;
+  height: calc(var(--vh) * 100);
     background: var(--bg-secondary);
     border: none;
     border-radius: 0;
@@ -488,7 +537,7 @@ body {
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
   color: var(--text-primary);
-  padding: 15px 22px;
+  padding: 15px 52px;
   border-radius: 44px;
   outline: none;
 }
@@ -499,14 +548,14 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 100vh;
+  
   color: var(--text-secondary);
 }
 .welcome-options-container{
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
 
 }
 .start-btn {
@@ -593,17 +642,39 @@ margin: 20px;
 
 .code-interpreter-container {
   max-width: 600px;
-  margin: 2rem auto;
+  margin: 2rem 2rem;
 
   animation: fadeIn 0.5s ease-out;
+ 
 }
-
+.resultado{
+  display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    /* max-height: 100vh; */
+    overflow-y: auto;
+    /* border: 1px solid var(--border-color); */
+    /* border-radius: 12px; */
+   
+    margin-top: 50px;
+    color: var(--text-primary);
+ max-height: calc(var(--vh, 1vh) * 100);
+    overflow-y: auto;
+    /* border: 1px solid var(--border-color); */
+    /* border-radius: 12px; */
+ 
+align-items: center;
+}
+.resultado-container{
+  border: none;
+}
 .code-interpreter-form {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-      margin: 30px;
-    margin-top: 100px;
+      margin: 15px;
+    margin-top: 150px;
+    align-items: center;
 
 }
 @keyframes fadeIn {
@@ -613,17 +684,18 @@ margin: 20px;
 
 /* ===== Global Fixed Robot Styles ===== */
 .robot-fixed-container {
-    position: fixed;             /* Flota sobre otros divs */
-    top: 26%;                    /* Centrado vertical */
-    left: 50%;                   /* Centrado horizontal */
+    position: relative;             /* Flota sobre otros divs */
+                   /* Centrado vertical */
+                /* Centrado horizontal */
     transform: translate(-50%, -50%); /* Centrado exacto */
     width: 200px;                /* Ajusta según el tamaño del robot */
     height: 200px;
-    z-index: 3000;               /* Encima de otros elementos */
+            /* Encima de otros elementos */
     pointer-events: none;        /* No interfiere con clicks */
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 40px;
 }
 
 .robot-fixed-container canvas {
@@ -664,4 +736,24 @@ margin: 20px;
       font-size: 1rem;
     font-weight: 300;
     padding: 20px;
+}
+.reset-button{
+  display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background:#2b3240;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 400;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+  font-size: 0.8rem;
+  padding: 3.5rem 4rem;
+      letter-spacing: 0.2rem;
+          margin: 100px;
 }

@@ -31,7 +31,7 @@ function Model() {
         }
     }, [actions]);
 
-    return <primitive object={scene} scale={[3, 3, 3]} />;
+    return <primitive object={scene} scale={[4, 4, 4]} />;
 }
 
 function checkWebGLSupport() {

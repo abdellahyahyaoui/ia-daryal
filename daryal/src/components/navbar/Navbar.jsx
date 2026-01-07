@@ -12,13 +12,13 @@ export default function Navbar() {
       </button>
       
       <div className={`nav-links ${isOpen ? "open" : ""}`}>
-        <Link to="/" onClick={() => setIsOpen(false)}>Inicio</Link>
-        <Link to="/moto" onClick={() => setIsOpen(false)}>Moto</Link>
+        <Link to="/" onClick={() => setIsOpen(false)}>Home</Link>
+        {/* <Link to="/moto" onClick={() => setIsOpen(false)}>Moto</Link>
         <Link to="/ecar" onClick={() => setIsOpen(false)}>Coche Eléctrico</Link>
         <Link to="/emoto" onClick={() => setIsOpen(false)}>Moto Eléctrica</Link>
         <Link to="/epatinete" onClick={() => setIsOpen(false)}>Patinete Eléctrico</Link>
-        <Link to="/orbea" onClick={() => setIsOpen(false)}>Orbea</Link>
-        <Link to="/code" onClick={() => setIsOpen(false)}>Código</Link>
+        <Link to="/orbea" onClick={() => setIsOpen(false)}>Orbea</Link> */}
+        <Link to="/code" onClick={() => setIsOpen(false)}>Enterpretar Código</Link>
       </div>
     </nav>
   )

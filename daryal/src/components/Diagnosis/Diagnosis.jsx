@@ -1,24 +1,4 @@
-// import React from 'react';
-// import './Diagnosis.scss';
 
-// function Diagnosis({ diagnosis }) {
-//   const [diagnostico, ...soluciones] = diagnosis.split('\n');
-
-//   return (
-//     <div className="diagnosis">
-//       <h2>Diagnóstico Avanzado</h2>
-//       <p>{diagnostico}</p>
-//       <h3>Soluciones Recomendadas</h3>
-//       <ul>
-//         {soluciones.map((solucion, index) => (
-//           <li key={index}>{solucion}</li>
-//         ))}
-//       </ul>
-//     </div>
-//   );
-// }
-
-// export default Diagnosis;
 "use client"
 
 import React, { useState, useEffect } from "react"
@@ -29,19 +9,35 @@ function Diagnosis({ diagnosis, obdData }) {
   const [diagnostico, setDiagnostico] = useState("")
   const [soluciones, setSoluciones] = useState([])
 
+  console.log("🔵 COMPONENTE DIAGNOSIS MOSTRANDO:", diagnosis);
+
   useEffect(() => {
     if (diagnosis) {
       if (typeof diagnosis === "object") {
         setDiagnostico(diagnosis.diagnostico || diagnosis.diagnosis || "Diagnóstico no disponible")
         setSoluciones(diagnosis.soluciones || diagnosis.solutions || [])
       } else {
-        const partes = diagnosis.split("\n")
-        if (partes.length > 0) {
-          setDiagnostico(partes[0])
-          setSoluciones(partes.slice(1).filter((s) => s.trim() !== ""))
+        // Limpiar posibles etiquetas de formato del backend
+        const cleanDiagnosis = diagnosis.replace(/Diagnóstico:|Soluciones:/gi, "").trim();
+        
+        // Separar por "Soluciones:" si existe como palabra clave en el string
+        const splitIndex = cleanDiagnosis.toLowerCase().indexOf("soluciones:");
+        
+        if (splitIndex !== -1) {
+          setDiagnostico(cleanDiagnosis.substring(0, splitIndex).trim());
+          const solsText = cleanDiagnosis.substring(splitIndex + 11).trim();
+          const partesSols = solsText.split("\n").filter(p => p.trim() !== "");
+          setSoluciones(partesSols.map(s => s.replace(/^\d+\.\s*/, "").trim()));
         } else {
-          setDiagnostico(diagnosis)
-          setSoluciones([])
+          const partes = cleanDiagnosis.split("\n").filter(p => p.trim() !== "");
+          if (partes.length > 1) {
+            setDiagnostico(partes[0])
+            const sols = partes.slice(1).map(s => s.replace(/^\d+\.\s*/, "").trim());
+            setSoluciones(sols)
+          } else {
+            setDiagnostico(diagnosis)
+            setSoluciones([])
+          }
         }
       }
     }
@@ -57,7 +53,7 @@ function Diagnosis({ diagnosis, obdData }) {
 
   return (
     <div className={`diagnosis ${obdData ? 'obd-enriched' : ''}`}>
-      <h2>{obdData ? 'Diagnóstico Técnico OBD-II' : 'Tu Diagnóstico Personalizado'}</h2>
+      <h2>{obdData ? 'Diagnóstico Técnico OBD-II' : 'Tu Diagnóstico '}</h2>
       
       {obdData && (
         <div className="telemetry-grid">
@@ -85,7 +81,7 @@ function Diagnosis({ diagnosis, obdData }) {
           <h3>Códigos de Error Detectados</h3>
           <div className="dtc-list-visual">
             {cleared ? (
-              <div className="no-errors">✅ Todos los códigos han sido borrados</div>
+              <div className="no-errors">Todos los códigos han sido borrados</div>
             ) : obdData.dtc && obdData.dtc.length > 0 ? (
               obdData.dtc.map((code, i) => (
                 <div key={i} className="dtc-item red">
@@ -103,7 +99,7 @@ function Diagnosis({ diagnosis, obdData }) {
               onClick={handleClearDTC}
               disabled={clearing}
             >
-              {clearing ? "Borrando..." : "🗑️ Borrar Códigos DTC"}
+              {clearing ? "Borrando..." : " Borrar Códigos DTC"}
             </button>
           )}
         </div>
@@ -125,7 +121,7 @@ function Diagnosis({ diagnosis, obdData }) {
       </div>
 
       <div className="action-buttons">
-        <button className="secondary-button" onClick={() => window.print()}>📄 Exportar Informe</button>
+        <button className="secondary-button" onClick={() => window.print()}> Exportar Informe</button>
         <button className="primary-button" onClick={() => window.location.reload()}>
           Nuevo Diagnóstico
         </button>
