@@ -543,7 +543,7 @@ button:active {
     background: var(--bg-secondary);
     border: none;
     border-radius: 10px;
-    padding: 90px 20px;
+  padding: 90px 12px 80px 10px;
     display: none;
     z-index: 5000;
     flex-direction: column;
@@ -559,10 +559,10 @@ button:active {
 
 /* Links */
 .nav-links a {
-        font-size: 0.8rem;
+        font-size: 0.7rem;
     color: var(--text-primary);
     text-decoration: none;
-    margin: 10px 0;
+    margin: 5px 0;
     font-weight: 400;
     letter-spacing: 0.1em;
     
@@ -598,7 +598,7 @@ button:active {
       flex-direction: row;
       margin-top: 10px;
       gap: 10px;
-      justify-content: space-between;
+      justify-content: space-around;
     }
 /* ===== Forms ===== */
 
@@ -938,3 +938,120 @@ border: 1px solid var(--border-color);
    
   }
 }
+/* Navbar contenedor */
+
+
+/* Toggle del menú */
+
+
+/* Menú lateral */
+.nav-links {
+ 
+  height: 82vh;
+  width: 224px;
+ 
+}
+
+.nav-links.open {
+  display: flex;
+}
+
+/* Links del nav */
+.nav-link {
+  color: white;
+  padding: 10px 0;
+  
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Home link separado si quieres */
+.home-link {
+  /* Puedes agregar estilos especiales si quieres */
+}
+
+/* Sección historial */
+.history-section {
+  margin-top: 40px;
+  width: 100%;
+  border-top: 2px solid #2b3240;
+  padding-top: 20px;
+}
+
+/* Título historial */
+.history-title {
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #f3f8f5;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Lista de historial */
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Item de historial */
+.history-item {
+  padding: 15px;
+  
+  
+}
+
+/* Cabecera de item */
+.history-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.history-date {
+      color: #a1a6ab;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.history-problema {
+  margin: 8px 0 0;
+  color: #fff;
+  font-size: 13px;
+  line-height: 1.4;
+      font-weight: 100;
+}
+
+/* Empty history */
+.history-empty {
+  padding: 20px;
+  text-align: center;
+  border: 1px dashed #444;
+  border-radius: 10px;
+}
+
+.history-empty p {
+  color: #888;
+  font-size: 12px;
+  margin: 0;
+}
+
+/* Social media */
+.social-media-menu {
+  margin-top: auto;
+  padding-top: 20px;
+  display: flex;
+  gap: 15px;
+
+}
+
+.social-media-menu a {
+  color: #666;
+}
+
+/* Botón cerrar */
+

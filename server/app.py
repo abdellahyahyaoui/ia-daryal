@@ -1,9 +1,12 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
+from dotenv import load_dotenv
 import os
 from openai import OpenAI
 import base64
 import logging
+
+load_dotenv()  # 👈 ESTO ES LO QUE FALTABA
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
