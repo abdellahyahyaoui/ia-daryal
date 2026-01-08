@@ -548,7 +548,8 @@ button:active {
     z-index: 5000;
     flex-direction: column;
     justify-content: flex-start;
-    
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    border: 1px solid var(--border-color);
     overflow-y: auto;
 }
 
@@ -960,7 +961,8 @@ border: 1px solid var(--border-color);
 .nav-link {
   color: white;
   padding: 10px 0;
-  
+  background: none;
+  border: none;
   display: flex;
   align-items: center;
   gap: 10px;
@@ -1000,28 +1002,30 @@ border: 1px solid var(--border-color);
 
 /* Item de historial */
 .history-item {
-  padding: 15px;
-  
+  padding: 5px;
+      background: none;
+    border: none;
+
   
 }
 
 /* Cabecera de item */
 .history-item-header {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
 }
 
 .history-date {
       color: #a1a6ab;
-    font-size: 14px;
+    font-size: 0.8rem;
     font-weight: 600;
 }
 
 .history-problema {
   margin: 8px 0 0;
   color: #fff;
-  font-size: 13px;
+  font-size: 0.7rem;
   line-height: 1.4;
       font-weight: 100;
 }

@@ -3,7 +3,7 @@
 import axios from "axios"
 
 const apiClient = axios.create({
-  baseURL: "/api",
+  baseURL: "https://ia-daryal-3.onrender.com/api",
   headers: {
     "Content-Type": "application/json",
   },

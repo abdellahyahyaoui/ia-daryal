@@ -39,6 +39,19 @@ const diagnosisReducer = (state, action) => {
       return { ...state, historial: [...state.historial, ...action.payload] };
     case "SET_DIAGNOSIS":
       return { ...state, diagnosis: action.payload, step: "diagnosis" };
+    case "LOAD_DIAGNOSIS":
+      const savedMessages = [
+        { sender: "user", text: action.payload.problema },
+        { sender: "ai", text: `**Diagnóstico Final:**\n\n${action.payload.diagnostico}` }
+      ];
+      return { 
+        ...state, 
+        step: "diagnosis", 
+        diagnosis: action.payload.diagnostico,
+        vehicleData: action.payload.vehicleData,
+        messages: savedMessages,
+        historial: action.payload.historial || []
+      };
     default:
       return state;
   }
@@ -47,6 +60,15 @@ const diagnosisReducer = (state, action) => {
 function Home() {
   const [state, dispatch] = useReducer(diagnosisReducer, initialState);
   const [isTyping, setIsTyping] = useState(false);
+
+  useEffect(() => {
+    const handleLoadDiagnosis = (event) => {
+      dispatch({ type: "LOAD_DIAGNOSIS", payload: event.detail });
+    };
+
+    window.addEventListener('load-diagnosis', handleLoadDiagnosis);
+    return () => window.removeEventListener('load-diagnosis', handleLoadDiagnosis);
+  }, []);
 
   const processChatInput = async (message, attachment) => {
     try {

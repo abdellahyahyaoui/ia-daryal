@@ -1,27 +1,53 @@
-import { useState, useEffect } from "react"
-import { Link } from "react-router-dom"
-import { Home, Facebook, Twitter, Instagram, History } from "lucide-react"
+import { useState, useEffect, useRef } from "react"
+import { Link, useNavigate } from "react-router-dom"
+import { Home, Facebook, Twitter, Instagram, History, Activity } from "lucide-react"
 import { getHistory } from "../../utils/historyStorage"
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [history, setHistory] = useState([])
+  const menuWrapperRef = useRef(null)
+  const navigate = useNavigate()
 
+  // Maneja clicks fuera del menú y del toggle
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuWrapperRef.current && !menuWrapperRef.current.contains(event.target)) {
+        setIsOpen(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [])
+
+  // Carga historial
   useEffect(() => {
     const loadHistory = () => {
       const savedHistory = getHistory()
-      console.log("[Navbar] Historial cargado:", savedHistory)
       setHistory(savedHistory || [])
     }
 
     loadHistory()
-    
-    window.addEventListener('history-updated', loadHistory)
-    return () => window.removeEventListener('history-updated', loadHistory)
+    window.addEventListener("history-updated", loadHistory)
+    return () => window.removeEventListener("history-updated", loadHistory)
   }, [])
 
+  const handleSelectHistory = (item) => {
+    const event = new CustomEvent('load-diagnosis', { detail: item })
+    window.dispatchEvent(event)
+    setIsOpen(false)
+  }
+
+  const handleGoHome = () => {
+    navigate("/")  // Fuerza navegar a la pantalla principal
+    const resetEvent = new CustomEvent("reset-diagnosis")
+    window.dispatchEvent(resetEvent)
+    setIsOpen(false)
+  }
+
   return (
-    <nav className="navbar-container">
+    <nav className="navbar-container" ref={menuWrapperRef}>
+      {/* Botón Toggle */}
       <button
         className={`menu-toggle ${isOpen ? "open" : ""}`}
         onClick={() => setIsOpen(!isOpen)}
@@ -30,31 +56,41 @@ export default function Navbar() {
         <span />
       </button>
 
+      {/* Menú */}
       <div className={`nav-links ${isOpen ? "open" : ""}`}>
-        <Link to="/" onClick={() => setIsOpen(false)} className="nav-link home-link">
+        <button onClick={handleGoHome} className="nav-link home-link">
           <Home size={18} /> Home
-        </Link>
+        </button>
+
+        <button onClick={handleGoHome} className="nav-link">
+          <Activity size={18} /> Diagnóstico
+        </button>
 
         <Link to="/code" onClick={() => setIsOpen(false)} className="nav-link">
           Interpretar Código
         </Link>
 
+        {/* Historial */}
         <div className="history-section">
           <h3 className="history-title">
-            <History size={18} /> Historial Reciente
+            <History size={25} /> Historial 
           </h3>
 
           <div className="history-list">
-            {history && history.length > 0 ? (
+            {history.length > 0 ? (
               history.map((item) => (
-                <div key={item.id} className="history-item">
+                <button
+                  key={item.id}
+                  className="history-item"
+                  onClick={() => handleSelectHistory(item)}
+                >
                   <div className="history-item-header">
                     <span className="history-date">
                       {new Date(item.timestamp).toLocaleDateString()}
                     </span>
                   </div>
                   <p className="history-problema">{item.problema}</p>
-                </div>
+                </button>
               ))
             ) : (
               <div className="history-empty">
@@ -64,6 +100,7 @@ export default function Navbar() {
           </div>
         </div>
 
+        {/* Redes sociales */}
         <div className="social-media-menu">
           <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
             <Facebook size={20} />
@@ -76,6 +113,7 @@ export default function Navbar() {
           </a>
         </div>
 
+        {/* Botón cerrar */}
         <button className="close-btn" onClick={() => setIsOpen(false)}>
           ×
         </button>
