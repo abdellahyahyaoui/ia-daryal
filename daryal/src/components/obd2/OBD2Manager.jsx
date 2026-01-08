@@ -39,11 +39,12 @@ export default function OBD2Manager() {
 
       await BleClient.requestLEScan({}, (result) => {
         console.log("[v0] Device found:", result.device)
-
+        
+        // Removed filter to show all devices
         if (!foundDevices.find((d) => d.deviceId === result.device.deviceId)) {
           foundDevices.push({
             deviceId: result.device.deviceId,
-            name: result.device.name || "Dispositivo sin nombre",
+            name: result.device.name || "Dispositivo desconocido",
             rssi: result.rssi,
           })
           setDevices([...foundDevices])

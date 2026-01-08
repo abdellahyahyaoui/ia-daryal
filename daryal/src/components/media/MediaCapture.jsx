@@ -70,6 +70,13 @@ export default function MediaCapture() {
       mediaRecorder.start()
       setIsRecording(true)
       console.log("[v0] Audio recording started")
+
+      // Limit recording to 15 seconds
+      setTimeout(() => {
+        if (mediaRecorder.state === "recording") {
+          stopAudioRecording()
+        }
+      }, 15000)
     } catch (error) {
       console.error("[v0] Error starting audio recording:", error)
       throw error
