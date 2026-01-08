@@ -3,11 +3,10 @@
 import axios from "axios"
 
 const apiClient = axios.create({
-  baseURL: "https://ia-daryal-3.onrender.com/api",
+  baseURL: "/api", // Proxied in development or absolute if needed
   headers: {
     "Content-Type": "application/json",
   },
-  timeout: 60000, // Aumentado a 60s por si Render está arrancando
 })
 
 export const iniciarDiagnostico = async (datosVehiculo) => {
