@@ -2,7 +2,7 @@
   "name": "daryal",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:5001",
+  "proxy": "http://0.0.0.0:5001",
   "dependencies": {
     "@capacitor-community/bluetooth-le": "^6.1.0",
     "@capacitor/android": "^8.0.0",
