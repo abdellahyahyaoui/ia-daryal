@@ -4,6 +4,8 @@ import ResultadoDiagnostico from './ResultadoDiagnostico';
 import { interpretarCodigos } from '../../api/openai';
 
 
+import { saveToHistory } from '../../utils/historyStorage';
+
 const CodeInterpreter = () => {
     const [resultado, setResultado] = useState(null);
     const [error, setError] = useState(null);
@@ -19,6 +21,13 @@ const CodeInterpreter = () => {
             const respuesta = await interpretarCodigos(codigos);
             setResultado(respuesta);
             setMostrarFormulario(false);
+            
+            // Guardar en el historial
+            saveToHistory({
+                problema: `Interpretación de códigos: ${Array.isArray(codigos) ? codigos.join(', ') : codigos}`,
+                diagnostico: respuesta.diagnostico || respuesta.diagnosis || respuesta,
+                tipo: "obd2"
+            });
         } catch (err) {
             setError('Hubo un problema al interpretar los códigos. Por favor, inténtalo de nuevo.');
         } finally {
