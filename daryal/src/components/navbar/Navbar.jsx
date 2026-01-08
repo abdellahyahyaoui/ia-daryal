@@ -8,12 +8,18 @@ export default function Navbar() {
   const [history, setHistory] = useState([])
 
   useEffect(() => {
-    if (isOpen) {
+    const loadHistory = () => {
       const savedHistory = getHistory()
       console.log("[Navbar] Historial cargado:", savedHistory)
       setHistory(savedHistory || [])
     }
-  }, [isOpen])
+
+    loadHistory()
+    
+    // Listen for history updates
+    window.addEventListener('history-updated', loadHistory)
+    return () => window.removeEventListener('history-updated', loadHistory)
+  }, [])
 
   return (
     <nav className="navbar-container" style={{ position: 'relative', zIndex: 1000 }}>
@@ -46,59 +52,56 @@ export default function Navbar() {
           Interpretar Código
         </Link>
 
-        {/* Sección de Historial */}
-        <div className="history-section" style={{ marginTop: '30px', flex: 1 }}>
+        {/* Sección de Historial - Muy visible */}
+        <div className="history-section" style={{ 
+          marginTop: '40px', 
+          width: '100%', 
+          borderTop: '2px solid #4ade80', 
+          paddingTop: '20px',
+          display: 'block'
+        }}>
           <h3 style={{ 
-            fontSize: '11px', 
-            fontWeight: '800', 
+            fontSize: '14px', 
+            fontWeight: 'bold', 
             textTransform: 'uppercase', 
             color: '#4ade80', 
-            letterSpacing: '1px',
-            marginBottom: '15px',
+            marginBottom: '20px',
             display: 'flex',
             alignItems: 'center',
-            gap: '8px'
+            gap: '10px'
           }}>
-            <History size={14} /> Historial de Diagnósticos
+            <History size={18} /> Historial Reciente
           </h3>
           
-          <div className="history-list" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            {history.length > 0 ? (
+          <div className="history-list" style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {history && history.length > 0 ? (
               history.map((item) => (
                 <div 
                   key={item.id} 
                   style={{ 
-                    padding: '12px', 
-                    backgroundColor: '#262626', 
-                    borderRadius: '8px', 
-                    border: '1px solid #333',
-                    cursor: 'pointer',
-                    transition: 'all 0.2s'
+                    padding: '15px', 
+                    backgroundColor: '#2a2a2a', 
+                    borderRadius: '10px', 
+                    border: '1px solid #444',
+                    boxShadow: '0 4px 6px rgba(0,0,0,0.3)'
                   }}
-                  onClick={() => setIsOpen(false)}
                 >
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-                    <span style={{ color: '#4ade80', fontSize: '10px', fontWeight: 'bold' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ color: '#4ade80', fontSize: '11px', fontWeight: 'bold' }}>
                       {new Date(item.timestamp).toLocaleDateString()}
                     </span>
-                    <ChevronRight size={12} color="#666" />
                   </div>
-                  <p style={{ 
-                    margin: 0, 
-                    color: '#eee', 
-                    fontSize: '12px', 
-                    whiteSpace: 'nowrap', 
-                    overflow: 'hidden', 
-                    textOverflow: 'ellipsis' 
-                  }}>
-                    {item.problema || "Sin descripción"}
+                  <p style={{ margin: '8px 0 0', color: '#fff', fontSize: '13px', lineHeight: '1.4' }}>
+                    {item.problema}
                   </p>
                 </div>
               ))
             ) : (
-              <p style={{ color: '#666', fontSize: '11px', fontStyle: 'italic', textAlign: 'center', marginTop: '20px' }}>
-                No hay diagnósticos guardados aún.
-              </p>
+              <div style={{ padding: '20px', textAlign: 'center', border: '1px dashed #444', borderRadius: '10px' }}>
+                <p style={{ color: '#888', fontSize: '12px', margin: 0 }}>
+                  Aún no tienes diagnósticos guardados.
+                </p>
+              </div>
             )}
           </div>
         </div>

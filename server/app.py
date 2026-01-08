@@ -9,27 +9,40 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "*"}})
+CORS(app)
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 @app.route('/api/iniciar-diagnostico', methods=['POST'])
 def iniciar_diagnostico():
     data = request.json
-    logger.info(f"Iniciar diagnóstico: {data}")
     return jsonify({"pregunta": "¿Podrías darme más detalles sobre el comportamiento del vehículo?"})
 
 @app.route('/api/continuar-diagnostico', methods=['POST'])
 def continuar_diagnostico():
     data = request.json
-    logger.info(f"Continuar diagnóstico: {data}")
-    return jsonify({"pregunta": "¿Has notado algún ruido extraño?"})
+    historial = data.get('historial', [])
+    messages = [{"role": "system", "content": "Eres un experto en diagnóstico de vehículos."}]
+    for h in historial:
+        role = "assistant" if h.get('tipo') == 'pregunta' else "user"
+        messages.append({"role": role, "content": h.get('texto', '')})
+    
+    try:
+        response = client.chat.completions.create(
+            model="gpt-4o",
+            messages=messages
+        )
+        content = response.choices[0].message.content
+        if len(historial) >= 6:
+             return jsonify({"diagnostico_y_soluciones": content})
+        return jsonify({"pregunta": content})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @app.route('/api/interpretar-codigos', methods=['POST'])
 def interpretar_codigos():
     data = request.json
     codigos = data.get('codigos', [])
-    logger.info(f"Interpretar códigos: {codigos}")
     try:
         response = client.chat.completions.create(
             model="gpt-4o",
@@ -37,14 +50,12 @@ def interpretar_codigos():
         )
         return jsonify({"diagnostico": response.choices[0].message.content})
     except Exception as e:
-        logger.error(f"Error en interpretar_codigos: {e}")
         return jsonify({"error": str(e)}), 500
 
 @app.route('/api/analizar-media', methods=['POST'])
 def analizar_media():
     problema = request.form.get('problema', '')
     vehicle_type = request.form.get('vehicleType', 'vehículo')
-    logger.info(f"Analizar media para {vehicle_type}: {problema}")
     results = []
     try:
         for key in request.files:
@@ -61,9 +72,7 @@ def analizar_media():
                 results.append(f"Sonido detectado: {transcript.text}")
         return jsonify({"analisis": "\n".join(results)})
     except Exception as e:
-        logger.error(f"Error en analizar_media: {e}")
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    # Usar puerto 5001 para el backend
     app.run(debug=True, host='0.0.0.0', port=5001)

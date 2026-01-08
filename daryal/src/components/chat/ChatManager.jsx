@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react"
 import { iniciarDiagnostico, continuarDiagnostico, interpretarCodigos, enviarMediaAIA } from "../../api/openai"
-import { saveDiagnosis } from "../../utils/storage"
+import { saveToHistory } from "../../utils/historyStorage"
 
 export default function ChatManager({ section, messages, setMessages, setIsTyping }) {
   const [conversationState, setConversationState] = useState({
@@ -127,13 +127,13 @@ export default function ChatManager({ section, messages, setMessages, setIsTypin
               })
 
               try {
-                await saveDiagnosis({
+                await saveToHistory({
                   vehicleData: conversationState.vehicleData,
                   problema: conversationState.vehicleData.problema,
                   diagnostico: finalDiagnosis,
                   historial: conversationState.historial,
                 })
-                console.log("[v0] Diagnosis saved successfully")
+                console.log("[v0] Diagnosis saved successfully to history")
               } catch (error) {
                 console.error("[v0] Failed to save diagnosis:", error)
               }
