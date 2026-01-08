@@ -43,10 +43,23 @@ def continuar_diagnostico():
 def interpretar_codigos():
     data = request.json
     codigos = data.get('codigos', [])
+    prompt = f"""Actúa como un Ingeniero Mecánico Automotriz experto con 20 años de experiencia en diagnóstico avanzado.
+    Analiza rigurosamente los siguientes códigos de falla OBD2: {', '.join(codigos)}.
+
+    Proporciona una respuesta estructurada con:
+    1. EXPLICACIÓN TÉCNICA: Qué significa exactamente cada código a nivel de componentes y señales.
+    2. CAUSAS PROBABLES: Lista de componentes que podrían estar fallando, priorizando los más comunes.
+    3. PROCEDIMIENTO DE DIAGNÓSTICO: Pasos paso a paso (ej: medir voltajes, revisar continuidad, inspección visual) para confirmar la falla.
+    4. SOLUCIONES RECOMENDADAS: Desde limpieza hasta reemplazo de piezas específicas.
+    5. NIVEL DE URGENCIA: Riesgos de seguir conduciendo con estos códigos.
+
+    Usa un lenguaje técnico pero comprensible y sé extremadamente preciso con los síntomas asociados."""
+    
     try:
         response = client.chat.completions.create(
             model="gpt-4o",
-            messages=[{"role": "user", "content": f"Interpreta estos códigos OBD2 y da soluciones: {', '.join(codigos)}"}]
+            messages=[{"role": "system", "content": "Eres un Ingeniero Mecánico experto en diagnóstico avanzado."}, 
+                     {"role": "user", "content": prompt}]
         )
         return jsonify({"diagnostico": response.choices[0].message.content})
     except Exception as e:
