@@ -9,9 +9,7 @@ export default function Navbar() {
 
   useEffect(() => {
     if (isOpen) {
-      const savedHistory = getHistory()
-      console.log("Historial cargado:", savedHistory)
-      setHistory(savedHistory)
+      setHistory(getHistory())
     }
   }, [isOpen])
 
@@ -36,14 +34,14 @@ export default function Navbar() {
 
         {history && history.length > 0 && (
           <div className="history-section" style={{ padding: '1rem', borderTop: '1px solid rgba(255,255,255,0.1)', marginTop: '1rem', width: '100%' }}>
-            <h3 style={{ fontSize: '0.75rem', fontWeight: 'bold', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <h3 style={{ fontSize: '0.75rem', fontWeight: 'bold', textTransform: 'uppercase', color: 'white', marginBottom: '0.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <History size={14} /> Historial Reciente
             </h3>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: '12rem', overflowY: 'auto' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', maxHeight: '15rem', overflowY: 'auto' }}>
               {history.map((item) => (
-                <div key={item.id} style={{ fontSize: '0.75rem', padding: '0.5rem', backgroundColor: 'rgba(255,255,255,0.05)', borderRadius: '4px', cursor: 'pointer' }}>
-                   <p style={{ fontWeight: 'bold', margin: 0, color: 'white' }}>{new Date(item.timestamp).toLocaleDateString()}</p>
-                   <p style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', color: 'rgba(255,255,255,0.7)', margin: 0 }}>{item.problema}</p>
+                <div key={item.id} style={{ fontSize: '0.75rem', padding: '0.6rem', backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: '6px' }}>
+                   <p style={{ fontWeight: 'bold', margin: 0, color: '#4ade80' }}>{new Date(item.timestamp).toLocaleDateString()}</p>
+                   <p style={{ color: 'rgba(255,255,255,0.9)', margin: '4px 0 0 0', fontSize: '0.7rem' }}>{item.problema}</p>
                 </div>
               ))}
             </div>
