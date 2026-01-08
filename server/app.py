@@ -30,10 +30,12 @@ def continuar_diagnostico():
     try:
         response = client.chat.completions.create(
             model="gpt-4o",
-            messages=messages
+            messages=messages,
+            max_tokens=800
         )
         content = response.choices[0].message.content
-        if len(historial) >= 6:
+        # Limitar a máximo 5 preguntas (historial de 10 mensajes: 5 user + 5 assistant)
+        if len(historial) >= 10:
              return jsonify({"diagnostico_y_soluciones": content})
         return jsonify({"pregunta": content})
     except Exception as e:
@@ -59,7 +61,8 @@ def interpretar_codigos():
         response = client.chat.completions.create(
             model="gpt-4o",
             messages=[{"role": "system", "content": "Eres un Ingeniero Mecánico experto en diagnóstico avanzado."}, 
-                     {"role": "user", "content": prompt}]
+                     {"role": "user", "content": prompt}],
+            max_tokens=1200
         )
         return jsonify({"diagnostico": response.choices[0].message.content})
     except Exception as e:
